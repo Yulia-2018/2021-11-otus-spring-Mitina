@@ -3,7 +3,8 @@ package ru.otus.homework.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.otus.homework.Main;
 import ru.otus.homework.domain.Question;
 
 import java.util.Arrays;
@@ -21,7 +22,7 @@ class QuestionServiceTest {
 
     @BeforeAll
     static void setUp() {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
         service = context.getBean(QuestionService.class);
     }
 

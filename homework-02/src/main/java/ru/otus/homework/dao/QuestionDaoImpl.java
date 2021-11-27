@@ -1,5 +1,7 @@
 package ru.otus.homework.dao;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 import ru.otus.homework.domain.Question;
 
 import java.io.BufferedReader;
@@ -8,11 +10,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class QuestionDaoImpl implements QuestionDao {
 
     private final String fileName;
 
-    public QuestionDaoImpl(String fileName) {
+    public QuestionDaoImpl(@Value("questions.csv") String fileName) {
         this.fileName = fileName;
     }
 
