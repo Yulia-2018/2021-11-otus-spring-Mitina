@@ -3,23 +3,25 @@ package ru.otus.homework;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 
 public class FileUtil {
-
-    public static final String FILE_ANSWER = ".\\src\\main\\resources\\answers.csv";
 
     private FileUtil() {
     }
 
-    public static void writeInList(String file, Consumer<String> consumer) {
+    public static <T> List<T> getList(String file, Function<String, T> function) {
+        List<T> list = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                consumer.accept(line);
+                list.add(function.apply(line));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return list;
     }
 }

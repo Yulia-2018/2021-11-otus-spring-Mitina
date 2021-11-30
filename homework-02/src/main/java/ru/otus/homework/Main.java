@@ -9,10 +9,7 @@ import ru.otus.homework.service.QuestionService;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
-
-import static ru.otus.homework.FileUtil.*;
 
 @PropertySource("classpath:application.properties")
 @ComponentScan
@@ -21,6 +18,7 @@ public class Main {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
         QuestionService questionService = context.getBean(QuestionService.class);
+        String pathFileAnswers = context.getBean(String.class);
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))){
             System.out.print("Enter your last name: ");
@@ -28,8 +26,7 @@ public class Main {
             System.out.print("Enter your name: ");
             String name = reader.readLine().trim();
 
-            List<String> answerList = new ArrayList<>();
-            writeInList(FILE_ANSWER, answerList::add);
+            List<String> answerList = FileUtil.getList(pathFileAnswers, (line) -> line);
             int numberRightAnswers = 0;
             List<Question> questionList = questionService.getAll();
             int numberQuestions = questionList.size();
