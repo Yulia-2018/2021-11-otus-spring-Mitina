@@ -1,16 +1,13 @@
 package ru.otus.homework.service;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
+import ru.otus.homework.AppMessageSource;
 import ru.otus.homework.FileUtil;
 import ru.otus.homework.domain.Question;
 
 import java.util.List;
-import java.util.Locale;
 
-@ConfigurationProperties(prefix = "app")
 @Component
 public class AppServiceImpl implements AppService {
 
@@ -18,33 +15,20 @@ public class AppServiceImpl implements AppService {
 
     private String pathFileAnswers;
 
-    private String language;
+    private AppMessageSource appMessageSource;
 
-    public AppServiceImpl(QuestionService questionService, @Value("${answer.path-file}${app.language}_${answer.file-name}") String pathFileAnswers
-    ) {
+    public AppServiceImpl(QuestionService questionService, @Value("${answer.path-file}${app.language}_${answer.file-name}") String pathFileAnswers, AppMessageSource appMessageSource) {
         this.questionService = questionService;
         this.pathFileAnswers = pathFileAnswers;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
+        this.appMessageSource = appMessageSource;
     }
 
     @Override
-    public String getLanguage() {
-        return language;
-    }
+    public void testStudent(ConsoleService consoleService) {
 
-    @Override
-    public void testStudent(MessageSource msg, ConsoleService consoleService) {
-
-        if (language.equals("en")) {
-            language = "";
-        }
-        Locale locale = Locale.forLanguageTag(language);
-        consoleService.write(msg.getMessage("app.lastName", null, locale));
+        consoleService.write(appMessageSource.getMessage("app.lastName", null));
         String lastName = consoleService.read();
-        consoleService.write(msg.getMessage("app.name", null, locale));
+        consoleService.write(appMessageSource.getMessage("app.name", null));
         String name = consoleService.read();
         List<String> answerList = FileUtil.getList(pathFileAnswers, (line) -> line);
         int numberRightAnswers = 0;
@@ -58,9 +42,6 @@ public class AppServiceImpl implements AppService {
                 numberRightAnswers++;
             }
         }
-        consoleService.write(msg.getMessage(
-                "app.result",
-                new String[]{name, lastName, Integer.toString(numberRightAnswers), Integer.toString(numberQuestions)},
-                locale));
+        consoleService.write(appMessageSource.getMessage("app.result", new String[]{name, lastName, Integer.toString(numberRightAnswers), Integer.toString(numberQuestions)}));
     }
 }

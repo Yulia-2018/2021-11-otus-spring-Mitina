@@ -2,10 +2,10 @@ package ru.otus.homework.service;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.MessageSource;
 import ru.otus.homework.Main;
 
 import static org.mockito.Mockito.*;
@@ -15,20 +15,19 @@ class AppServiceTest {
 
     private static AppService service;
 
-    private static MessageSource msg;
+    @Value("${app.language}")
+    private String language;
 
     @BeforeAll
     static void setUp() {
         ApplicationContext context = SpringApplication.run(Main.class);
         service = context.getBean(AppService.class);
-        msg = context.getBean(MessageSource.class);
     }
 
     @Test
     void testStudent() {
         ConsoleService consoleService = mock(ConsoleService.class);
 
-        String language = service.getLanguage();
         if (language.equals("ru")) {
             when(consoleService.read()).thenReturn(
                     "Иванов", "Михаил",
@@ -43,7 +42,7 @@ class AppServiceTest {
                     "Moscow", "Nile", "4 6", "France", "Moscow");
         }
 
-        service.testStudent(msg, consoleService);
+        service.testStudent(consoleService);
 
         verify(consoleService, times(7)).read();
         verify(consoleService, times(8)).write(any());

@@ -3,6 +3,7 @@ package ru.otus.homework.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -23,11 +24,19 @@ class QuestionServiceTest {
     private static Question Question_4;
     private static Question Question_5;
 
+    @Value("${app.language}")
+    private String language;
+
     @BeforeAll
     static void setUp() {
         ApplicationContext context = SpringApplication.run(Main.class);
-        AppService appService = context.getBean(AppService.class);
-        String language = appService.getLanguage();
+        service = context.getBean(QuestionService.class);
+    }
+
+    @Test
+    void getAll() {
+        List<Question> result = service.getAll();
+        Assertions.assertEquals(5, result.size());
 
         switch (language) {
             case "ru":
@@ -53,13 +62,6 @@ class QuestionServiceTest {
                 break;
         }
 
-        service = context.getBean(QuestionService.class);
-    }
-
-    @Test
-    void getAll() {
-        List<Question> result = service.getAll();
-        Assertions.assertEquals(5, result.size());
         Assertions.assertEquals(Arrays.asList(Question_1, Question_2, Question_3, Question_4, Question_5), result);
     }
 }
