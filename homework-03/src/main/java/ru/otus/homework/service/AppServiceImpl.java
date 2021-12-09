@@ -2,7 +2,6 @@ package ru.otus.homework.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.otus.homework.AppMessageSource;
 import ru.otus.homework.FileUtil;
 import ru.otus.homework.domain.Question;
 
@@ -15,20 +14,30 @@ public class AppServiceImpl implements AppService {
 
     private String pathFileAnswers;
 
-    private AppMessageSource appMessageSource;
+    private MessageService messageService;
 
-    public AppServiceImpl(QuestionService questionService, @Value("${answer.path-file}${app.language}_${answer.file-name}") String pathFileAnswers, AppMessageSource appMessageSource) {
+    private ConsoleService consoleService;
+
+    public AppServiceImpl(QuestionService questionService,
+                          @Value("${answer.path-file}${app.language}_${answer.file-name}") String pathFileAnswers,
+                          MessageService messageService,
+                          ConsoleService consoleService) {
         this.questionService = questionService;
         this.pathFileAnswers = pathFileAnswers;
-        this.appMessageSource = appMessageSource;
+        this.messageService = messageService;
+        this.consoleService = consoleService;
+    }
+
+    public void setConsoleService(ConsoleService consoleService) {
+        this.consoleService = consoleService;
     }
 
     @Override
-    public void testStudent(ConsoleService consoleService) {
+    public void testStudent() {
 
-        consoleService.write(appMessageSource.getMessage("app.lastName", null));
+        consoleService.write(messageService.getMessage("app.lastName", null));
         String lastName = consoleService.read();
-        consoleService.write(appMessageSource.getMessage("app.name", null));
+        consoleService.write(messageService.getMessage("app.name", null));
         String name = consoleService.read();
         List<String> answerList = FileUtil.getList(pathFileAnswers, (line) -> line);
         int numberRightAnswers = 0;
@@ -42,6 +51,6 @@ public class AppServiceImpl implements AppService {
                 numberRightAnswers++;
             }
         }
-        consoleService.write(appMessageSource.getMessage("app.result", new String[]{name, lastName, Integer.toString(numberRightAnswers), Integer.toString(numberQuestions)}));
+        consoleService.write(messageService.getMessage("app.result", new String[]{name, lastName, Integer.toString(numberRightAnswers), Integer.toString(numberQuestions)}));
     }
 }

@@ -1,19 +1,19 @@
-package ru.otus.homework;
+package ru.otus.homework.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Locale;
 
-@Component
-public class AppMessageSource {
+@Service
+public class MessageService {
 
     private MessageSource messageSource;
 
     private Locale locale;
 
-    public AppMessageSource(MessageSource messageSource, @Value("${app.language}") String language) {
+    public MessageService(MessageSource messageSource, @Value("${app.language}") String language) {
         this.messageSource = messageSource;
         this.locale = Locale.forLanguageTag(language.equals("en") ? "" : language);
     }

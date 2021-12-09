@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class AppServiceTest {
 
-    private static AppService service;
+    private static AppServiceImpl service;
 
     @Value("${app.language}")
     private String language;
@@ -21,12 +21,13 @@ class AppServiceTest {
     @BeforeAll
     static void setUp() {
         ApplicationContext context = SpringApplication.run(Main.class);
-        service = context.getBean(AppService.class);
+        service = context.getBean(AppServiceImpl.class);
     }
 
     @Test
     void testStudent() {
         ConsoleService consoleService = mock(ConsoleService.class);
+        service.setConsoleService(consoleService);
 
         if (language.equals("ru")) {
             when(consoleService.read()).thenReturn(
@@ -42,7 +43,7 @@ class AppServiceTest {
                     "Moscow", "Nile", "4 6", "France", "Moscow");
         }
 
-        service.testStudent(consoleService);
+        service.testStudent();
 
         verify(consoleService, times(7)).read();
         verify(consoleService, times(8)).write(any());
