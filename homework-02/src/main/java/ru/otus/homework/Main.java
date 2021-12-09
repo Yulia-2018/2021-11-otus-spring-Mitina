@@ -1,12 +1,17 @@
 package ru.otus.homework;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.otus.homework.service.QuestionService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
+import ru.otus.homework.service.AppService;
 
+@PropertySource("classpath:application.properties")
+@ComponentScan
 public class Main {
+
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
-        QuestionService questionService = context.getBean(QuestionService.class);
-        questionService.getAll().forEach(System.out::println);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
+        AppService appService = context.getBean(AppService.class);
+        appService.testStudent();
     }
 }

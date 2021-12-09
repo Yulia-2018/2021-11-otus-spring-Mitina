@@ -1,5 +1,8 @@
 package ru.otus.homework.domain;
 
+import lombok.Builder;
+
+@Builder
 public class Question {
 
     private final String text;
