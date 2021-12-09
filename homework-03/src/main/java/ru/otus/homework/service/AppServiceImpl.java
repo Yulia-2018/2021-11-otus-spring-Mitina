@@ -28,10 +28,6 @@ public class AppServiceImpl implements AppService {
         this.consoleService = consoleService;
     }
 
-    public void setConsoleService(ConsoleService consoleService) {
-        this.consoleService = consoleService;
-    }
-
     @Override
     public void testStudent() {
 

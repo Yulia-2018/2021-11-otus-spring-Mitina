@@ -1,13 +1,10 @@
 package ru.otus.homework.service;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
-import ru.otus.homework.Main;
 import ru.otus.homework.domain.Question;
 
 import java.util.Arrays;
@@ -16,7 +13,8 @@ import java.util.List;
 @SpringBootTest
 class QuestionServiceTest {
 
-    private static QuestionService service;
+    @Autowired
+    private QuestionService service;
 
     private static Question Question_1;
     private static Question Question_2;
@@ -26,12 +24,6 @@ class QuestionServiceTest {
 
     @Value("${app.language}")
     private String language;
-
-    @BeforeAll
-    static void setUp() {
-        ApplicationContext context = SpringApplication.run(Main.class);
-        service = context.getBean(QuestionService.class);
-    }
 
     @Test
     void getAll() {

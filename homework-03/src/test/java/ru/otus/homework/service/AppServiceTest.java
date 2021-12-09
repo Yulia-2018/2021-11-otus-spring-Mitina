@@ -1,33 +1,27 @@
 package ru.otus.homework.service;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
-import ru.otus.homework.Main;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class AppServiceTest {
 
-    private static AppServiceImpl service;
+    @Autowired
+    private AppServiceImpl service;
+
+    @MockBean
+    private ConsoleService consoleService;
 
     @Value("${app.language}")
     private String language;
 
-    @BeforeAll
-    static void setUp() {
-        ApplicationContext context = SpringApplication.run(Main.class);
-        service = context.getBean(AppServiceImpl.class);
-    }
-
     @Test
     void testStudent() {
-        ConsoleService consoleService = mock(ConsoleService.class);
-        service.setConsoleService(consoleService);
 
         if (language.equals("ru")) {
             when(consoleService.read()).thenReturn(
