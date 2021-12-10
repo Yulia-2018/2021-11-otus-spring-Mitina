@@ -12,7 +12,7 @@ import java.util.List;
 @SpringBootTest
 class QuestionDaoTest {
 
-    private static QuestionDaoImpl dao;
+    private static QuestionDao dao;
 
     private static final Question QUESTION_1 = new Question("Вопрос 1");
     private static final Question QUESTION_2 = new Question("Вопрос 2");

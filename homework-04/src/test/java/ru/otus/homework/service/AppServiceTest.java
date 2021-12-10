@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*;
 class AppServiceTest {
 
     @Autowired
-    private AppServiceImpl service;
+    private AppService service;
 
     @MockBean
     private ConsoleService consoleService;

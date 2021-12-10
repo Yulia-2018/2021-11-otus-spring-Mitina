@@ -1,4 +1,7 @@
 spring:
+  shell:
+    interactive:
+      enabled: false
   main:
     allow-circular-references: true
   messages.basename: i18n/messages
@@ -9,4 +12,3 @@ question:
 answer:
   file-name: answers.csv
   path-file: .\src\main\resources\
-  passing-score: 4
