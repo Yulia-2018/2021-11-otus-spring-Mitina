@@ -10,13 +10,13 @@ import java.util.List;
 @Component
 public class AppServiceImpl implements AppService {
 
-    private QuestionService questionService;
+    private final QuestionService questionService;
 
-    private String pathFileAnswers;
+    private final String pathFileAnswers;
 
-    private MessageService messageService;
+    private final MessageService messageService;
 
-    private ConsoleService consoleService;
+    private final ConsoleService consoleService;
 
     public AppServiceImpl(QuestionService questionService,
                           @Value("${answer.path-file}${app.language}_${answer.file-name}") String pathFileAnswers,

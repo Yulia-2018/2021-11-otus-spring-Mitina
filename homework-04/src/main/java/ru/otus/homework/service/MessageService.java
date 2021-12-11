@@ -9,9 +9,9 @@ import java.util.Locale;
 @Service
 public class MessageService {
 
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
 
-    private Locale locale;
+    private final Locale locale;
 
     public MessageService(MessageSource messageSource, @Value("${app.language}") String language) {
         this.messageSource = messageSource;

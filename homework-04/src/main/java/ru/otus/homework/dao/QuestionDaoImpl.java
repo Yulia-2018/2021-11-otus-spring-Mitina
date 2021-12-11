@@ -10,7 +10,7 @@ import java.util.List;
 @Component
 public class QuestionDaoImpl implements QuestionDao {
 
-    private String fileName;
+    private final String fileName;
 
     public QuestionDaoImpl(@Value("${app.language}_${question.file-name}") String fileName) {
         this.fileName = fileName;
