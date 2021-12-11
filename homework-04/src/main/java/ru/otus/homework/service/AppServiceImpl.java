@@ -16,37 +16,37 @@ public class AppServiceImpl implements AppService {
 
     private final MessageService messageService;
 
-    private final ConsoleService consoleService;
+    private final IOService ioService;
 
     public AppServiceImpl(QuestionService questionService,
                           @Value("${answer.path-file}${app.language}_${answer.file-name}") String pathFileAnswers,
                           MessageService messageService,
-                          ConsoleService consoleService) {
+                          IOService ioService) {
         this.questionService = questionService;
         this.pathFileAnswers = pathFileAnswers;
         this.messageService = messageService;
-        this.consoleService = consoleService;
+        this.ioService = ioService;
     }
 
     @Override
     public void testStudent() {
 
-        consoleService.write(messageService.getMessage("app.lastName", null));
-        String lastName = consoleService.read();
-        consoleService.write(messageService.getMessage("app.name", null));
-        String name = consoleService.read();
+        ioService.write(messageService.getMessage("app.lastName", null));
+        String lastName = ioService.read();
+        ioService.write(messageService.getMessage("app.name", null));
+        String name = ioService.read();
         List<String> answerList = FileUtil.getList(pathFileAnswers, (line) -> line);
         int numberRightAnswers = 0;
         List<Question> questionList = questionService.getAll();
         int numberQuestions = questionList.size();
         for (int i = 0; i < numberQuestions; i++) {
             Question question = questionList.get(i);
-            consoleService.write(question.toString());
-            String answer = consoleService.read().toLowerCase();
+            ioService.write(question.toString());
+            String answer = ioService.read().toLowerCase();
             if (answer.equals(answerList.get(i).toLowerCase())) {
                 numberRightAnswers++;
             }
         }
-        consoleService.write(messageService.getMessage("app.result", new String[]{name, lastName, Integer.toString(numberRightAnswers), Integer.toString(numberQuestions)}));
+        ioService.write(messageService.getMessage("app.result", new String[]{name, lastName, Integer.toString(numberRightAnswers), Integer.toString(numberQuestions)}));
     }
 }
