@@ -1,0 +1,12 @@
+spring:
+  main:
+    allow-circular-references: true
+  messages.basename: i18n/messages
+app:
+  language: ru
+question:
+  file-name: questions.csv
+answer:
+  file-name: answers.csv
+  path-file: .\src\main\resources\
+  passing-score: 4

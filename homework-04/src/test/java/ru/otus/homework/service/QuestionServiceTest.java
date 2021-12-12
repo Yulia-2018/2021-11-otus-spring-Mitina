@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import ru.otus.homework.dao.QuestionDao;
+import ru.otus.homework.dao.QuestionDaoImpl;
 import ru.otus.homework.domain.Question;
 
 import java.util.Arrays;
@@ -16,14 +20,31 @@ class QuestionServiceTest {
     @Autowired
     private QuestionService service;
 
+    @Value("${app.language}")
+    private String language;
+
+    @Configuration
+    static class TestConfiguration {
+
+        @Value("${app.language}_${question.file-name}")
+        private String fileName;
+
+        @Bean
+        public QuestionService service(QuestionDao dao) {
+            return new QuestionServiceImpl(dao);
+        }
+
+        @Bean
+        public QuestionDao dao(){
+            return new QuestionDaoImpl(fileName);
+        }
+    }
+
     private static Question Question_1;
     private static Question Question_2;
     private static Question Question_3;
     private static Question Question_4;
     private static Question Question_5;
-
-    @Value("${app.language}")
-    private String language;
 
     @Test
     void getAll() {
