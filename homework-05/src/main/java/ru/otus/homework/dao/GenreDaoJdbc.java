@@ -1,6 +1,7 @@
 package ru.otus.homework.dao;
 
 import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -9,13 +10,13 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsertOperations;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.domain.Genre;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 @Repository
 public class GenreDaoJdbc implements GenreDao {
+
+    private static final RowMapper<Genre> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Genre.class);
 
     private final NamedParameterJdbcOperations jdbc;
 
@@ -37,20 +38,13 @@ public class GenreDaoJdbc implements GenreDao {
 
     @Override
     public Genre getById(long id) {
-        List<Genre> genres = jdbc.query("SELECT id, title FROM genre WHERE id = :id", Map.of("id", id), new GenreMapper());
+        List<Genre> genres = jdbc.query("SELECT id, title FROM genre WHERE id = :id", Map.of("id", id), ROW_MAPPER);
         return DataAccessUtils.singleResult(genres);
     }
 
     @Override
     public Genre getByTitle(String title) {
-        List<Genre> genres = jdbc.query("SELECT id, title FROM genre WHERE title = :title", Map.of("title", title), new GenreMapper());
+        List<Genre> genres = jdbc.query("SELECT id, title FROM genre WHERE title = :title", Map.of("title", title), ROW_MAPPER);
         return DataAccessUtils.singleResult(genres);
-    }
-
-    private static class GenreMapper implements RowMapper<Genre> {
-        @Override
-        public Genre mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Genre(rs.getLong("id"), rs.getString("title"));
-        }
     }
 }

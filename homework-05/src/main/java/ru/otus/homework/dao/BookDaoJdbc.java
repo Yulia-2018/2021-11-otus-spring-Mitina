@@ -83,7 +83,8 @@ public class BookDaoJdbc implements BookDao {
                         "SELECT b.id, b.title, b.author_id, b.genre_id, a.name AS author_name, g.title AS genre_title " +
                         "FROM book b " +
                         "  INNER JOIN author a ON b.author_id = a.id " +
-                        "  INNER JOIN genre g ON b.genre_id = g.id",
+                        "  INNER JOIN genre g ON b.genre_id = g.id " +
+                        "ORDER BY b.id",
                 new BookMapper());
     }
 

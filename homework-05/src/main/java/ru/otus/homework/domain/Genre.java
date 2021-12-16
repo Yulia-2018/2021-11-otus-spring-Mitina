@@ -7,10 +7,13 @@ public class Genre {
 
     private long id;
 
-    private final String title;
+    private String title;
 
     public Genre(String title) {
         this.title = title;
+    }
+
+    public Genre() {
     }
 
     public Genre(long id, String title) {
