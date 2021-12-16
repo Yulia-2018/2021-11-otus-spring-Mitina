@@ -1,0 +1,25 @@
+DROP TABLE book IF EXISTS;
+DROP TABLE author IF EXISTS;
+DROP TABLE genre IF EXISTS;
+
+CREATE TABLE author
+(
+  id   BIGINT PRIMARY KEY,
+  name VARCHAR(255)
+);
+
+CREATE TABLE genre
+(
+  id    BIGINT PRIMARY KEY,
+  title VARCHAR(255)
+);
+
+CREATE TABLE book
+(
+  id        BIGINT PRIMARY KEY,
+  title     VARCHAR(255),
+  author_id BIGINT NOT NULL,
+  genre_id  BIGINT NOT NULL,
+  FOREIGN KEY (author_id) REFERENCES author (id) ON DELETE CASCADE,
+  FOREIGN KEY (genre_id)  REFERENCES genre  (id) ON DELETE CASCADE
+);
