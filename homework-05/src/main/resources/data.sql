@@ -2,14 +2,16 @@ DELETE FROM book;
 DELETE FROM author;
 DELETE FROM genre;
 
-INSERT INTO author (id, name) VALUES
-  (1, 'author 1'),
-  (2, 'author 2');
+ALTER SEQUENCE global_seq RESTART WITH 100000;
 
-INSERT INTO genre (id, title) VALUES
-  (1, 'genre 1'),
-  (2, 'genre 2');
+INSERT INTO author (name) VALUES
+  ('author 1'),
+  ('author 2');
 
-INSERT INTO book (id, title, author_id, genre_id) VALUES
-  (1, 'book 1', 1, 2),
-  (2, 'book 2', 2, 1);
+INSERT INTO genre (title) VALUES
+  ('genre 1'),
+  ('genre 2');
+
+INSERT INTO book (title, author_id, genre_id) VALUES
+  ('book 1', 100000, 100003),
+  ('book 2', 100001, 100002);

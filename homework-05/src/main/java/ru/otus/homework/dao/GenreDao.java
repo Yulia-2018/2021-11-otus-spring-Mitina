@@ -7,4 +7,6 @@ public interface GenreDao {
     Genre insert(Genre genre);
 
     Genre getById(long id);
+
+    Genre getByTitle(String title);
 }

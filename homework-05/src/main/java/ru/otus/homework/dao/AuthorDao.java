@@ -7,4 +7,6 @@ public interface AuthorDao {
     Author insert(Author author);
 
     Author getById(long id);
+
+    Author getByName(String name);
 }
