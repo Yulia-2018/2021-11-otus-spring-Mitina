@@ -23,44 +23,35 @@ public class BookDaoJdbc implements BookDao {
 
     private final SimpleJdbcInsertOperations insertBook;
 
-    private final AuthorDao authorDao;
-
-    private final GenreDao genreDao;
-
-    public BookDaoJdbc(NamedParameterJdbcOperations jdbc, AuthorDao authorDao, GenreDao genreDao) {
+    public BookDaoJdbc(NamedParameterJdbcOperations jdbc) {
         this.jdbc = jdbc;
         this.insertBook = new SimpleJdbcInsert((JdbcTemplate) jdbc.getJdbcOperations())
                 .withTableName("book")
                 .usingGeneratedKeyColumns("id");
-        this.authorDao = authorDao;
-        this.genreDao = genreDao;
     }
 
     @Override
     public Book insert(Book book) {
-        Author author = insertAuthorIfNotExist(book.getAuthor());
-        Genre genre = insertGenreIfNotExist(book.getGenre());
-        Number newId = insertBook.executeAndReturnKey(Map.of("title", book.getTitle(), "author_id", author.getId(), "genre_id", genre.getId()));
+        Number newId = insertBook.executeAndReturnKey(Map.of(
+                "title", book.getTitle(),
+                "author_id", book.getAuthor().getId(),
+                "genre_id", book.getGenre().getId()));
         book.setId(newId.longValue());
-        book.setAuthor(author);
-        book.setGenre(genre);
         return book;
     }
 
     @Override
     public Book update(Book book) {
-        Author author = insertAuthorIfNotExist(book.getAuthor());
-        Genre genre = insertGenreIfNotExist(book.getGenre());
-
         if (jdbc.update("" +
                         "UPDATE book " +
                         "SET title = :title, author_id = :author_id, genre_id = :genre_id " +
                         "WHERE id = :id",
-                Map.of("id", book.getId(), "title", book.getTitle(), "author_id", author.getId(), "genre_id", genre.getId())) == 0) {
+                Map.of("id", book.getId(),
+                        "title", book.getTitle(),
+                        "author_id", book.getAuthor().getId(),
+                        "genre_id", book.getGenre().getId())) == 0) {
             return null;
         }
-        book.setAuthor(author);
-        book.setGenre(genre);
         return book;
     }
 
@@ -91,18 +82,6 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public boolean deleteById(long id) {
         return jdbc.update("DELETE FROM book WHERE id = :id", Map.of("id", id)) != 0;
-    }
-
-    private Author insertAuthorIfNotExist(Author author) {
-        String name = author.getName();
-        Author authorFromBase = authorDao.getByName(name);
-        return (authorFromBase == null) ? authorDao.insert(author) : authorFromBase;
-    }
-
-    private Genre insertGenreIfNotExist(Genre genre) {
-        String title = genre.getTitle();
-        Genre genreFromBase = genreDao.getByTitle(title);
-        return (genreFromBase == null) ? genreDao.insert(genre) : genreFromBase;
     }
 
     private static class BookMapper implements RowMapper<Book> {

@@ -26,15 +26,7 @@ public class Book {
         this.genre = genre;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public Book(Book book) {
+        this(book.getId(), book.getTitle(), book.getAuthor(), book.getGenre());
     }
 }

@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static ru.otus.homework.TestData.*;
 
 @JdbcTest
-@Import({BookDaoJdbc.class, AuthorDaoJdbc.class, GenreDaoJdbc.class})
+@Import(BookDaoJdbc.class)
 class BookDaoJdbcTest {
 
     @Autowired

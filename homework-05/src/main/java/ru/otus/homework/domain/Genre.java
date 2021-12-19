@@ -20,8 +20,4 @@ public class Genre {
         this.id = id;
         this.title = title;
     }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }
