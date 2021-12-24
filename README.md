@@ -11,3 +11,5 @@ homework-03 - домашнее задание к уроку "Чёрная маг
 homework-04 - домашнее задание к уроку "Продвинутая конфигурация Spring-приложений"
 
 homework-05 - домашнее задание к уроку "DAO на Spring JDBC"
+
+homework-06 - домашнее задание к уроку "JPQL, Spring ORM, DAO на основе Spring ORM + JPA"
