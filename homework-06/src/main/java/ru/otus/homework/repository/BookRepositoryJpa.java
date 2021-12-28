@@ -34,6 +34,18 @@ public class BookRepositoryJpa implements BookRepository {
     }
 
     @Override
+    public Optional<Book> getByIdWithComments(long id) {
+        TypedQuery<Book> query = em.createQuery("" +
+                "SELECT b FROM Book b" +
+                " JOIN FETCH b.author" +
+                " JOIN FETCH b.genre" +
+                " JOIN FETCH b.comments" +
+                " WHERE b.id = :id", Book.class);
+        query.setParameter("id", id);
+        return query.getResultList().stream().findFirst();
+    }
+
+    @Override
     public List<Book> getAll() {
         TypedQuery<Book> query = em.createQuery("SELECT b FROM Book b JOIN FETCH b.author JOIN FETCH b.genre ORDER BY b.id", Book.class);
         return query.getResultList();

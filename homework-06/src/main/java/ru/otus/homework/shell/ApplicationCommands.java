@@ -32,6 +32,13 @@ public class ApplicationCommands {
         System.out.println(bookService.getById(id));
     }
 
+    @ShellMethod(value = "Get book by id with comments", key = {"gW", "getWithComments"})
+    private void getBookByIdWithComments(@ShellOption Long id) {
+        Book bookWithComments = bookService.getByIdWithComments(id);
+        System.out.println(bookWithComments);
+        bookWithComments.getComments().forEach(System.out::println);
+    }
+
     @ShellMethod(value = "Delete book by id", key = {"d", "delete"})
     private void deleteBookById(@ShellOption Long id) {
         bookService.deleteById(id);

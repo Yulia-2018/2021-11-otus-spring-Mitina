@@ -29,10 +29,10 @@ class BookRepositoryJpaTest {
         Book newBook = new Book(book);
         Book createdBook = repositoryJpa.save(newBook);
         book.setId(createdBook.getId());
-        assertThat(createdBook).usingRecursiveComparison().isEqualTo(book);
+        assertThat(createdBook).usingRecursiveComparison().ignoringFields("comments").isEqualTo(book);
         List<Book> books = repositoryJpa.getAll();
         assertThat(books.size()).isEqualTo(BOOKS_COUNT + 1);
-        assertThat(books).containsExactlyElementsOf(List.of(BOOK_1, BOOK_2, book));
+        assertThat(books).usingRecursiveFieldByFieldElementComparatorIgnoringFields("comments").containsExactlyElementsOf(List.of(BOOK_1, BOOK_2, book));
     }
 
     @Test
@@ -40,20 +40,28 @@ class BookRepositoryJpaTest {
         Book book = new Book(BOOK_1_ID, "updated book", BOOK_1.getAuthor(), BOOK_2.getGenre());
         Book updatedBook = new Book(book);
         Book actualBook = repositoryJpa.save(updatedBook);
-        assertThat(actualBook).usingRecursiveComparison().isEqualTo(book);
+        assertThat(actualBook).usingRecursiveComparison().ignoringFields("comments").isEqualTo(book);
     }
 
     @Test
     void getById() {
         Optional<Book> actualBook = repositoryJpa.getById(BOOK_1_ID);
-        assertThat(actualBook).isPresent().get().usingRecursiveComparison().isEqualTo(BOOK_1);
+        assertThat(actualBook).isPresent().get().usingRecursiveComparison().ignoringFields("comments").isEqualTo(BOOK_1);
+    }
+
+    @Test
+    void getByIdWithComments() {
+        Book book = new Book(BOOK_2);
+        book.setComments(List.of(COMMENT_4));
+        Optional<Book> actualBookWithComments = repositoryJpa.getByIdWithComments(BOOK_2_ID);
+        assertThat(actualBookWithComments).isPresent().get().usingRecursiveComparison().ignoringFields("comments.book").isEqualTo(book);
     }
 
     @Test
     void getAll() {
         List<Book> books = repositoryJpa.getAll();
         assertThat(books.size()).isEqualTo(BOOKS_COUNT);
-        assertThat(books).containsExactlyElementsOf(List.of(BOOK_1, BOOK_2));
+        assertThat(books).usingRecursiveFieldByFieldElementComparatorIgnoringFields("comments").containsExactlyElementsOf(List.of(BOOK_1, BOOK_2));
     }
 
     @Test

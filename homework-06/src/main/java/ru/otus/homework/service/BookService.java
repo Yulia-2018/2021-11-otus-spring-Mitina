@@ -13,6 +13,8 @@ public interface BookService {
 
     Book getById(long id) throws NotFoundException;
 
+    Book getByIdWithComments(long id) throws NotFoundException;
+
     List<Book> getAll();
 
     void deleteById(long id) throws NotFoundException;

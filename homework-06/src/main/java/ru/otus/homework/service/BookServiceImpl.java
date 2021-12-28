@@ -58,6 +58,15 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Book getByIdWithComments(long id) throws NotFoundException {
+        Optional<Book> bookWithComments = bookRepository.getByIdWithComments(id);
+        if (bookWithComments.isEmpty()) {
+            throw new NotFoundException("Book " + id + " not exist");
+        }
+        return bookWithComments.get();
+    }
+
+    @Override
     public List<Book> getAll() {
         return bookRepository.getAll();
     }

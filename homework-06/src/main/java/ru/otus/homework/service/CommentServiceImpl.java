@@ -47,7 +47,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> getAllForBook(long bookId) {
-        return commentRepository.getAllForBook(bookId);
+        Book bookWithComments = bookService.getByIdWithComments(bookId);
+        return bookWithComments.getComments();
     }
 
     @Transactional

@@ -11,6 +11,8 @@ public interface BookRepository {
 
     Optional<Book> getById(long id);
 
+    Optional<Book> getByIdWithComments(long id);
+
     List<Book> getAll();
 
     boolean deleteById(long id);

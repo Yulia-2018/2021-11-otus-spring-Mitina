@@ -59,16 +59,16 @@ class BookServiceImplTest {
 
     @Test
     void update() {
-        Book expectedBook = new Book(BOOK_1.getId(), "updated book", BOOK_1.getAuthor(), GENRE_1);
+        Book expectedBook = new Book(BOOK_1_ID, "updated book", BOOK_1.getAuthor(), GENRE_1);
         Book updatedBook = new Book(expectedBook);
 
         when(authorRepository.getByName(BOOK_1.getAuthor().getName())).thenReturn(Optional.of(BOOK_1.getAuthor()));
         when(genreRepository.getByTitle(GENRE_1.getTitle())).thenReturn(Optional.of(GENRE_1));
         when(bookRepository.save(updatedBook)).thenReturn(expectedBook);
-        when(bookRepository.getById(BOOK_1.getId())).thenReturn(Optional.of(expectedBook));
+        when(bookRepository.getById(BOOK_1_ID)).thenReturn(Optional.of(expectedBook));
 
         service.update(updatedBook);
-        Book actualBook = service.getById(BOOK_1.getId());
+        Book actualBook = service.getById(BOOK_1_ID);
         assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);
 
         verify(authorRepository, times(1)).getByName(BOOK_1.getAuthor().getName());
@@ -76,7 +76,7 @@ class BookServiceImplTest {
         verify(genreRepository, times(1)).getByTitle(GENRE_1.getTitle());
         verify(genreRepository, times(0)).save(any());
         verify(bookRepository, times(1)).save(updatedBook);
-        verify(bookRepository, times(2)).getById(BOOK_1.getId());
+        verify(bookRepository, times(2)).getById(BOOK_1_ID);
     }
 
     @Test
@@ -90,12 +90,25 @@ class BookServiceImplTest {
 
     @Test
     void getById() {
-        when(bookRepository.getById(BOOK_1.getId())).thenReturn(Optional.of(BOOK_1));
+        when(bookRepository.getById(BOOK_1_ID)).thenReturn(Optional.of(BOOK_1));
 
-        Book actualBook = service.getById(BOOK_1.getId());
+        Book actualBook = service.getById(BOOK_1_ID);
         assertThat(actualBook).usingRecursiveComparison().isEqualTo(BOOK_1);
 
-        verify(bookRepository, times(1)).getById(BOOK_1.getId());
+        verify(bookRepository, times(1)).getById(BOOK_1_ID);
+    }
+
+    @Test
+    void getByIdWithComments() {
+        Book book = new Book(BOOK_2);
+        book.setComments(List.of(COMMENT_4));
+
+        when(bookRepository.getByIdWithComments(BOOK_2_ID)).thenReturn(Optional.of(book));
+
+        Book actualBookWithComments = service.getByIdWithComments(BOOK_2_ID);
+        assertThat(actualBookWithComments).usingRecursiveComparison().isEqualTo(book);
+
+        verify(bookRepository, times(1)).getByIdWithComments(BOOK_2_ID);
     }
 
     @Test
@@ -103,6 +116,13 @@ class BookServiceImplTest {
         when(bookRepository.getById(1)).thenReturn(Optional.empty());
         assertThatCode(() -> service.getById(1)).isInstanceOf(NotFoundException.class).hasMessage("Book 1 not exist");
         verify(bookRepository, times(1)).getById(1);
+    }
+
+    @Test
+    void getByIdWithCommentsNotFound() {
+        when(bookRepository.getByIdWithComments(1)).thenReturn(Optional.empty());
+        assertThatCode(() -> service.getByIdWithComments(1)).isInstanceOf(NotFoundException.class).hasMessage("Book 1 not exist");
+        verify(bookRepository, times(1)).getByIdWithComments(1);
     }
 
     @Test
@@ -118,15 +138,15 @@ class BookServiceImplTest {
 
     @Test
     void deleteById() {
-        when(bookRepository.deleteById(BOOK_1.getId())).thenReturn(true);
+        when(bookRepository.deleteById(BOOK_1_ID)).thenReturn(true);
         when(bookRepository.getAll()).thenReturn(List.of(BOOK_2));
 
-        service.deleteById(BOOK_1.getId());
+        service.deleteById(BOOK_1_ID);
         List<Book> books = service.getAll();
         assertThat(books.size()).isEqualTo(BOOKS_COUNT - 1);
         assertThat(books).containsExactlyElementsOf(List.of(BOOK_2));
 
-        verify(bookRepository, times(1)).deleteById(BOOK_1.getId());
+        verify(bookRepository, times(1)).deleteById(BOOK_1_ID);
         verify(bookRepository, times(1)).getAll();
     }
 

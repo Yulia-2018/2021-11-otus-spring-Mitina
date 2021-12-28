@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.homework.domain.Comment;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,10 +28,7 @@ class CommentRepositoryJpaTest {
         Comment newComment = new Comment(comment);
         Comment createdComment = repositoryJpa.save(newComment);
         comment.setId(createdComment.getId());
-        assertThat(createdComment).usingRecursiveComparison().isEqualTo(comment);
-        List<Comment> comments = repositoryJpa.getAllForBook(BOOK_1_ID);
-        assertThat(comments.size()).isEqualTo(COMMENTS_FOR_BOOK_1_COUNT + 1);
-        assertThat(comments).containsExactlyElementsOf(List.of(COMMENT_1, COMMENT_2, COMMENT_3, comment));
+        assertThat(createdComment).usingRecursiveComparison().ignoringFields("book.comments").isEqualTo(comment);
     }
 
     @Test
@@ -40,20 +36,13 @@ class CommentRepositoryJpaTest {
         Comment comment = new Comment(COMMENT_1_ID, "updated comment", BOOK_1);
         Comment updatedComment = new Comment(comment);
         Comment actualComment = repositoryJpa.save(updatedComment);
-        assertThat(actualComment).usingRecursiveComparison().isEqualTo(comment);
+        assertThat(actualComment).usingRecursiveComparison().ignoringFields("book.comments").isEqualTo(comment);
     }
 
     @Test
     void getById() {
         Optional<Comment> actualComment = repositoryJpa.getById(COMMENT_1_ID);
-        assertThat(actualComment).isPresent().get().usingRecursiveComparison().isEqualTo(COMMENT_1);
-    }
-
-    @Test
-    void getAllForBook() {
-        List<Comment> comments = repositoryJpa.getAllForBook(BOOK_1_ID);
-        assertThat(comments.size()).isEqualTo(COMMENTS_FOR_BOOK_1_COUNT);
-        assertThat(comments).containsExactlyElementsOf(List.of(COMMENT_1, COMMENT_2, COMMENT_3));
+        assertThat(actualComment).isPresent().get().usingRecursiveComparison().ignoringFields("book.comments").isEqualTo(COMMENT_1);
     }
 
     @Test

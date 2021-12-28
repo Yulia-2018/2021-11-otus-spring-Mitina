@@ -16,7 +16,7 @@ public class Comment {
     @Column(name = "text", nullable = false)
     private String text;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
