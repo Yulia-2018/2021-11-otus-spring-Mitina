@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Comment;
 import ru.otus.homework.exception.NotFoundException;
-import ru.otus.homework.repository.BookRepository;
 import ru.otus.homework.repository.CommentRepository;
 
 import java.util.List;
@@ -17,17 +16,17 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
-    private final BookRepository bookRepository;
+    private final BookService bookService;
 
-    public CommentServiceImpl(CommentRepository repository, BookRepository bookRepository) {
+    public CommentServiceImpl(CommentRepository repository, BookService bookService) {
         this.commentRepository = repository;
-        this.bookRepository = bookRepository;
+        this.bookService = bookService;
     }
 
     @Transactional
     @Override
     public Comment insert(Comment comment, long bookId) throws NotFoundException {
-        Book book = getBook(bookId);
+        Book book = bookService.getById(bookId);
         comment.setBook(book);
         return commentRepository.save(comment);
     }
@@ -36,7 +35,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void update(Comment comment, long bookId) throws NotFoundException {
         getCommentForBook(comment.getId(), bookId);
-        Book book = getBook(bookId);
+        Book book = bookService.getById(bookId);
         comment.setBook(book);
         commentRepository.save(comment);
     }
@@ -56,14 +55,6 @@ public class CommentServiceImpl implements CommentService {
     public void deleteById(long id, long bookId) throws NotFoundException {
         Comment comment = getCommentForBook(id, bookId);
         commentRepository.delete(comment);
-    }
-
-    private Book getBook(long bookId) throws NotFoundException {
-        Optional<Book> book = bookRepository.getById(bookId);
-        if (book.isEmpty()) {
-            throw new NotFoundException("Book " + bookId + " not exist");
-        }
-        return book.get();
     }
 
     private Comment getCommentForBook(long id, long bookId) {
