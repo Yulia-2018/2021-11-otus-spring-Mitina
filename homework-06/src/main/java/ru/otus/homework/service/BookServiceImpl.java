@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
@@ -57,6 +56,7 @@ public class BookServiceImpl implements BookService {
         return book.get();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Book getByIdWithComments(long id) throws NotFoundException {
         Optional<Book> bookWithComments = bookRepository.getByIdWithComments(id);
@@ -66,6 +66,7 @@ public class BookServiceImpl implements BookService {
         return bookWithComments.get();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Book> getAll() {
         return bookRepository.getAll();
