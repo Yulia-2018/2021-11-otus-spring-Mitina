@@ -13,13 +13,13 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-public class CommentServiceJpa implements CommentService {
+public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
     private final BookRepository bookRepository;
 
-    public CommentServiceJpa(CommentRepository repository, BookRepository bookRepository) {
+    public CommentServiceImpl(CommentRepository repository, BookRepository bookRepository) {
         this.commentRepository = repository;
         this.bookRepository = bookRepository;
     }

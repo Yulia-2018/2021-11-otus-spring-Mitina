@@ -19,10 +19,10 @@ import static org.mockito.Mockito.*;
 import static ru.otus.homework.TestData.*;
 
 @SpringBootTest
-class BookServiceJpaTest {
+class BookServiceImplTest {
 
     @Autowired
-    private BookServiceJpa service;
+    private BookServiceImpl service;
 
     @MockBean
     private BookRepositoryJpa bookRepository;

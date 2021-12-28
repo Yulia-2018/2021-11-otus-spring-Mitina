@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-public class BookServiceJpa implements BookService {
+public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
@@ -23,7 +23,7 @@ public class BookServiceJpa implements BookService {
 
     private final GenreRepository genreRepository;
 
-    public BookServiceJpa(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
