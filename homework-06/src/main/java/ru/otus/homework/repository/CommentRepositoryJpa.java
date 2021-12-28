@@ -1,13 +1,13 @@
 package ru.otus.homework.repository;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import ru.otus.homework.domain.Comment;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Optional;
 
-@Repository
+@Component
 public class CommentRepositoryJpa implements CommentRepository {
 
     @PersistenceContext
