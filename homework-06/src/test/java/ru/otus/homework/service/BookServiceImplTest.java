@@ -99,30 +99,10 @@ class BookServiceImplTest {
     }
 
     @Test
-    void getByIdWithComments() {
-        Book book = new Book(BOOK_2);
-        book.setComments(List.of(COMMENT_4));
-
-        when(bookRepository.getByIdWithComments(BOOK_2_ID)).thenReturn(Optional.of(book));
-
-        Book actualBookWithComments = service.getByIdWithComments(BOOK_2_ID);
-        assertThat(actualBookWithComments).usingRecursiveComparison().isEqualTo(book);
-
-        verify(bookRepository, times(1)).getByIdWithComments(BOOK_2_ID);
-    }
-
-    @Test
     void getByIdNotFound() {
         when(bookRepository.getById(1)).thenReturn(Optional.empty());
         assertThatCode(() -> service.getById(1)).isInstanceOf(NotFoundException.class).hasMessage("Book 1 not exist");
         verify(bookRepository, times(1)).getById(1);
-    }
-
-    @Test
-    void getByIdWithCommentsNotFound() {
-        when(bookRepository.getByIdWithComments(1)).thenReturn(Optional.empty());
-        assertThatCode(() -> service.getByIdWithComments(1)).isInstanceOf(NotFoundException.class).hasMessage("Book 1 not exist");
-        verify(bookRepository, times(1)).getByIdWithComments(1);
     }
 
     @Test

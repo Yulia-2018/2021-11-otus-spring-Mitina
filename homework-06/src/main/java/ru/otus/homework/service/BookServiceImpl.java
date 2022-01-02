@@ -58,16 +58,6 @@ public class BookServiceImpl implements BookService {
 
     @Transactional(readOnly = true)
     @Override
-    public Book getByIdWithComments(long id) throws NotFoundException {
-        Optional<Book> bookWithComments = bookRepository.getByIdWithComments(id);
-        if (bookWithComments.isEmpty()) {
-            throw new NotFoundException("Book " + id + " not exist");
-        }
-        return bookWithComments.get();
-    }
-
-    @Transactional(readOnly = true)
-    @Override
     public List<Book> getAll() {
         return bookRepository.getAll();
     }

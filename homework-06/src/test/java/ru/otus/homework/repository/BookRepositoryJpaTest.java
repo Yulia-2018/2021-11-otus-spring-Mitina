@@ -50,14 +50,6 @@ class BookRepositoryJpaTest {
     }
 
     @Test
-    void getByIdWithComments() {
-        Book book = new Book(BOOK_2);
-        book.setComments(List.of(COMMENT_4));
-        Optional<Book> actualBookWithComments = repositoryJpa.getByIdWithComments(BOOK_2_ID);
-        assertThat(actualBookWithComments).isPresent().get().usingRecursiveComparison().ignoringFields("comments.book").isEqualTo(book);
-    }
-
-    @Test
     void getAll() {
         List<Book> books = repositoryJpa.getAll();
         assertThat(books.size()).isEqualTo(BOOKS_COUNT);

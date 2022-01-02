@@ -44,10 +44,12 @@ public class CommentServiceImpl implements CommentService {
         return getCommentForBook(id, bookId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Comment> getAllForBook(long bookId) {
-        Book bookWithComments = bookService.getByIdWithComments(bookId);
-        return bookWithComments.getComments();
+        Book book = bookService.getById(bookId);
+        //System.out.println(book.getComments());
+        return book.getComments();
     }
 
     @Transactional
