@@ -49,11 +49,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getById(long id) {
-        Optional<Book> book = bookRepository.getById(id);
-        if (book.isEmpty()) {
-            throw new NotFoundException("Book " + id + " not exist");
-        }
-        return book.get();
+        return bookRepository.getById(id).orElseThrow(() -> new NotFoundException("Book " + id + " not exist"));
     }
 
     @Transactional(readOnly = true)
