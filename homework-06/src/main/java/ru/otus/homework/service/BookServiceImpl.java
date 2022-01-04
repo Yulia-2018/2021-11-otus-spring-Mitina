@@ -2,13 +2,11 @@ package ru.otus.homework.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.homework.repository.AuthorRepository;
-import ru.otus.homework.repository.BookRepository;
-import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
 import ru.otus.homework.exception.NotFoundException;
+import ru.otus.homework.repository.BookRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,14 +16,14 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
-    private final AuthorRepository authorRepository;
+    private final AuthorService authorService;
 
-    private final GenreRepository genreRepository;
+    private final GenreService genreService;
 
-    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorService authorService, GenreService genreService) {
         this.bookRepository = bookRepository;
-        this.authorRepository = authorRepository;
-        this.genreRepository = genreRepository;
+        this.authorService = authorService;
+        this.genreService = genreService;
     }
 
     @Transactional
@@ -67,21 +65,9 @@ public class BookServiceImpl implements BookService {
     }
 
     private void addAuthorAndGenre(Book book) {
-        Author author = insertAuthorIfNotExist(book.getAuthor());
-        Genre genre = insertGenreIfNotExist(book.getGenre());
+        Author author = authorService.getOrCreate(book.getAuthor());
+        Genre genre = genreService.getOrCreate(book.getGenre());
         book.setAuthor(author);
         book.setGenre(genre);
-    }
-
-    private Author insertAuthorIfNotExist(Author author) {
-        String name = author.getName();
-        Optional<Author> authorFromBase = authorRepository.getByName(name);
-        return (authorFromBase.isEmpty()) ? authorRepository.save(author) : authorFromBase.get();
-    }
-
-    private Genre insertGenreIfNotExist(Genre genre) {
-        String title = genre.getTitle();
-        Optional<Genre> genreFromBase = genreRepository.getByTitle(title);
-        return (genreFromBase.isEmpty()) ? genreRepository.save(genre) : genreFromBase.get();
     }
 }
