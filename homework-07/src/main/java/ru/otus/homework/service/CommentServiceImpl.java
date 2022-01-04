@@ -9,7 +9,6 @@ import ru.otus.homework.exception.NotFoundException;
 import ru.otus.homework.repository.CommentRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -34,7 +33,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public void update(Comment comment, long bookId) throws NotFoundException {
-        getCommentForBook(comment.getId(), bookId);
+        getById(comment.getId(), bookId);
         Book book = bookService.getById(bookId);
         comment.setBook(book);
         commentRepository.save(comment);
@@ -42,7 +41,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment getById(long id, long bookId) throws NotFoundException {
-        return getCommentForBook(id, bookId);
+        return commentRepository.getById(id)
+                .filter(comment -> comment.getBook().getId() == bookId)
+                .orElseThrow(() -> new NotFoundException("Comment " + id + " for book " + bookId + " not exist"));
     }
 
     @Transactional(readOnly = true)
@@ -57,17 +58,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public void deleteById(long id, long bookId) throws NotFoundException {
-        Comment comment = getCommentForBook(id, bookId);
+        Comment comment = getById(id, bookId);
         commentRepository.delete(comment);
-    }
-
-    private Comment getCommentForBook(long id, long bookId) {
-        Optional<Comment> comment = commentRepository.getById(id);
-        if (comment.isEmpty()) {
-            throw new NotFoundException("Comment " + id + " not exist");
-        } else if (comment.get().getBook().getId() != bookId) {
-            throw new NotFoundException("Comment " + id + " for book " + bookId + " not exist");
-        }
-        return comment.get();
     }
 }

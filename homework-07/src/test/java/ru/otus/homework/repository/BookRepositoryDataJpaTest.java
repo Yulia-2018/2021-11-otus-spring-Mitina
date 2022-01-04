@@ -14,11 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static ru.otus.homework.TestData.*;
 
 @DataJpaTest
-@Import(BookRepositoryJpa.class)
-class BookRepositoryJpaTest {
+@Import(BookRepositoryDataJpa.class)
+class BookRepositoryDataJpaTest {
 
     @Autowired
-    private BookRepositoryJpa repositoryJpa;
+    private BookRepositoryDataJpa repository;
 
     @Autowired
     private TestEntityManager em;
@@ -27,10 +27,10 @@ class BookRepositoryJpaTest {
     void insert() {
         Book book = new Book("new book", AUTHOR_1, GENRE_1);
         Book newBook = new Book(book);
-        Book createdBook = repositoryJpa.save(newBook);
+        Book createdBook = repository.save(newBook);
         book.setId(createdBook.getId());
         assertThat(createdBook).usingRecursiveComparison().ignoringFields("comments").isEqualTo(book);
-        List<Book> books = repositoryJpa.getAll();
+        List<Book> books = repository.getAll();
         assertThat(books.size()).isEqualTo(BOOKS_COUNT + 1);
         assertThat(books).usingRecursiveFieldByFieldElementComparatorIgnoringFields("comments").containsExactlyElementsOf(List.of(BOOK_1, BOOK_2, book));
     }
@@ -39,19 +39,19 @@ class BookRepositoryJpaTest {
     void update() {
         Book book = new Book(BOOK_1_ID, "updated book", BOOK_1.getAuthor(), BOOK_2.getGenre());
         Book updatedBook = new Book(book);
-        Book actualBook = repositoryJpa.save(updatedBook);
+        Book actualBook = repository.save(updatedBook);
         assertThat(actualBook).usingRecursiveComparison().ignoringFields("comments").isEqualTo(book);
     }
 
     @Test
     void getById() {
-        Optional<Book> actualBook = repositoryJpa.getById(BOOK_1_ID);
+        Optional<Book> actualBook = repository.getById(BOOK_1_ID);
         assertThat(actualBook).isPresent().get().usingRecursiveComparison().ignoringFields("comments").isEqualTo(BOOK_1);
     }
 
     @Test
     void getAll() {
-        List<Book> books = repositoryJpa.getAll();
+        List<Book> books = repository.getAll();
         assertThat(books.size()).isEqualTo(BOOKS_COUNT);
         assertThat(books).usingRecursiveFieldByFieldElementComparatorIgnoringFields("comments").containsExactlyElementsOf(List.of(BOOK_1, BOOK_2));
     }
@@ -60,7 +60,7 @@ class BookRepositoryJpaTest {
     void deleteById() {
         Book book = em.find(Book.class, BOOK_1_ID);
         assertThat(book).isNotNull();
-        repositoryJpa.deleteById(BOOK_1_ID);
+        repository.deleteById(BOOK_1_ID);
         Book deletedBook = em.find(Book.class, BOOK_1_ID);
         assertThat(deletedBook).isNull();
     }

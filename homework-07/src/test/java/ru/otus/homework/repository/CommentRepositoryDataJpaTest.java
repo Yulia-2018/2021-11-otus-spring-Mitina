@@ -13,11 +13,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static ru.otus.homework.TestData.*;
 
 @DataJpaTest
-@Import(CommentRepositoryJpa.class)
-class CommentRepositoryJpaTest {
+@Import(CommentRepositoryDataJpa.class)
+class CommentRepositoryDataJpaTest {
 
     @Autowired
-    private CommentRepositoryJpa repositoryJpa;
+    private CommentRepositoryDataJpa repository;
 
     @Autowired
     private TestEntityManager em;
@@ -26,7 +26,7 @@ class CommentRepositoryJpaTest {
     void insert() {
         Comment comment = new Comment("new comment", BOOK_1);
         Comment newComment = new Comment(comment);
-        Comment createdComment = repositoryJpa.save(newComment);
+        Comment createdComment = repository.save(newComment);
         comment.setId(createdComment.getId());
         assertThat(createdComment).usingRecursiveComparison().ignoringFields("book.comments").isEqualTo(comment);
     }
@@ -35,13 +35,13 @@ class CommentRepositoryJpaTest {
     void update() {
         Comment comment = new Comment(COMMENT_1_ID, "updated comment", BOOK_1);
         Comment updatedComment = new Comment(comment);
-        Comment actualComment = repositoryJpa.save(updatedComment);
+        Comment actualComment = repository.save(updatedComment);
         assertThat(actualComment).usingRecursiveComparison().ignoringFields("book.comments").isEqualTo(comment);
     }
 
     @Test
     void getById() {
-        Optional<Comment> actualComment = repositoryJpa.getById(COMMENT_1_ID);
+        Optional<Comment> actualComment = repository.getById(COMMENT_1_ID);
         assertThat(actualComment).isPresent().get().usingRecursiveComparison().ignoringFields("book.comments").isEqualTo(COMMENT_1);
     }
 
@@ -49,7 +49,7 @@ class CommentRepositoryJpaTest {
     void deleteById() {
         Comment comment = em.find(Comment.class, COMMENT_1_ID);
         assertThat(comment).isNotNull();
-        repositoryJpa.deleteById(COMMENT_1_ID);
+        repository.deleteById(COMMENT_1_ID);
         Comment deletedComment = em.find(Comment.class, COMMENT_1_ID);
         assertThat(deletedComment).isNull();
     }
@@ -58,7 +58,7 @@ class CommentRepositoryJpaTest {
     void delete() {
         Comment comment = em.find(Comment.class, COMMENT_1_ID);
         assertThat(comment).isNotNull();
-        repositoryJpa.delete(comment);
+        repository.delete(comment);
         Comment deletedComment = em.find(Comment.class, COMMENT_1_ID);
         assertThat(deletedComment).isNull();
     }

@@ -50,13 +50,11 @@ public class BookServiceImpl implements BookService {
         return bookRepository.getById(id).orElseThrow(() -> new NotFoundException("Book " + id + " not exist"));
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Book> getAll() {
         return bookRepository.getAll();
     }
 
-    @Transactional
     @Override
     public void deleteById(long id) {
         if (!bookRepository.deleteById(id)) {

@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.homework.repository.AuthorRepositoryJpa;
-import ru.otus.homework.repository.BookRepositoryJpa;
-import ru.otus.homework.repository.GenreRepositoryJpa;
+import ru.otus.homework.repository.AuthorRepositoryDataJpa;
+import ru.otus.homework.repository.BookRepositoryDataJpa;
+import ru.otus.homework.repository.GenreRepositoryDataJpa;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.exception.NotFoundException;
 
@@ -25,13 +25,13 @@ class BookServiceImplTest {
     private BookServiceImpl service;
 
     @MockBean
-    private BookRepositoryJpa bookRepository;
+    private BookRepositoryDataJpa bookRepository;
 
     @MockBean
-    private AuthorRepositoryJpa authorRepository;
+    private AuthorRepositoryDataJpa authorRepository;
 
     @MockBean
-    private GenreRepositoryJpa genreRepository;
+    private GenreRepositoryDataJpa genreRepository;
 
     @Test
     void insert() {
