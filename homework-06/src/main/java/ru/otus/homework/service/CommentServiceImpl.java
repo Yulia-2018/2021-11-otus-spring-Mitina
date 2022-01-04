@@ -1,5 +1,6 @@
 package ru.otus.homework.service;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.domain.Book;
@@ -48,8 +49,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getAllForBook(long bookId) {
         Book book = bookService.getById(bookId);
-        //System.out.println(book.getComments());
-        return book.getComments();
+        List<Comment> comments = book.getComments();
+        Hibernate.initialize(comments);
+        return comments;
     }
 
     @Transactional
