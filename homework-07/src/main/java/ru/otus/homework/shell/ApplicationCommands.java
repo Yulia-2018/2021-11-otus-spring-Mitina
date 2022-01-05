@@ -57,28 +57,28 @@ public class ApplicationCommands {
     }
 
     @ShellMethod(value = "Get comment by id", key = {"gC", "getComment"})
-    private void getCommentById(@ShellOption Long id, @ShellOption Long idBook) {
-        System.out.println(commentService.getById(id, idBook));
+    private void getCommentById(@ShellOption Long id) {
+        System.out.println(commentService.getById(id));
     }
 
     @ShellMethod(value = "Delete comment for book by id", key = {"dC", "deleteComment"})
-    private void deleteCommentById(@ShellOption Long id, @ShellOption Long idBook) {
-        commentService.deleteById(id, idBook);
-        System.out.println("Comment " + id + " for book " + idBook + " deleted");
+    private void deleteCommentById(@ShellOption Long id) {
+        commentService.deleteById(id);
+        System.out.println("Comment " + id + " deleted");
     }
 
     @ShellMethod(value = "Insert comment for book", key = {"iC", "insertComment"})
     private void insertCommentForBook(@ShellOption String text, @ShellOption Long idBook) {
         Book book = new Book(idBook, "", null, null);
         Comment comment = new Comment(text, book);
-        System.out.println(commentService.insert(comment, idBook));
+        System.out.println(commentService.insert(comment));
     }
 
     @ShellMethod(value = "Update comment for book", key = {"uC", "updateComment"})
     private void updateCommentForBook(@ShellOption Long id, @ShellOption String text, @ShellOption Long idBook) {
         Book book = new Book(idBook, "", null, null);
         Comment comment = new Comment(id, text, book);
-        commentService.update(comment, idBook);
-        System.out.println("Comment " + id + " for book " + idBook + " updated");
+        commentService.update(comment);
+        System.out.println("Comment " + id + " updated");
     }
 }

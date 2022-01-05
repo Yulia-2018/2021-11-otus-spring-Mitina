@@ -24,26 +24,24 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public Comment insert(Comment comment, long bookId) throws NotFoundException {
-        Book book = bookService.getById(bookId);
+    public Comment insert(Comment comment) throws NotFoundException {
+        Book book = bookService.getById(comment.getBook().getId());
         comment.setBook(book);
         return commentRepository.save(comment);
     }
 
     @Transactional
     @Override
-    public void update(Comment comment, long bookId) throws NotFoundException {
-        getById(comment.getId(), bookId);
-        Book book = bookService.getById(bookId);
+    public void update(Comment comment) throws NotFoundException {
+        getById(comment.getId());
+        Book book = bookService.getById(comment.getBook().getId());
         comment.setBook(book);
         commentRepository.save(comment);
     }
 
     @Override
-    public Comment getById(long id, long bookId) throws NotFoundException {
-        return commentRepository.getById(id)
-                .filter(comment -> comment.getBook().getId() == bookId)
-                .orElseThrow(() -> new NotFoundException("Comment " + id + " for book " + bookId + " not exist"));
+    public Comment getById(long id) throws NotFoundException {
+        return commentRepository.getById(id).orElseThrow(() -> new NotFoundException("Comment " + id + " not exist"));
     }
 
     @Transactional(readOnly = true)
@@ -57,8 +55,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public void deleteById(long id, long bookId) throws NotFoundException {
-        Comment comment = getById(id, bookId);
+    public void deleteById(long id) throws NotFoundException {
+        Comment comment = getById(id);
         commentRepository.delete(comment);
     }
 }
