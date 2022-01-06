@@ -41,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment getById(long id) throws NotFoundException {
-        return commentRepository.getById(id).orElseThrow(() -> new NotFoundException("Comment " + id + " not exist"));
+        return commentRepository.findById(id).orElseThrow(() -> new NotFoundException("Comment " + id + " not exist"));
     }
 
     @Transactional(readOnly = true)

@@ -1,16 +1,8 @@
 package ru.otus.homework.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.otus.homework.domain.Comment;
 
-import java.util.Optional;
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-public interface CommentRepository {
-
-    Comment save(Comment comment);
-
-    Optional<Comment> getById(long id);
-
-    void deleteById(long id);
-
-    void delete(Comment comment);
 }

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import ru.otus.homework.domain.Comment;
 
 import java.util.Optional;
@@ -13,11 +12,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static ru.otus.homework.TestData.*;
 
 @DataJpaTest
-@Import(CommentRepositoryDataJpa.class)
 class CommentRepositoryDataJpaTest {
 
     @Autowired
-    private CommentRepositoryDataJpa repository;
+    private CommentRepository repository;
 
     @Autowired
     private TestEntityManager em;
@@ -41,7 +39,7 @@ class CommentRepositoryDataJpaTest {
 
     @Test
     void getById() {
-        Optional<Comment> actualComment = repository.getById(COMMENT_1_ID);
+        Optional<Comment> actualComment = repository.findById(COMMENT_1_ID);
         assertThat(actualComment).isPresent().get().usingRecursiveComparison().ignoringFields("book.comments").isEqualTo(COMMENT_1);
     }
 

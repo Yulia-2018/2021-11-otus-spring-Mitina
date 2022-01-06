@@ -9,7 +9,6 @@ import ru.otus.homework.exception.NotFoundException;
 import ru.otus.homework.repository.BookRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -36,30 +35,26 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public void update(Book book) {
-        long id = book.getId();
-        Optional<Book> bookFromBase = bookRepository.getById(id);
-        if (bookFromBase.isEmpty()) {
-            throw new NotFoundException("Book " + id + " not exist");
-        }
+        getById(book.getId());
         addAuthorAndGenre(book);
         bookRepository.save(book);
     }
 
     @Override
     public Book getById(long id) {
-        return bookRepository.getById(id).orElseThrow(() -> new NotFoundException("Book " + id + " not exist"));
+        return bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book " + id + " not exist"));
     }
 
     @Override
     public List<Book> getAll() {
-        return bookRepository.getAll();
+        return bookRepository.findAll();
     }
 
+    @Transactional
     @Override
     public void deleteById(long id) {
-        if (!bookRepository.deleteById(id)) {
-            throw new NotFoundException("Book " + id + " not exist");
-        }
+        Book book = getById(id);
+        bookRepository.delete(book);
     }
 
     private void addAuthorAndGenre(Book book) {
