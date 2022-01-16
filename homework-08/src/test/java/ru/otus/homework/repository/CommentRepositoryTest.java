@@ -1,24 +1,13 @@
 package ru.otus.homework.repository;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import ru.otus.homework.domain.Comment;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Optional;
+//@DataJpaTest
+@SpringBootTest
+class CommentRepositoryTest {
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static ru.otus.homework.TestData.*;
-
-@DataJpaTest
-class CommentRepositoryDataJpaTest {
-
-    @Autowired
+    /*@Autowired
     private CommentRepository repository;
-
-    @Autowired
-    private TestEntityManager em;
 
     @Test
     void insert() {
@@ -45,19 +34,19 @@ class CommentRepositoryDataJpaTest {
 
     @Test
     void deleteById() {
-        Comment comment = em.find(Comment.class, COMMENT_1_ID);
-        assertThat(comment).isNotNull();
+        Optional<Comment> comment = repository.findById(COMMENT_1_ID);
+        assertThat(comment).isNotEmpty();
         repository.deleteById(COMMENT_1_ID);
-        Comment deletedComment = em.find(Comment.class, COMMENT_1_ID);
-        assertThat(deletedComment).isNull();
+        Optional<Comment> deletedComment = repository.findById(COMMENT_1_ID);
+        assertThat(deletedComment).isEmpty();
     }
 
     @Test
     void delete() {
-        Comment comment = em.find(Comment.class, COMMENT_1_ID);
-        assertThat(comment).isNotNull();
-        repository.delete(comment);
-        Comment deletedComment = em.find(Comment.class, COMMENT_1_ID);
-        assertThat(deletedComment).isNull();
-    }
+        Optional<Comment> comment = repository.findById(COMMENT_1_ID);
+        assertThat(comment).isNotEmpty();
+        repository.delete(comment.get());
+        Optional<Comment> deletedComment = repository.findById(COMMENT_1_ID);
+        assertThat(deletedComment).isEmpty();
+    }*/
 }

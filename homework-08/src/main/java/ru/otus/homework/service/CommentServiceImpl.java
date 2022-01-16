@@ -1,8 +1,6 @@
 package ru.otus.homework.service;
 
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Comment;
 import ru.otus.homework.exception.NotFoundException;
@@ -22,7 +20,6 @@ public class CommentServiceImpl implements CommentService {
         this.bookService = bookService;
     }
 
-    @Transactional
     @Override
     public Comment insert(Comment comment) throws NotFoundException {
         Book book = bookService.getById(comment.getBook().getId());
@@ -30,7 +27,6 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.save(comment);
     }
 
-    @Transactional
     @Override
     public void update(Comment comment) throws NotFoundException {
         getById(comment.getId());
@@ -44,16 +40,12 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findById(id).orElseThrow(() -> new NotFoundException("Comment " + id + " not exist"));
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public List<Comment> getAllForBook(long bookId) {
+    public List<Comment> getAllForBook(String bookId) {
         Book book = bookService.getById(bookId);
-        List<Comment> comments = book.getComments();
-        Hibernate.initialize(comments);
-        return comments;
+        return book.getComments();
     }
 
-    @Transactional
     @Override
     public void deleteById(long id) throws NotFoundException {
         Comment comment = getById(id);

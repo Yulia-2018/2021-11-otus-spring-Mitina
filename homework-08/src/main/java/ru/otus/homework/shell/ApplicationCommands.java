@@ -28,12 +28,12 @@ public class ApplicationCommands {
     }
 
     @ShellMethod(value = "Get book by id", key = {"g", "get"})
-    private void getBookById(@ShellOption Long id) {
+    private void getBookById(@ShellOption String id) {
         System.out.println(bookService.getById(id));
     }
 
     @ShellMethod(value = "Delete book by id", key = {"d", "delete"})
-    private void deleteBookById(@ShellOption Long id) {
+    private void deleteBookById(@ShellOption String id) {
         bookService.deleteById(id);
         System.out.println("Book " + id + " deleted");
     }
@@ -45,14 +45,14 @@ public class ApplicationCommands {
     }
 
     @ShellMethod(value = "Update book", key = {"u", "update"})
-    private void updateBook(@ShellOption Long idBook, @ShellOption String titleBook, @ShellOption String nameAuthor, @ShellOption String titleGenre) {
+    private void updateBook(@ShellOption String idBook, @ShellOption String titleBook, @ShellOption String nameAuthor, @ShellOption String titleGenre) {
         Book book = new Book(idBook, titleBook, new Author(nameAuthor), new Genre(titleGenre));
         bookService.update(book);
         System.out.println("Book " + idBook + " updated");
     }
 
     @ShellMethod(value = "Get all comments for book", key = {"allC", "allComments", "getAllComments"})
-    private void getAllComments(@ShellOption Long idBook) {
+    private void getAllComments(@ShellOption String idBook) {
         commentService.getAllForBook(idBook).forEach(System.out::println);
     }
 
@@ -68,14 +68,14 @@ public class ApplicationCommands {
     }
 
     @ShellMethod(value = "Insert comment for book", key = {"iC", "insertComment"})
-    private void insertCommentForBook(@ShellOption String text, @ShellOption Long idBook) {
+    private void insertCommentForBook(@ShellOption String text, @ShellOption String idBook) {
         Book book = new Book(idBook, "", null, null);
         Comment comment = new Comment(text, book);
         System.out.println(commentService.insert(comment));
     }
 
     @ShellMethod(value = "Update comment for book", key = {"uC", "updateComment"})
-    private void updateCommentForBook(@ShellOption Long id, @ShellOption String text, @ShellOption Long idBook) {
+    private void updateCommentForBook(@ShellOption Long id, @ShellOption String text, @ShellOption String idBook) {
         Book book = new Book(idBook, "", null, null);
         Comment comment = new Comment(id, text, book);
         commentService.update(comment);

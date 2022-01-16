@@ -6,9 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.exception.NotFoundException;
-import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.repository.BookRepository;
-import ru.otus.homework.repository.GenreRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,20 +25,12 @@ class BookServiceImplTest {
     @MockBean
     private BookRepository bookRepository;
 
-    @MockBean
-    private AuthorRepository authorRepository;
-
-    @MockBean
-    private GenreRepository genreRepository;
-
     @Test
     void insert() {
         Book newBook = new Book("new book", AUTHOR_1, GENRE_1);
 
-        when(authorRepository.getByName(AUTHOR_1.getName())).thenReturn(Optional.of(AUTHOR_1));
-        when(genreRepository.getByTitle(GENRE_1.getTitle())).thenReturn(Optional.of(GENRE_1));
-        when(bookRepository.save(newBook)).thenReturn(new Book(100006, "new book", AUTHOR_1, GENRE_1));
-        when(bookRepository.findAll()).thenReturn(List.of(BOOK_1, BOOK_2, new Book(100006, "new book", AUTHOR_1, GENRE_1)));
+        when(bookRepository.save(newBook)).thenReturn(new Book("100006", "new book", AUTHOR_1, GENRE_1));
+        when(bookRepository.findAll()).thenReturn(List.of(BOOK_1, BOOK_2, new Book("100006", "new book", AUTHOR_1, GENRE_1)));
 
         Book createdBook = service.insert(newBook);
         newBook.setId(createdBook.getId());
@@ -49,10 +39,6 @@ class BookServiceImplTest {
         assertThat(books.size()).isEqualTo(BOOKS_COUNT + 1);
         assertThat(books).containsExactlyElementsOf(List.of(BOOK_1, BOOK_2, newBook));
 
-        verify(authorRepository, times(1)).getByName(AUTHOR_1.getName());
-        verify(authorRepository, times(0)).save(any());
-        verify(genreRepository, times(1)).getByTitle(GENRE_1.getTitle());
-        verify(genreRepository, times(0)).save(any());
         verify(bookRepository, times(1)).save(newBook);
         verify(bookRepository, times(1)).findAll();
     }
@@ -62,8 +48,6 @@ class BookServiceImplTest {
         Book expectedBook = new Book(BOOK_1_ID, "updated book", BOOK_1.getAuthor(), GENRE_1);
         Book updatedBook = new Book(expectedBook);
 
-        when(authorRepository.getByName(BOOK_1.getAuthor().getName())).thenReturn(Optional.of(BOOK_1.getAuthor()));
-        when(genreRepository.getByTitle(GENRE_1.getTitle())).thenReturn(Optional.of(GENRE_1));
         when(bookRepository.save(updatedBook)).thenReturn(expectedBook);
         when(bookRepository.findById(BOOK_1_ID)).thenReturn(Optional.of(expectedBook));
 
@@ -71,20 +55,16 @@ class BookServiceImplTest {
         Book actualBook = service.getById(BOOK_1_ID);
         assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);
 
-        verify(authorRepository, times(1)).getByName(BOOK_1.getAuthor().getName());
-        verify(authorRepository, times(0)).save(any());
-        verify(genreRepository, times(1)).getByTitle(GENRE_1.getTitle());
-        verify(genreRepository, times(0)).save(any());
         verify(bookRepository, times(1)).save(updatedBook);
         verify(bookRepository, times(2)).findById(BOOK_1_ID);
     }
 
     @Test
     void updateNotFound() {
-        Book updatedBook = new Book(1, "updated book", BOOK_1.getAuthor(), GENRE_1);
-        when(bookRepository.findById(1L)).thenReturn(Optional.empty());
+        Book updatedBook = new Book("1", "updated book", BOOK_1.getAuthor(), GENRE_1);
+        when(bookRepository.findById("1")).thenReturn(Optional.empty());
         assertThatCode(() -> service.update(updatedBook)).isInstanceOf(NotFoundException.class).hasMessage("Book 1 not exist");
-        verify(bookRepository, times(1)).findById(1L);
+        verify(bookRepository, times(1)).findById("1");
         verify(bookRepository, times(0)).save(updatedBook);
     }
 
@@ -100,9 +80,9 @@ class BookServiceImplTest {
 
     @Test
     void getByIdNotFound() {
-        when(bookRepository.findById(1L)).thenReturn(Optional.empty());
-        assertThatCode(() -> service.getById(1)).isInstanceOf(NotFoundException.class).hasMessage("Book 1 not exist");
-        verify(bookRepository, times(1)).findById(1L);
+        when(bookRepository.findById("1")).thenReturn(Optional.empty());
+        assertThatCode(() -> service.getById("1")).isInstanceOf(NotFoundException.class).hasMessage("Book 1 not exist");
+        verify(bookRepository, times(1)).findById("1");
     }
 
     @Test
@@ -133,9 +113,9 @@ class BookServiceImplTest {
 
     @Test
     void deleteByIdNotFound() {
-        when(bookRepository.findById(1L)).thenReturn(Optional.empty());
-        assertThatCode(() -> service.deleteById(1)).isInstanceOf(NotFoundException.class).hasMessage("Book 1 not exist");
-        verify(bookRepository, times(1)).findById(1L);
+        when(bookRepository.findById("1")).thenReturn(Optional.empty());
+        assertThatCode(() -> service.deleteById("1")).isInstanceOf(NotFoundException.class).hasMessage("Book 1 not exist");
+        verify(bookRepository, times(1)).findById("1");
         verify(bookRepository, times(0)).delete(any());
     }
 }

@@ -11,9 +11,9 @@ public interface BookService {
 
     void update(Book book) throws NotFoundException;
 
-    Book getById(long id) throws NotFoundException;
+    Book getById(String id) throws NotFoundException;
 
     List<Book> getAll();
 
-    void deleteById(long id) throws NotFoundException;
+    void deleteById(String id) throws NotFoundException;
 }

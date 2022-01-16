@@ -4,20 +4,12 @@ spring:
       enabled: false
   main:
     allow-circular-references: true
-  datasource:
-    url: jdbc:h2:mem:testdb
-  sql:
-    init:
-      mode: always
-      data-locations: data.sql
-      schema-locations: schema.sql
-  jpa:
-    generate-ddl: false
-    hibernate:
-      ddl-auto: none
+  data:
+    mongodb:
+      port: 27017
+      database: library
 
-    show-sql: true
-
-logging:
-  level:
-    ROOT: ERROR
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.homework.mongock.changelog

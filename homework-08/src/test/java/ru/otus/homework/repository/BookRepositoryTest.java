@@ -1,9 +1,9 @@
 package ru.otus.homework.repository;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import ru.otus.homework.domain.Book;
 
 import java.util.List;
@@ -12,14 +12,18 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.otus.homework.TestData.*;
 
-@DataJpaTest
-class BookRepositoryDataJpaTest {
+@DataMongoTest
+class BookRepositoryTest {
 
     @Autowired
     private BookRepository repository;
 
-    @Autowired
-    private TestEntityManager em;
+    @BeforeEach
+    void init() {
+        repository.deleteAll();
+        repository.save(BOOK_1);
+        repository.save(BOOK_2);
+    }
 
     @Test
     void insert() {
@@ -56,10 +60,10 @@ class BookRepositoryDataJpaTest {
 
     @Test
     void deleteById() {
-        Book book = em.find(Book.class, BOOK_1_ID);
-        assertThat(book).isNotNull();
+        Optional<Book> book = repository.findById(BOOK_1_ID);
+        assertThat(book).isNotEmpty();
         repository.deleteById(BOOK_1_ID);
-        Book deletedBook = em.find(Book.class, BOOK_1_ID);
-        assertThat(deletedBook).isNull();
+        Optional<Book> deletedBook = repository.findById(BOOK_1_ID);
+        assertThat(deletedBook).isEmpty();
     }
 }

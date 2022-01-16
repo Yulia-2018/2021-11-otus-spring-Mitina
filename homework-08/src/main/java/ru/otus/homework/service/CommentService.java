@@ -13,7 +13,7 @@ public interface CommentService {
 
     Comment getById(long id) throws NotFoundException;
 
-    List<Comment> getAllForBook(long bookId);
+    List<Comment> getAllForBook(String bookId);
 
     void deleteById(long id) throws NotFoundException;
 }
