@@ -45,39 +45,37 @@ public class ApplicationCommands {
     }
 
     @ShellMethod(value = "Update book", key = {"u", "update"})
-    private void updateBook(@ShellOption String idBook, @ShellOption String titleBook, @ShellOption String nameAuthor, @ShellOption String titleGenre) {
-        Book book = new Book(idBook, titleBook, new Author(nameAuthor), new Genre(titleGenre));
+    private void updateBook(@ShellOption String id, @ShellOption String titleBook, @ShellOption String nameAuthor, @ShellOption String titleGenre) {
+        Book book = new Book(id, titleBook, new Author(nameAuthor), new Genre(titleGenre));
         bookService.update(book);
-        System.out.println("Book " + idBook + " updated");
+        System.out.println("Book " + id + " updated");
     }
 
     @ShellMethod(value = "Get all comments for book", key = {"allC", "allComments", "getAllComments"})
-    private void getAllComments(@ShellOption String idBook) {
-        commentService.getAllForBook(idBook).forEach(System.out::println);
+    private void getAllComments(@ShellOption String bookId) {
+        commentService.getAllForBook(bookId).forEach(System.out::println);
     }
 
     @ShellMethod(value = "Get comment by id", key = {"gC", "getComment"})
-    private void getCommentById(@ShellOption Long id) {
+    private void getCommentById(@ShellOption String id) {
         System.out.println(commentService.getById(id));
     }
 
     @ShellMethod(value = "Delete comment for book by id", key = {"dC", "deleteComment"})
-    private void deleteCommentById(@ShellOption Long id) {
+    private void deleteCommentById(@ShellOption String id) {
         commentService.deleteById(id);
         System.out.println("Comment " + id + " deleted");
     }
 
     @ShellMethod(value = "Insert comment for book", key = {"iC", "insertComment"})
-    private void insertCommentForBook(@ShellOption String text, @ShellOption String idBook) {
-        Book book = new Book(idBook, "", null, null);
-        Comment comment = new Comment(text, book);
-        System.out.println(commentService.insert(comment));
+    private void insertCommentForBook(@ShellOption String text, @ShellOption String bookId) {
+        Comment comment = new Comment(text);
+        System.out.println(commentService.insert(comment, bookId));
     }
 
     @ShellMethod(value = "Update comment for book", key = {"uC", "updateComment"})
-    private void updateCommentForBook(@ShellOption Long id, @ShellOption String text, @ShellOption String idBook) {
-        Book book = new Book(idBook, "", null, null);
-        Comment comment = new Comment(id, text, book);
+    private void updateCommentForBook(@ShellOption String id, @ShellOption String text) {
+        Comment comment = new Comment(id, text);
         commentService.update(comment);
         System.out.println("Comment " + id + " updated");
     }

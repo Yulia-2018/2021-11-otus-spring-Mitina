@@ -7,6 +7,7 @@ import ru.otus.homework.exception.NotFoundException;
 import ru.otus.homework.repository.CommentRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -21,22 +22,22 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment insert(Comment comment) throws NotFoundException {
-        Book book = bookService.getById(comment.getBook().getId());
-        comment.setBook(book);
+    public Comment insert(Comment comment, String bookId) throws NotFoundException {
+        Book book = bookService.getById(bookId);
+        comment.setId(UUID.randomUUID().toString());
+        book.addComment(comment);
+        bookService.update(book);
         return commentRepository.save(comment);
     }
 
     @Override
     public void update(Comment comment) throws NotFoundException {
         getById(comment.getId());
-        Book book = bookService.getById(comment.getBook().getId());
-        comment.setBook(book);
         commentRepository.save(comment);
     }
 
     @Override
-    public Comment getById(long id) throws NotFoundException {
+    public Comment getById(String id) throws NotFoundException {
         return commentRepository.findById(id).orElseThrow(() -> new NotFoundException("Comment " + id + " not exist"));
     }
 
@@ -47,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteById(long id) throws NotFoundException {
+    public void deleteById(String id) throws NotFoundException {
         Comment comment = getById(id);
         commentRepository.delete(comment);
     }

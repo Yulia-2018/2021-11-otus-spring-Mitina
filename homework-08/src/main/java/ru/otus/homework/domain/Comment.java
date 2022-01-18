@@ -9,27 +9,23 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Comment {
 
     @Id
-    private long id;
+    private String id;
 
     private String text;
-
-    private Book book;
 
     public Comment() {
     }
 
-    public Comment(long id, String text, Book book) {
+    public Comment(String id, String text) {
         this.id = id;
         this.text = text;
-        this.book = book;
     }
 
-    public Comment(String text, Book book) {
+    public Comment(String text) {
         this.text = text;
-        this.book = book;
     }
 
     public Comment(Comment comment) {
-        this(comment.getId(), comment.getText(), comment.getBook());
+        this(comment.getId(), comment.getText());
     }
 }

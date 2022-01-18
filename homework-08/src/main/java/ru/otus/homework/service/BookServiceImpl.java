@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.exception.NotFoundException;
 import ru.otus.homework.repository.BookRepository;
+import ru.otus.homework.repository.CommentRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,8 +14,11 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
-    public BookServiceImpl(BookRepository bookRepository) {
+    private final CommentRepository commentRepository;
+
+    public BookServiceImpl(BookRepository bookRepository, CommentRepository commentRepository) {
         this.bookRepository = bookRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -42,6 +46,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteById(String id) {
         Book book = getById(id);
+        book.getComments().forEach(commentRepository::delete);
         bookRepository.delete(book);
     }
 }
