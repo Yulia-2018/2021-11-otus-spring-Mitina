@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ public class Book {
     private Genre genre;
 
     @DBRef
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();;
 
     public Book() {
     }

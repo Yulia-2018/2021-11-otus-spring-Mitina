@@ -32,8 +32,13 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void update(Comment comment) throws NotFoundException {
-        getById(comment.getId());
-        commentRepository.save(comment);
+        String id = comment.getId();
+        boolean exists = commentRepository.existsById(id);
+        if (exists) {
+            commentRepository.save(comment);
+        } else {
+            throw new NotFoundException("Comment " + id + " not exist");
+        }
     }
 
     @Override

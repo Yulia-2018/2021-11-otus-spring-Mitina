@@ -54,21 +54,23 @@ class BookServiceImplTest {
 
         when(bookRepository.save(updatedBook)).thenReturn(expectedBook);
         when(bookRepository.findById(BOOK_1_ID)).thenReturn(Optional.of(expectedBook));
+        when(bookRepository.existsById(BOOK_1_ID)).thenReturn(true);
 
         service.update(updatedBook);
         Book actualBook = service.getById(BOOK_1_ID);
         assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);
 
         verify(bookRepository, times(1)).save(updatedBook);
-        verify(bookRepository, times(2)).findById(BOOK_1_ID);
+        verify(bookRepository, times(1)).findById(BOOK_1_ID);
+        verify(bookRepository, times(1)).existsById(BOOK_1_ID);
     }
 
     @Test
     void updateNotFound() {
         Book updatedBook = new Book("1", "updated book", BOOK_1.getAuthor(), GENRE_1);
-        when(bookRepository.findById("1")).thenReturn(Optional.empty());
+        when(bookRepository.existsById("1")).thenReturn(false);
         assertThatCode(() -> service.update(updatedBook)).isInstanceOf(NotFoundException.class).hasMessage("Book 1 not exist");
-        verify(bookRepository, times(1)).findById("1");
+        verify(bookRepository, times(1)).existsById("1");
         verify(bookRepository, times(0)).save(updatedBook);
     }
 
