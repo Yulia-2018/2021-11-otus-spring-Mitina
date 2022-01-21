@@ -3,10 +3,12 @@ package ru.otus.homework.service;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
+import ru.otus.homework.domain.Genre;
 import ru.otus.homework.exception.NotFoundException;
 import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.repository.BookRepository;
 import ru.otus.homework.repository.CommentRepository;
+import ru.otus.homework.repository.GenreRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,14 +18,18 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
-    private final CommentRepository commentRepository;
-
     private final AuthorRepository authorRepository;
 
-    public BookServiceImpl(BookRepository bookRepository, CommentRepository commentRepository, AuthorRepository authorRepository) {
+    private final GenreRepository genreRepository;
+
+    private final CommentRepository commentRepository;
+
+
+    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository, CommentRepository commentRepository) {
         this.bookRepository = bookRepository;
-        this.commentRepository = commentRepository;
         this.authorRepository = authorRepository;
+        this.genreRepository = genreRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -64,8 +70,8 @@ public class BookServiceImpl implements BookService {
 
     private void addAuthorAndGenre(Book book) {
         Author author = authorRepository.getOrCreate(book.getAuthor());
-        //Genre genre = genreService.getOrCreate(book.getGenre());
+        Genre genre = genreRepository.getOrCreate(book.getGenre());
         book.setAuthor(author);
-        //book.setGenre(genre);
+        book.setGenre(genre);
     }
 }

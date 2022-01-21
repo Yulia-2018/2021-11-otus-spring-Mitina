@@ -10,6 +10,7 @@ import ru.otus.homework.domain.Genre;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.CommentService;
+import ru.otus.homework.service.GenreService;
 
 @ShellComponent
 public class ApplicationCommands {
@@ -18,11 +19,14 @@ public class ApplicationCommands {
 
     private final AuthorService authorService;
 
+    private final GenreService genreService;
+
     private final CommentService commentService;
 
-    public ApplicationCommands(BookService service, AuthorService authorService, CommentService commentService) {
+    public ApplicationCommands(BookService service, AuthorService authorService, GenreService genreService, CommentService commentService) {
         this.bookService = service;
         this.authorService = authorService;
+        this.genreService = genreService;
         this.commentService = commentService;
     }
 
@@ -53,6 +57,23 @@ public class ApplicationCommands {
         Book book = new Book(id, titleBook, new Author(nameAuthor), new Genre(titleGenre));
         bookService.update(book);
         System.out.println("Book " + id + " updated");
+    }
+
+    @ShellMethod(value = "Get all genres", key = {"allG", "getAllGenres"})
+    private void getAllGenres() {
+        genreService.getAll().forEach(System.out::println);
+    }
+
+    @ShellMethod(value = "Get genre by id", key = {"gG", "getGenre"})
+    private void getGenreById(@ShellOption String id) {
+        System.out.println(genreService.getById(id));
+    }
+
+    @ShellMethod(value = "Update genre", key = {"uG", "updateGenre"})
+    private void updateGenre(@ShellOption String id, @ShellOption String title) {
+        Genre genre = new Genre(id, title);
+        genreService.update(genre);
+        System.out.println("Genre " + id + " updated");
     }
 
     @ShellMethod(value = "Get all authors", key = {"allA", "getAllAuthors"})

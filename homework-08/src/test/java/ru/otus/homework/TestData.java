@@ -19,8 +19,8 @@ public class TestData {
     public static final int BOOKS_COUNT = 2;
     public static final Author AUTHOR_1 = new Author("Author_1", "author 1");
     public static final Author AUTHOR_2 = new Author("Author_2", "author 2");
-    public static final Genre GENRE_1 = new Genre("genre 1");
-    public static final Genre GENRE_2 = new Genre("genre 2");
+    public static final Genre GENRE_1 = new Genre("Genre_1", "genre 1");
+    public static final Genre GENRE_2 = new Genre("Genre_2", "genre 2");
     public static final String BOOK_1_ID = "100000";
     public static final String BOOK_2_ID = "100001";
     public static final Book BOOK_1 = new Book(BOOK_1_ID, "book 1", AUTHOR_1, GENRE_2, List.of(COMMENT_1, COMMENT_2, COMMENT_3));
