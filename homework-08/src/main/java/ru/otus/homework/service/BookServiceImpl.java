@@ -41,14 +41,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void update(Book book) {
-        String id = book.getId();
-        boolean exists = bookRepository.existsById(id);
-        if (exists) {
-            addAuthorAndGenre(book);
-            bookRepository.save(book);
-        } else {
-            throw new NotFoundException("Book " + id + " not exist");
-        }
+        Book bookFromBase = getById(book.getId());
+        book.setComments(bookFromBase.getComments());
+        addAuthorAndGenre(book);
+        bookRepository.save(book);
     }
 
     @Override
