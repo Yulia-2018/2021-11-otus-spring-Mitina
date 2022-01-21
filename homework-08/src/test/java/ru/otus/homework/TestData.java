@@ -17,8 +17,8 @@ public class TestData {
     public static final int COMMENTS_FOR_BOOK_1_COUNT = 3;
 
     public static final int BOOKS_COUNT = 2;
-    public static final Author AUTHOR_1 = new Author("author 1");
-    public static final Author AUTHOR_2 = new Author("author 2");
+    public static final Author AUTHOR_1 = new Author("Author_1", "author 1");
+    public static final Author AUTHOR_2 = new Author("Author_2", "author 2");
     public static final Genre GENRE_1 = new Genre("genre 1");
     public static final Genre GENRE_2 = new Genre("genre 2");
     public static final String BOOK_1_ID = "100000";
