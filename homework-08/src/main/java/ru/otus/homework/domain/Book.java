@@ -2,7 +2,6 @@ package ru.otus.homework.domain;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ public class Book {
 
     private Genre genre;
 
-    @DBRef
     private List<Comment> comments = new ArrayList<>();;
 
     public Book() {
@@ -54,12 +52,6 @@ public class Book {
 
     public Book(Book book) {
         this(book.getId(), book.getTitle(), book.getAuthor(), book.getGenre(), book.getComments());
-    }
-
-    public void addComment(Comment comment) {
-        List<Comment> comments = this.getComments();
-        comments.add(comment);
-        this.setComments(comments);
     }
 
     @Override

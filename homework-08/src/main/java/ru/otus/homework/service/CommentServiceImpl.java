@@ -23,10 +23,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment insert(Comment comment, String bookId) throws NotFoundException {
-        Book book = bookService.getById(bookId);
+        bookService.getById(bookId);
         comment.setId(UUID.randomUUID().toString());
-        book.addComment(comment);
-        bookService.update(book);
+        commentRepository.insertCommentInBook(comment, bookId);
         return commentRepository.save(comment);
     }
 
@@ -36,6 +35,7 @@ public class CommentServiceImpl implements CommentService {
         boolean exists = commentRepository.existsById(id);
         if (exists) {
             commentRepository.save(comment);
+            commentRepository.updateCommentInBook(comment);
         } else {
             throw new NotFoundException("Comment " + id + " not exist");
         }
@@ -56,5 +56,6 @@ public class CommentServiceImpl implements CommentService {
     public void deleteById(String id) throws NotFoundException {
         Comment comment = getById(id);
         commentRepository.delete(comment);
+        commentRepository.deleteCommentInBook(id);
     }
 }
