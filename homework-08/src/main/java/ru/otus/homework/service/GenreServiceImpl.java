@@ -22,7 +22,6 @@ public class GenreServiceImpl implements GenreService {
         boolean exists = repository.existsById(id);
         if (exists) {
             repository.save(genre);
-            repository.updateGenreInBooks(genre);
         } else {
             throw new NotFoundException("Genre " + id + " not exist");
         }

@@ -3,8 +3,6 @@ package ru.otus.homework.repository;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
-import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
 
 public class GenreRepositoryCustomImpl implements GenreRepositoryCustom {
@@ -13,15 +11,6 @@ public class GenreRepositoryCustomImpl implements GenreRepositoryCustom {
 
     public GenreRepositoryCustomImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
-    }
-
-    @Override
-    public void updateGenreInBooks(Genre genre) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("genre._id").is(genre.getId()));
-        Update update = new Update();
-        update.set("genre.title", genre.getTitle());
-        mongoTemplate.updateMulti(query, update, Book.class);
     }
 
     @Override

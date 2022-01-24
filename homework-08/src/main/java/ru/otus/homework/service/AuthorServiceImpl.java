@@ -22,7 +22,6 @@ public class AuthorServiceImpl implements AuthorService {
         boolean exists = repository.existsById(id);
         if (exists) {
             repository.save(author);
-            repository.updateAuthorInBooks(author);
         } else {
             throw new NotFoundException("Author " + id + " not exist");
         }
