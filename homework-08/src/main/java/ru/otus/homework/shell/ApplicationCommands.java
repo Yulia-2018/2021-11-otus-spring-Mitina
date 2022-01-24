@@ -54,6 +54,9 @@ public class ApplicationCommands {
     @ShellMethod(value = "Update book", key = {"u", "update"})
     private void updateBook(@ShellOption String id, @ShellOption String titleBook, @ShellOption String nameAuthor, @ShellOption String titleGenre) {
         Book book = new Book(id, titleBook, new Author(nameAuthor), new Genre(titleGenre));
+        Book bookFromBase = bookService.getById(id);
+        List<Comment> commentsFromBase = bookFromBase.getComments();
+        book.setComments(commentsFromBase);
         bookService.update(book);
         System.out.println("Book " + id + " updated");
     }
