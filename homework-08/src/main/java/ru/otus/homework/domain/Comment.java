@@ -2,6 +2,8 @@ package ru.otus.homework.domain;
 
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class Comment {
 
@@ -18,6 +20,7 @@ public class Comment {
     }
 
     public Comment(String text) {
+        this.id = UUID.randomUUID().toString();
         this.text = text;
     }
 

@@ -7,7 +7,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.exception.NotFoundException;
 import ru.otus.homework.repository.BookRepository;
-import ru.otus.homework.repository.CommentRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,9 +24,6 @@ class BookServiceImplTest {
 
     @MockBean
     private BookRepository bookRepository;
-
-    @MockBean
-    private CommentRepository commentRepository;
 
     @Test
     void insert() {
@@ -115,7 +111,6 @@ class BookServiceImplTest {
 
         verify(bookRepository, times(1)).findById(BOOK_1_ID);
         verify(bookRepository, times(1)).delete(BOOK_1);
-        verify(commentRepository, times(COMMENTS_FOR_BOOK_1_COUNT)).delete(any());
         verify(bookRepository, times(1)).findAll();
     }
 
@@ -125,6 +120,5 @@ class BookServiceImplTest {
         assertThatCode(() -> service.deleteById("1")).isInstanceOf(NotFoundException.class).hasMessage("Book 1 not exist");
         verify(bookRepository, times(1)).findById("1");
         verify(bookRepository, times(0)).delete(any());
-        verify(commentRepository, times(0)).delete(any());
     }
 }

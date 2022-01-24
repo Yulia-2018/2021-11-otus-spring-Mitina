@@ -7,7 +7,6 @@ import ru.otus.homework.domain.Genre;
 import ru.otus.homework.exception.NotFoundException;
 import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.repository.BookRepository;
-import ru.otus.homework.repository.CommentRepository;
 import ru.otus.homework.repository.GenreRepository;
 
 import java.util.List;
@@ -22,14 +21,10 @@ public class BookServiceImpl implements BookService {
 
     private final GenreRepository genreRepository;
 
-    private final CommentRepository commentRepository;
-
-
-    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository, CommentRepository commentRepository) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
-        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -41,8 +36,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void update(Book book) {
-        Book bookFromBase = getById(book.getId());
-        book.setComments(bookFromBase.getComments());
+        getById(book.getId());
         addAuthorAndGenre(book);
         bookRepository.save(book);
     }
@@ -60,7 +54,6 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteById(String id) {
         Book book = getById(id);
-        book.getComments().forEach(commentRepository::delete);
         bookRepository.delete(book);
     }
 

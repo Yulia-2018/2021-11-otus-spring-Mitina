@@ -9,7 +9,6 @@ import ru.otus.homework.domain.Comment;
 import ru.otus.homework.domain.Genre;
 import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.repository.BookRepository;
-import ru.otus.homework.repository.CommentRepository;
 import ru.otus.homework.repository.GenreRepository;
 
 import java.util.List;
@@ -47,16 +46,7 @@ public class DatabaseChangelog {
         repository.save(genre_2);
     }
 
-    @ChangeSet(order = "004", id = "insertComments", author = "mitina")
-    public void insertComments(CommentRepository repository) {
-        repository.deleteAll();
-        repository.save(comment_1);
-        repository.save(comment_2);
-        repository.save(comment_3);
-        repository.save(comment_4);
-    }
-
-    @ChangeSet(order = "005", id = "insertBooks", author = "mitina")
+    @ChangeSet(order = "004", id = "insertBooks", author = "mitina")
     public void insertBooks(BookRepository repository) {
         repository.deleteAll();
         repository.save(book_1);

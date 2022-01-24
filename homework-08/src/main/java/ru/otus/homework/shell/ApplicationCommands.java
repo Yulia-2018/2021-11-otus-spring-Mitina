@@ -9,8 +9,10 @@ import ru.otus.homework.domain.Comment;
 import ru.otus.homework.domain.Genre;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.BookService;
-import ru.otus.homework.service.CommentService;
 import ru.otus.homework.service.GenreService;
+
+import java.util.Iterator;
+import java.util.List;
 
 @ShellComponent
 public class ApplicationCommands {
@@ -21,13 +23,10 @@ public class ApplicationCommands {
 
     private final GenreService genreService;
 
-    private final CommentService commentService;
-
-    public ApplicationCommands(BookService service, AuthorService authorService, GenreService genreService, CommentService commentService) {
+    public ApplicationCommands(BookService service, AuthorService authorService, GenreService genreService) {
         this.bookService = service;
         this.authorService = authorService;
         this.genreService = genreService;
-        this.commentService = commentService;
     }
 
     @ShellMethod(value = "Get all books", key = {"all", "getAll"})
@@ -95,30 +94,60 @@ public class ApplicationCommands {
 
     @ShellMethod(value = "Get all comments for book", key = {"allC", "allComments", "getAllComments"})
     private void getAllComments(@ShellOption String bookId) {
-        commentService.getAllForBook(bookId).forEach(System.out::println);
+        bookService.getById(bookId).getComments().forEach(System.out::println);
     }
 
     @ShellMethod(value = "Get comment by id", key = {"gC", "getComment"})
     private void getCommentById(@ShellOption String id) {
-        System.out.println(commentService.getById(id));
+        List<Book> books = bookService.getAll();
+        books.forEach((book -> {
+            List<Comment> comments = book.getComments();
+            for (Comment comment : comments) {
+                if (comment.getId().equals(id)) {
+                    System.out.println(comment);
+                    break;
+                }
+            }
+        }));
     }
 
     @ShellMethod(value = "Delete comment for book by id", key = {"dC", "deleteComment"})
-    private void deleteCommentById(@ShellOption String id) {
-        commentService.deleteById(id);
-        System.out.println("Comment " + id + " deleted");
+    private void deleteCommentById(@ShellOption String id, @ShellOption String bookId) {
+        Book book = bookService.getById(bookId);
+        List<Comment> comments = book.getComments();
+        Iterator<Comment> iterator = comments.iterator();
+        while (iterator.hasNext()) {
+            Comment comment = iterator.next();
+            if (comment.getId().equals(id)) {
+                iterator.remove();
+                bookService.update(book);
+                System.out.println("Comment " + id + " deleted");
+                break;
+            }
+        }
     }
 
     @ShellMethod(value = "Insert comment for book", key = {"iC", "insertComment"})
     private void insertCommentForBook(@ShellOption String text, @ShellOption String bookId) {
         Comment comment = new Comment(text);
-        System.out.println(commentService.insert(comment, bookId));
+        Book book = bookService.getById(bookId);
+        List<Comment> comments = book.getComments();
+        comments.add(comment);
+        bookService.update(book);
+        System.out.println("Comment " + comment.getId() + " inserted");
     }
 
     @ShellMethod(value = "Update comment for book", key = {"uC", "updateComment"})
-    private void updateCommentForBook(@ShellOption String id, @ShellOption String text) {
-        Comment comment = new Comment(id, text);
-        commentService.update(comment);
-        System.out.println("Comment " + id + " updated");
+    private void updateCommentForBook(@ShellOption String id, @ShellOption String text, @ShellOption String bookId) {
+        Book book = bookService.getById(bookId);
+        List<Comment> comments = book.getComments();
+        for (Comment comment : comments) {
+            if (comment.getId().equals(id)) {
+                comment.setText(text);
+                bookService.update(book);
+                System.out.println("Comment " + id + " updated");
+                break;
+            }
+        }
     }
 }
