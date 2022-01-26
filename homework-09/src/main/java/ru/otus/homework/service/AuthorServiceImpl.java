@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.repository.AuthorRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -13,6 +14,16 @@ public class AuthorServiceImpl implements AuthorService {
 
     public AuthorServiceImpl(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
+    }
+
+    @Override
+    public Author getById(long id) {
+        return authorRepository.getById(id);
+    }
+
+    @Override
+    public List<Author> getAll() {
+        return authorRepository.findAll();
     }
 
     @Override

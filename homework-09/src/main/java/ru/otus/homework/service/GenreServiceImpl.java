@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.homework.domain.Genre;
 import ru.otus.homework.repository.GenreRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -13,6 +14,16 @@ public class GenreServiceImpl implements GenreService {
 
     public GenreServiceImpl(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
+    }
+
+    @Override
+    public Genre getById(long id) {
+        return genreRepository.getById(id);
+    }
+
+    @Override
+    public List<Genre> getAll() {
+        return genreRepository.findAll();
     }
 
     @Override
