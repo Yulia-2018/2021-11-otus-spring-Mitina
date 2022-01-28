@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
-import ru.otus.homework.domain.Comment;
 import ru.otus.homework.domain.Genre;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.BookService;
@@ -62,13 +61,13 @@ public class BookController {
         } else {
             book = new Book();
         }
-        List<Comment> comments = book.getComments();
+
+        book.setTitle(title);
         Author author = authorService.getById(authorId);
         Genre genre = genreService.getById(genreId);
-        book.setTitle(title);
         book.setAuthor(author);
         book.setGenre(genre);
-        book.setComments(comments);
+
         if (id != 0) {
             bookService.update(book);
         } else {

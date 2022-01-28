@@ -22,6 +22,10 @@
         .books td:last-child, td:first-child {
             width: 50px;
         }
+
+        .row {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -48,12 +52,17 @@
         <td>
             <a href="list.html" th:href="@{/delete(id=${book.id})}">Delete</a>
         </td>
+        <td>
+            <a href="comments.html" th:href="@{'/' + ${book.id} + '/comments'}">Comments</a>
+        </td>
     </tr>
     </tbody>
 </table>
 
 <div class="row">
-    <a href="edit.html" th:href="@{/edit(id=0)}"><button type="button">Add book</button></a>
+    <a href="edit.html" th:href="@{/edit(id=0)}">
+        <button type="button">Add book</button>
+    </a>
 </div>
 
 </body>

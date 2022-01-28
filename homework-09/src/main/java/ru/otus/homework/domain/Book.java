@@ -3,6 +3,7 @@ package ru.otus.homework.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -26,7 +27,7 @@ public class Book {
     private Genre genre;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     public Book() {
     }

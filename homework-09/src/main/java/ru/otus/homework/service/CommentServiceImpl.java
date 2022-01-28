@@ -46,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Comment> getAllForBook(long bookId) {
+    public List<Comment> getAllForBook(long bookId) throws NotFoundException {
         Book book = bookService.getById(bookId);
         List<Comment> comments = book.getComments();
         Hibernate.initialize(comments);

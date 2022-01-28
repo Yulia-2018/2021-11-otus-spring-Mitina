@@ -20,6 +20,10 @@
         .row {
             margin-top: 10px;
         }
+
+        .form-control {
+            width: 180px;
+        }
     </style>
 </head>
 <body>
@@ -54,7 +58,9 @@
 
     <div class="row">
         <button type="submit">Save</button>
-        <a href="list.html" th:href="@{/}"><button type="button">Cancel</button></a>
+        <a href="list.html" th:href="@{/}">
+            <button type="button">Cancel</button>
+        </a>
     </div>
 </form>
 
