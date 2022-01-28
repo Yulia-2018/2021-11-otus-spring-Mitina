@@ -27,9 +27,13 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getOrCreate(Genre genre) {
-        String title = genre.getTitle();
+    public Genre getByTitleOrCreate(String title) {
         Optional<Genre> genreFromBase = genreRepository.getByTitle(title);
-        return (genreFromBase.isEmpty()) ? genreRepository.save(genre) : genreFromBase.get();
+        if (genreFromBase.isEmpty()) {
+            Genre genre = new Genre(title);
+            return genreRepository.save(genre);
+        } else {
+            return genreFromBase.get();
+        }
     }
 }

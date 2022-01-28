@@ -50,10 +50,36 @@
     </div>
 
     <div class="row">
+        <input id="id-checkbox-author" name="is-new-author" type="checkbox" onclick="
+        var checker = document.getElementById('id-checkbox-author');
+        var newAuthor = document.getElementById('new-author-input');
+        var authorSelect = document.getElementById('author-select');
+        checker.onchange = function(){
+          newAuthor.disabled = !this.checked;
+          authorSelect.disabled = this.checked;
+        }"/>
+
+        <input id="new-author-input" name="new-author" type="text" value="New author" disabled="disabled"/>
+    </div>
+
+    <div class="row">
         <label for="genre-select">Genre:</label>
         <select class="form-control" th:field="*{genre}" id="genre-select">
             <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.title}"></option>
         </select>
+    </div>
+
+    <div class="row">
+        <input id="id-checkbox-genre" name="is-new-genre" type="checkbox" onclick="
+        var checker = document.getElementById('id-checkbox-genre');
+        var newGenre = document.getElementById('new-genre-input');
+        var genreSelect = document.getElementById('genre-select');
+        checker.onchange = function(){
+          newGenre.disabled = !this.checked;
+          genreSelect.disabled = this.checked;
+        }"/>
+
+        <input id="new-genre-input" name="new-genre" type="text" value="New genre" disabled="disabled"/>
     </div>
 
     <div class="row">

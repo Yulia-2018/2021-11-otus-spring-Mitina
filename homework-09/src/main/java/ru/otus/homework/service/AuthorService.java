@@ -10,5 +10,5 @@ public interface AuthorService {
 
     List<Author> getAll();
 
-    Author getOrCreate(Author author);
+    Author getByNameOrCreate(String name);
 }

@@ -10,5 +10,5 @@ public interface GenreService {
 
     List<Genre> getAll();
 
-    Genre getOrCreate(Genre genre);
+    Genre getByTitleOrCreate(String title);
 }

@@ -27,9 +27,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getOrCreate(Author author) {
-        String name = author.getName();
+    public Author getByNameOrCreate(String name) {
         Optional<Author> authorFromBase = authorRepository.getByName(name);
-        return (authorFromBase.isEmpty()) ? authorRepository.save(author) : authorFromBase.get();
+        if (authorFromBase.isEmpty()) {
+            Author author = new Author(name);
+            return authorRepository.save(author);
+        } else {
+            return authorFromBase.get();
+        }
     }
 }

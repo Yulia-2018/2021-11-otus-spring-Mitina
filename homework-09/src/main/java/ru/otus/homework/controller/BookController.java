@@ -54,7 +54,9 @@ public class BookController {
 
     @PostMapping("/edit")
     public String saveBook(@RequestParam("id") int id, @RequestParam("title") String title,
-                           @RequestParam("author") int authorId, @RequestParam("genre") int genreId) {
+                           @RequestParam(name = "author", required = false) Integer authorId, @RequestParam(name = "genre", required = false) Integer genreId,
+                           @RequestParam(name = "new-author", required = false) String nameNewAuthor, @RequestParam(name = "new-genre", required = false) String titleNewGenre) {
+
         Book book;
         if (id != 0) {
             book = bookService.getById(id);
@@ -63,9 +65,21 @@ public class BookController {
         }
 
         book.setTitle(title);
-        Author author = authorService.getById(authorId);
-        Genre genre = genreService.getById(genreId);
+
+        Author author;
+        if (!(nameNewAuthor == null)) {
+            author = authorService.getByNameOrCreate(nameNewAuthor.trim());
+        } else {
+            author = authorService.getById(authorId);
+        }
         book.setAuthor(author);
+
+        Genre genre;
+        if (!(titleNewGenre == null)) {
+            genre = genreService.getByTitleOrCreate(titleNewGenre.trim());
+        } else {
+            genre = genreService.getById(genreId);
+        }
         book.setGenre(genre);
 
         if (id != 0) {
