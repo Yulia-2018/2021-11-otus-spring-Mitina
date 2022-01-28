@@ -8,10 +8,12 @@ import ru.otus.homework.domain.Genre;
 public class TestData {
 
     public static final int BOOKS_COUNT = 2;
-    public static final Author AUTHOR_1 = new Author(100000, "author 1");
-    public static final Author AUTHOR_2 = new Author(100001, "author 2");
-    public static final Genre GENRE_1 = new Genre(100002, "genre 1");
-    public static final Genre GENRE_2 = new Genre(100003, "genre 2");
+    public static final long AUTHOR_1_ID = 100000;
+    public static final Author AUTHOR_1 = new Author(AUTHOR_1_ID, "author 1");
+    public static final Author AUTHOR_2 = new Author(AUTHOR_1_ID + 1, "author 2");
+    public static final long GENRE_1_ID = 100002;
+    public static final Genre GENRE_1 = new Genre(GENRE_1_ID, "genre 1");
+    public static final Genre GENRE_2 = new Genre(GENRE_1_ID + 1, "genre 2");
     public static final long BOOK_1_ID = 100004;
     public static final long BOOK_2_ID = 100005;
     public static final Book BOOK_1 = new Book(BOOK_1_ID, "book 1", AUTHOR_1, GENRE_2);
