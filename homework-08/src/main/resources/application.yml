@@ -1,0 +1,12 @@
+spring:
+  main:
+    allow-circular-references: true
+  data:
+    mongodb:
+      port: 27017
+      database: library
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.homework.mongock.changelog

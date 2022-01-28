@@ -15,3 +15,5 @@ homework-05 - домашнее задание к уроку "DAO на Spring JDB
 homework-06 - домашнее задание к уроку "JPQL, Spring ORM, DAO на основе Spring ORM + JPA"
 
 homework-07 - домашнее задание к уроку "Белая магия Spring Data: Spring Data JPA"
+
+homework-08 - домашнее задание к уроку "Spring Data для подключения к нереляционным БД"
