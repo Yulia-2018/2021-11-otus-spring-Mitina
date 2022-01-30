@@ -24,9 +24,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public Comment insert(Comment comment) throws NotFoundException {
-        Book book = bookService.getById(comment.getBook().getId());
-        comment.setBook(book);
+    public Comment insert(Comment comment) {
         return commentRepository.save(comment);
     }
 
@@ -34,8 +32,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void update(Comment comment) throws NotFoundException {
         getById(comment.getId());
-        Book book = bookService.getById(comment.getBook().getId());
-        comment.setBook(book);
         commentRepository.save(comment);
     }
 
