@@ -30,12 +30,12 @@
     <h3>Comments for book:</h3>
 
     <div class="row" th:each="comment : ${comments}">
-        <input id="comment-input" name="comment-text" type="text" value="Comment 1" th:value="${comment.text}"/>
+        <input id="comment-input" name="commentsText" type="text" value="Comment 1" th:value="${comment.text}"/>
     </div>
 
     <div class="row">
         <label for="new-comment-input">Enter new comment for book:</label><br/>
-        <input id="new-comment-input" name="comment-text" type="text" value=""/>
+        <input id="new-comment-input" name="commentsText" type="text" value=""/>
     </div>
 
     <div class="row">
