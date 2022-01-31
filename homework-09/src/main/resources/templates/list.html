@@ -41,19 +41,19 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="book : ${books}">
-        <td th:text="${book.id}">1</td>
-        <td th:text="${book.title}">Book 1</td>
-        <td th:text="${book.author.name}">Author 1</td>
-        <td th:text="${book.genre.title}">Genre 1</td>
+    <tr th:each="bookDto : ${booksDto}">
+        <td th:text="${bookDto.id}">1</td>
+        <td th:text="${bookDto.title}">Book 1</td>
+        <td th:text="${bookDto.authorName}">Author 1</td>
+        <td th:text="${bookDto.genreTitle}">Genre 1</td>
         <td>
-            <a href="edit.html" th:href="@{/edit(id=${book.id})}">Edit</a>
+            <a href="edit.html" th:href="@{/edit(id=${bookDto.id})}">Edit</a>
         </td>
         <td>
-            <a href="list.html" th:href="@{/delete(id=${book.id})}">Delete</a>
+            <a href="list.html" th:href="@{/delete(id=${bookDto.id})}">Delete</a>
         </td>
         <td>
-            <a href="comments.html" th:href="@{'/' + ${book.id} + '/comments'}">Comments</a>
+            <a href="comments.html" th:href="@{'/' + ${bookDto.id} + '/comments'}">Comments</a>
         </td>
     </tr>
     </tbody>

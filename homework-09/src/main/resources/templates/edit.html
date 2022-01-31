@@ -63,7 +63,7 @@
 <body>
 
 <!-- Book edition -->
-<form id="edit-form" action="edit.html" th:method="post" th:action="@{/edit(id=${book.id})}" th:object="${book}">
+<form id="edit-form" action="edit.html" th:method="post" th:action="@{/edit(id=${bookDto.id})}" th:object="${bookDto}">
     <h3>Book Info:</h3>
 
     <div class="row">
@@ -78,20 +78,20 @@
 
     <label for="author-select">Author:</label>
     <div class="select-editable">
-        <select onchange="this.nextElementSibling.value=this.value" id="author-select" th:field="*{author.name}">
+        <select onchange="this.nextElementSibling.value=this.value" id="author-select">
             <option value=""></option>
             <option th:each="author : ${authors}" th:value="${author.name}" th:text="${author.name}"></option>
         </select>
-        <input type="text" name="authorName" th:value="*{author.name}"/>
+        <input type="text" name="authorName" th:value="*{authorName}"/>
     </div>
 
     <label for="genre-select">Genre:</label>
     <div class="select-editable">
-        <select onchange="this.nextElementSibling.value=this.value" id="genre-select" th:field="*{genre.title}">
+        <select onchange="this.nextElementSibling.value=this.value" id="genre-select">
             <option value=""></option>
             <option th:each="genre : ${genres}" th:value="${genre.title}" th:text="${genre.title}"></option>
         </select>
-        <input type="text" name="genreTitle" th:value="*{genre.title}"/>
+        <input type="text" name="genreTitle" th:value="*{genreTitle}"/>
     </div>
 
     <div class="row">

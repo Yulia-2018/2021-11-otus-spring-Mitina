@@ -1,11 +1,13 @@
 package ru.otus.homework.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
 
 @Getter
+@Setter
 public class BookDto {
 
     private long id;

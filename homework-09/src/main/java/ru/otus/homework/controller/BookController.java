@@ -3,16 +3,19 @@ package ru.otus.homework.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
+import ru.otus.homework.dto.BookDto;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.GenreService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class BookController {
@@ -31,20 +34,20 @@ public class BookController {
 
     @GetMapping("/")
     public String listPage(Model model) {
-        List<Book> books = bookService.getAll();
-        model.addAttribute("books", books);
+        List<BookDto> booksDto = bookService.getAll().stream().map(BookDto::toDto).collect(Collectors.toList());
+        model.addAttribute("booksDto", booksDto);
         return "list";
     }
 
     @GetMapping("/edit")
     public String editPage(@RequestParam("id") int id, Model model) {
-        Book book;
+        BookDto bookDto;
         if (id != 0) {
-            book = bookService.getById(id);
+            bookDto = BookDto.toDto(bookService.getById(id));
         } else {
-            book = new Book();
+            bookDto = new BookDto();
         }
-        model.addAttribute("book", book);
+        model.addAttribute("bookDto", bookDto);
         List<Author> authors = authorService.getAll();
         model.addAttribute("authors", authors);
         List<Genre> genres = genreService.getAll();
@@ -53,8 +56,12 @@ public class BookController {
     }
 
     @PostMapping("/edit")
-    public String saveBook(@RequestParam("id") int id, @RequestParam("title") String title,
-                           @RequestParam("authorName") String authorName, @RequestParam("genreTitle") String genreTitle) {
+    public String saveBook(@ModelAttribute("bookDto") BookDto bookDto) {
+
+        long id = bookDto.getId();
+        String title = bookDto.getTitle();
+        String authorName = bookDto.getAuthorName();
+        String genreTitle = bookDto.getGenreTitle();
 
         Book book;
         if (id != 0) {
