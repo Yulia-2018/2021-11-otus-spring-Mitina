@@ -15,7 +15,7 @@
 `curl -s -X POST -d '{"title":"New book","author":{"id":100000},"genre":{"id":100003}}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/books`
 
 #### update Book
-`curl -s -X PUT -d '{"id":100004,"title":"Updated book","author":{"id":100001},"genre":{"id":100003}}' -H 'Content-Type: application/json' http://localhost:8080/books/100004`
+`curl -s -X PUT -d '{"title":"Updated book","author":{"id":100001},"genre":{"id":100003}}' -H 'Content-Type: application/json' http://localhost:8080/books/100004`
 
 ### Comments
 #### get All Comments for Book
@@ -31,4 +31,4 @@
 `curl -s -X POST -d '{"text":"New comment","book":{"id":100004}}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/comments`
 
 #### update Comment
-`curl -s -X PUT -d '{"id":100007,"text":"Updated comment","book":{"id":100004}}' -H 'Content-Type: application/json' http://localhost:8080/comments/100007`
+`curl -s -X PUT -d '{"text":"Updated comment","book":{"id":100005}}' -H 'Content-Type: application/json' http://localhost:8080/comments/100007`

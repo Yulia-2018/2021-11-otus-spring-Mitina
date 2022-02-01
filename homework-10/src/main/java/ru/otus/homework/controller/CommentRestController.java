@@ -44,6 +44,7 @@ public class CommentRestController {
     @PutMapping(value = "/comments/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@RequestBody Comment comment, @PathVariable long id) {
+        comment.setId(id);
         commentService.update(comment);
     }
 

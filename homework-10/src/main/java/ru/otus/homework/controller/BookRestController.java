@@ -44,6 +44,7 @@ public class BookRestController {
     @PutMapping(value = "/books/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@RequestBody Book book, @PathVariable long id) {
+        book.setId(id);
         bookService.update(book);
     }
 
