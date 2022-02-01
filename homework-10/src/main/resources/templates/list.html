@@ -27,6 +27,7 @@
             margin-top: 10px;
         }
     </style>
+    <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 <h3>Books:</h3>
@@ -41,21 +42,6 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="bookDto : ${booksDto}">
-        <td th:text="${bookDto.id}">1</td>
-        <td th:text="${bookDto.title}">Book 1</td>
-        <td th:text="${bookDto.authorName}">Author 1</td>
-        <td th:text="${bookDto.genreTitle}">Genre 1</td>
-        <td>
-            <a href="edit.html" th:href="@{/edit(id=${bookDto.id})}">Edit</a>
-        </td>
-        <td>
-            <a href="list.html" th:href="@{/delete(id=${bookDto.id})}">Delete</a>
-        </td>
-        <td>
-            <a href="comments.html" th:href="@{'/' + ${bookDto.id} + '/comments'}">Comments</a>
-        </td>
-    </tr>
     </tbody>
 </table>
 
@@ -64,6 +50,26 @@
         <button type="button">Add book</button>
     </a>
 </div>
+
+<script>
+    $(function () {
+        $.get('/books').done(function (booksDto) {
+            booksDto.forEach(function (bookDto) {
+                $('tbody').append(`
+                            <tr>
+                                <td>${bookDto.id}</td>
+                                <td>${bookDto.title}</td>
+                                <td>${bookDto.authorName}</td>
+                                <td>${bookDto.genreTitle}</td>
+                                <td><a href="/edit?id=${bookDto.id}">Edit</a></td>
+                                <td><a href="/delete?id=${bookDto.id}">Delete</a></td>
+                                <td><a href="/${bookDto.id}/comments">Comments</a></td>
+                            </tr>
+                        `)
+            });
+        })
+    });
+</script>
 
 </body>
 </html>

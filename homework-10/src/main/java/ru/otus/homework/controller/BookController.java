@@ -15,7 +15,6 @@ import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.GenreService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class BookController {
@@ -33,9 +32,7 @@ public class BookController {
     }
 
     @GetMapping("/")
-    public String listPage(Model model) {
-        List<BookDto> booksDto = bookService.getAll().stream().map(BookDto::toDto).collect(Collectors.toList());
-        model.addAttribute("booksDto", booksDto);
+    public String listPage() {
         return "list";
     }
 
