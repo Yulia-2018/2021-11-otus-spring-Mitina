@@ -16,4 +16,8 @@ public interface CommentService {
     List<Comment> getAllForBook(long bookId) throws NotFoundException;
 
     void deleteById(long id) throws NotFoundException;
+
+    void deleteAllForBook(long bookId) throws NotFoundException;
+
+    void insertAllForBook(long bookId, List<String> commentsText) throws NotFoundException;
 }

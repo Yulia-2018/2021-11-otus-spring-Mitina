@@ -58,18 +58,18 @@ class BookControllerTest {
     @Test
     void saveBook() throws Exception {
         when(bookService.getById(BOOK_1_ID)).thenReturn(BOOK_1);
-        when(authorService.getById(AUTHOR_1_ID)).thenReturn(AUTHOR_1);
-        when(genreService.getById(GENRE_1_ID)).thenReturn(GENRE_1);
+        when(authorService.getByNameOrCreate(AUTHOR_1.getName())).thenReturn(AUTHOR_1);
+        when(genreService.getByTitleOrCreate(GENRE_1.getTitle())).thenReturn(GENRE_1);
 
         mvc.perform(post("/edit")
                 .param("id", String.valueOf(BOOK_1_ID)).param("title", "New title")
-                .param("author", String.valueOf(AUTHOR_1_ID)).param("genre", String.valueOf(GENRE_1_ID)))
+                .param("authorName", AUTHOR_1.getName()).param("genreTitle", String.valueOf(GENRE_1.getTitle())))
                 .andExpect(status().is(302))
                 .andExpect(redirectedUrl("/"));
 
         verify(bookService, times(1)).getById(BOOK_1_ID);
-        verify(authorService, times(1)).getById(AUTHOR_1_ID);
-        verify(genreService, times(1)).getById(GENRE_1_ID);
+        verify(authorService, times(1)).getByNameOrCreate(AUTHOR_1.getName());
+        verify(genreService, times(1)).getByTitleOrCreate(GENRE_1.getTitle());
         verify(bookService, times(1)).update(any());
     }
 

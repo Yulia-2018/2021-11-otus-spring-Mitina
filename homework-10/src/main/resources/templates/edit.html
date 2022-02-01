@@ -24,12 +24,46 @@
         .form-control {
             width: 180px;
         }
+
+        .select-editable {
+            position: relative;
+            background-color: white;
+            border: solid grey 1px;
+            width: 120px;
+            height: 18px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .select-editable select {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            font-size: 14px;
+            border: none;
+            width: 120px;
+            margin: 0;
+        }
+
+        .select-editable input {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100px;
+            padding: 1px;
+            font-size: 12px;
+            border: none;
+        }
+
+        .select-editable select:focus, .select-editable input:focus {
+            outline: none;
+        }
     </style>
 </head>
 <body>
 
 <!-- Book edition -->
-<form id="edit-form" action="edit.html" th:method="post" th:action="@{/edit(id=${book.id})}" th:object="${book}">
+<form id="edit-form" action="edit.html" th:method="post" th:action="@{/edit(id=${bookDto.id})}" th:object="${bookDto}">
     <h3>Book Info:</h3>
 
     <div class="row">
@@ -41,45 +75,24 @@
         <label for="book-title-input">Title:</label>
         <input id="book-title-input" name="title" type="text" value="Book 1" th:value="*{title}"/>
     </div>
+    <br/>
 
-    <div class="row">
-        <label for="author-select">Author:</label>
-        <select class="form-control" th:field="*{author}" id="author-select">
-            <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
+    <label for="author-select">Author:</label>
+    <div class="select-editable">
+        <select onchange="this.nextElementSibling.value=this.value" id="author-select">
+            <option value=""></option>
+            <option th:each="author : ${authors}" th:value="${author.name}" th:text="${author.name}"></option>
         </select>
+        <input type="text" name="authorName" th:value="*{authorName}"/>
     </div>
 
-    <div class="row">
-        <input id="id-checkbox-author" name="is-new-author" type="checkbox" onclick="
-        var checker = document.getElementById('id-checkbox-author');
-        var newAuthor = document.getElementById('new-author-input');
-        var authorSelect = document.getElementById('author-select');
-        checker.onchange = function(){
-          newAuthor.disabled = !this.checked;
-          authorSelect.disabled = this.checked;
-        }"/>
-
-        <input id="new-author-input" name="new-author" type="text" value="New author" disabled="disabled"/>
-    </div>
-
-    <div class="row">
-        <label for="genre-select">Genre:</label>
-        <select class="form-control" th:field="*{genre}" id="genre-select">
-            <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.title}"></option>
+    <label for="genre-select">Genre:</label>
+    <div class="select-editable">
+        <select onchange="this.nextElementSibling.value=this.value" id="genre-select">
+            <option value=""></option>
+            <option th:each="genre : ${genres}" th:value="${genre.title}" th:text="${genre.title}"></option>
         </select>
-    </div>
-
-    <div class="row">
-        <input id="id-checkbox-genre" name="is-new-genre" type="checkbox" onclick="
-        var checker = document.getElementById('id-checkbox-genre');
-        var newGenre = document.getElementById('new-genre-input');
-        var genreSelect = document.getElementById('genre-select');
-        checker.onchange = function(){
-          newGenre.disabled = !this.checked;
-          genreSelect.disabled = this.checked;
-        }"/>
-
-        <input id="new-genre-input" name="new-genre" type="text" value="New genre" disabled="disabled"/>
+        <input type="text" name="genreTitle" th:value="*{genreTitle}"/>
     </div>
 
     <div class="row">

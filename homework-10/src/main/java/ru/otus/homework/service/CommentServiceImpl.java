@@ -55,4 +55,24 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = getById(id);
         commentRepository.delete(comment);
     }
+
+    @Transactional
+    @Override
+    public void deleteAllForBook(long bookId) throws NotFoundException {
+        List<Comment> comments = getAllForBook(bookId);
+        for (Comment comment : comments) {
+            commentRepository.delete(comment);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void insertAllForBook(long bookId, List<String> commentsText) throws NotFoundException {
+        Book book = bookService.getById(bookId);
+        for (String text : commentsText) {
+            if (!text.trim().isEmpty()) {
+                commentRepository.save(new Comment(text.trim(), book));
+            }
+        }
+    }
 }
