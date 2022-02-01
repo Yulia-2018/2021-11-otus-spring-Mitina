@@ -59,9 +59,9 @@ public class BookController {
     public String saveBook(@ModelAttribute("bookDto") BookDto bookDto) {
 
         long id = bookDto.getId();
-        String title = bookDto.getTitle();
-        String authorName = bookDto.getAuthorName();
-        String genreTitle = bookDto.getGenreTitle();
+        String title = bookDto.getTitle().trim();
+        String authorName = bookDto.getAuthorName().trim();
+        String genreTitle = bookDto.getGenreTitle().trim();
 
         Book book;
         if (id != 0) {
@@ -72,10 +72,10 @@ public class BookController {
 
         book.setTitle(title);
 
-        Author author = authorService.getByNameOrCreate(authorName.trim());
+        Author author = authorService.getByNameOrCreate(authorName);
         book.setAuthor(author);
 
-        Genre genre = genreService.getByTitleOrCreate(genreTitle.trim());
+        Genre genre = genreService.getByTitleOrCreate(genreTitle);
         book.setGenre(genre);
 
         if (id != 0) {
