@@ -60,13 +60,7 @@ public class BookController {
         String authorName = bookDto.getAuthorName().trim();
         String genreTitle = bookDto.getGenreTitle().trim();
 
-        Book book;
-        if (id != 0) {
-            book = bookService.getById(id);
-        } else {
-            book = new Book();
-        }
-
+        Book book = bookDto.toDomain();
         book.setTitle(title);
 
         Author author = authorService.getByNameOrCreate(authorName);

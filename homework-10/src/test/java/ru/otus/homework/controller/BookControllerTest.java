@@ -51,7 +51,6 @@ class BookControllerTest {
 
     @Test
     void saveBook() throws Exception {
-        when(bookService.getById(BOOK_1_ID)).thenReturn(BOOK_1);
         when(authorService.getByNameOrCreate(AUTHOR_1.getName())).thenReturn(AUTHOR_1);
         when(genreService.getByTitleOrCreate(GENRE_1.getTitle())).thenReturn(GENRE_1);
 
@@ -61,7 +60,6 @@ class BookControllerTest {
                 .andExpect(status().is(302))
                 .andExpect(redirectedUrl("/"));
 
-        verify(bookService, times(1)).getById(BOOK_1_ID);
         verify(authorService, times(1)).getByNameOrCreate(AUTHOR_1.getName());
         verify(genreService, times(1)).getByTitleOrCreate(GENRE_1.getTitle());
         verify(bookService, times(1)).update(any());
