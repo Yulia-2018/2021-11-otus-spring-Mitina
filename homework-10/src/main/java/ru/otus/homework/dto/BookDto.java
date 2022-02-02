@@ -1,13 +1,9 @@
 package ru.otus.homework.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import ru.otus.homework.domain.Author;
+import lombok.Data;
 import ru.otus.homework.domain.Book;
-import ru.otus.homework.domain.Genre;
 
-@Getter
-@Setter
+@Data
 public class BookDto {
 
     private long id;
@@ -26,10 +22,6 @@ public class BookDto {
         this.title = title;
         this.authorName = authorName;
         this.genreTitle = genreTitle;
-    }
-
-    public Book toDomain() {
-        return new Book(id, title, new Author(authorName), new Genre(genreTitle));
     }
 
     public static BookDto toDto(Book book) {

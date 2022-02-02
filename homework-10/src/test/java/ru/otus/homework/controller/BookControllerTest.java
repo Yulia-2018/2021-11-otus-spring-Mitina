@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.otus.homework.domain.Book;
+import ru.otus.homework.dto.BookDto;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.GenreService;
@@ -51,8 +53,10 @@ class BookControllerTest {
 
     @Test
     void saveBook() throws Exception {
-        when(authorService.getByNameOrCreate(AUTHOR_1.getName())).thenReturn(AUTHOR_1);
-        when(genreService.getByTitleOrCreate(GENRE_1.getTitle())).thenReturn(GENRE_1);
+        Book book = new Book(BOOK_1_ID, "New title", AUTHOR_1, GENRE_1);
+        BookDto bookDto = BookDto.toDto(book);
+
+        when(bookService.createBookOnDto(bookDto)).thenReturn(book);
 
         mvc.perform(post("/edit")
                 .param("id", String.valueOf(BOOK_1_ID)).param("title", "New title")
@@ -60,8 +64,7 @@ class BookControllerTest {
                 .andExpect(status().is(302))
                 .andExpect(redirectedUrl("/"));
 
-        verify(authorService, times(1)).getByNameOrCreate(AUTHOR_1.getName());
-        verify(genreService, times(1)).getByTitleOrCreate(GENRE_1.getTitle());
+        verify(bookService, times(1)).createBookOnDto(bookDto);
         verify(bookService, times(1)).update(any());
     }
 

@@ -54,21 +54,8 @@ public class BookController {
 
     @PostMapping("/edit")
     public String saveBook(@ModelAttribute("bookDto") BookDto bookDto) {
-
         long id = bookDto.getId();
-        String title = bookDto.getTitle().trim();
-        String authorName = bookDto.getAuthorName().trim();
-        String genreTitle = bookDto.getGenreTitle().trim();
-
-        Book book = bookDto.toDomain();
-        book.setTitle(title);
-
-        Author author = authorService.getByNameOrCreate(authorName);
-        book.setAuthor(author);
-
-        Genre genre = genreService.getByTitleOrCreate(genreTitle);
-        book.setGenre(genre);
-
+        Book book = bookService.createBookOnDto(bookDto);
         if (id != 0) {
             bookService.update(book);
         } else {
