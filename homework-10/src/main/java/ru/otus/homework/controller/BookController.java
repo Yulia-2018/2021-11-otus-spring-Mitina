@@ -25,8 +25,8 @@ public class BookController {
 
     private final GenreService genreService;
 
-    public BookController(BookService service, AuthorService authorService, GenreService genreService) {
-        this.bookService = service;
+    public BookController(BookService bookService, AuthorService authorService, GenreService genreService) {
+        this.bookService = bookService;
         this.authorService = authorService;
         this.genreService = genreService;
     }
