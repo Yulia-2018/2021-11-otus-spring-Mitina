@@ -17,3 +17,7 @@ homework-06 - домашнее задание к уроку "JPQL, Spring ORM, D
 homework-07 - домашнее задание к уроку "Белая магия Spring Data: Spring Data JPA"
 
 homework-08 - домашнее задание к уроку "Spring Data для подключения к нереляционным БД"
+
+homework-09 - домашнее задание к уроку "Spring MVC View"
+
+homework-10 - домашнее задание к уроку "Современные приложения на Spring MVC"
