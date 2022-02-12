@@ -1,56 +1,54 @@
 package ru.otus.homework.domain;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
-@Entity
-@Table(name = "book")
+@Document(collection = "books")
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
-    private long id;
+    private String id;
 
-    @Column(name = "title", nullable = false)
     private String title;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "author_id", nullable = false)
+    @DBRef
     private Author author;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "genre_id", nullable = false)
+    @DBRef
     private Genre genre;
 
-    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
     public Book() {
     }
 
-    public Book(long id, String title) {
+    public Book(String id, String title) {
         this.id = id;
         this.title = title;
     }
 
     public Book(String title, Author author, Genre genre) {
+        this.id = UUID.randomUUID().toString();
         this.title = title;
         this.author = author;
         this.genre = genre;
     }
 
-    public Book(long id, String title, Author author, Genre genre) {
+    public Book(String id, String title, Author author, Genre genre) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.genre = genre;
     }
 
-    public Book(long id, String title, Author author, Genre genre, List<Comment> comments) {
+    public Book(String id, String title, Author author, Genre genre, List<Comment> comments) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -65,10 +63,11 @@ public class Book {
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", author=" + author +
                 ", genre=" + genre +
+                ", comments=" + comments +
                 '}';
     }
 }

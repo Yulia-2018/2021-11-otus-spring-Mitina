@@ -1,27 +1,11 @@
 package ru.otus.homework.controller;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-import ru.otus.homework.domain.Book;
-import ru.otus.homework.dto.BookDto;
-import ru.otus.homework.service.AuthorService;
-import ru.otus.homework.service.BookService;
-import ru.otus.homework.service.GenreService;
-
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.otus.homework.TestData.*;
 
 @WebMvcTest(BookController.class)
 class BookControllerTest {
 
-    @Autowired
+    /*@Autowired
     private MockMvc mvc;
 
     @MockBean
@@ -75,5 +59,5 @@ class BookControllerTest {
                 .andExpect(redirectedUrl("/"));
 
         verify(bookService, times(1)).deleteById(BOOK_1_ID);
-    }
+    }*/
 }

@@ -6,11 +6,11 @@ import ru.otus.homework.domain.Comment;
 @Getter
 public class CommentDto {
 
-    private long id;
+    private String id;
 
     private String text;
 
-    public CommentDto(long id, String text) {
+    public CommentDto(String id, String text) {
         this.id = id;
         this.text = text;
     }

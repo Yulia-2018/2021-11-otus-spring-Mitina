@@ -63,7 +63,7 @@
 <body>
 
 <!-- Book edition -->
-<form id="edit-form" action="edit.html" th:method="post" th:action="@{/edit(id=${bookDto.id})}" th:object="${bookDto}">
+<form id="edit-form" action="edit.html" th:method="post" th:action="@{/edit(idBook=${bookDto.id})}" th:object="${bookDto}">
     <h3>Book Info:</h3>
 
     <div class="row">

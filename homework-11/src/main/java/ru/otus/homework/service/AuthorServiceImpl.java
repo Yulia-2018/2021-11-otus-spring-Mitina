@@ -2,6 +2,7 @@ package ru.otus.homework.service;
 
 import org.springframework.stereotype.Service;
 import ru.otus.homework.domain.Author;
+import ru.otus.homework.exception.NotFoundException;
 import ru.otus.homework.repository.AuthorRepository;
 
 import java.util.List;
@@ -17,8 +18,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getById(long id) {
-        return authorRepository.getById(id);
+    public Author getById(String id) {
+        return authorRepository.findById(id).orElseThrow(() -> new NotFoundException("Author " + id + " not exist"));
     }
 
     @Override

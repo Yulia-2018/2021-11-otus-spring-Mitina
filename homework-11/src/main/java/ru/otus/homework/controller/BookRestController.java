@@ -30,20 +30,20 @@ public class BookRestController {
     }
 
     @GetMapping(value = "/books/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public BookDto get(@PathVariable long id) {
+    public BookDto get(@PathVariable String id) {
         Book book = bookService.getById(id);
         return BookDto.toDto(book);
     }
 
     @DeleteMapping("/books/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable long id) {
+    public void delete(@PathVariable String id) {
         bookService.deleteById(id);
     }
 
     @PutMapping(value = "/books/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Book book, @PathVariable long id) {
+    public void update(@RequestBody Book book, @PathVariable String id) {
         book.setId(id);
         bookService.update(book);
     }

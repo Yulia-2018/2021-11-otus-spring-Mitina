@@ -1,13 +1,8 @@
 package ru.otus.homework;
 
-import ru.otus.homework.domain.Author;
-import ru.otus.homework.domain.Book;
-import ru.otus.homework.domain.Comment;
-import ru.otus.homework.domain.Genre;
-
 public class TestData {
 
-    public static final int BOOKS_COUNT = 2;
+    /*public static final int BOOKS_COUNT = 2;
     public static final long AUTHOR_1_ID = 100000;
     public static final Author AUTHOR_1 = new Author(AUTHOR_1_ID, "author 1");
     public static final Author AUTHOR_2 = new Author(AUTHOR_1_ID + 1, "author 2");
@@ -23,7 +18,7 @@ public class TestData {
     public static final Comment COMMENT_2 = new Comment(COMMENT_1_ID + 1, "comment 2", BOOK_1);
     public static final Comment COMMENT_3 = new Comment(COMMENT_1_ID + 2, "comment 3", BOOK_1);
     public static final Comment COMMENT_4 = new Comment(COMMENT_1_ID + 3, "comment 4", BOOK_2);
-    public static final long COMMENTS_FOR_BOOK_1_COUNT = 3;
+    public static final long COMMENTS_FOR_BOOK_1_COUNT = 3;*/
 
     private TestData() {
     }

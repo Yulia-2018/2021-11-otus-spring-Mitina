@@ -2,6 +2,7 @@ package ru.otus.homework.service;
 
 import org.springframework.stereotype.Service;
 import ru.otus.homework.domain.Genre;
+import ru.otus.homework.exception.NotFoundException;
 import ru.otus.homework.repository.GenreRepository;
 
 import java.util.List;
@@ -17,8 +18,8 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getById(long id) {
-        return genreRepository.getById(id);
+    public Genre getById(String id) {
+        return genreRepository.findById(id).orElseThrow(() -> new NotFoundException("Genre " + id + " not exist"));
     }
 
     @Override

@@ -6,7 +6,7 @@ import ru.otus.homework.domain.Book;
 @Data
 public class BookDto {
 
-    private long id;
+    private String id;
 
     private String title;
 
@@ -17,7 +17,7 @@ public class BookDto {
     public BookDto() {
     }
 
-    public BookDto(long id, String title, String authorName, String genreTitle) {
+    public BookDto(String id, String title, String authorName, String genreTitle) {
         this.id = id;
         this.title = title;
         this.authorName = authorName;
@@ -31,7 +31,7 @@ public class BookDto {
     @Override
     public String toString() {
         return "BookDto{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", authorName='" + authorName + '\'' +
                 ", genreTitle='" + genreTitle + '\'' +

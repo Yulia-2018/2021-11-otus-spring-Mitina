@@ -2,39 +2,29 @@ package ru.otus.homework.domain;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import java.util.UUID;
 
 @Data
-@Entity
-@Table(name = "comment")
 public class Comment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
-    private long id;
+    private String id;
 
-    @Column(name = "text", nullable = false)
     private String text;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id", nullable = false)
-    private Book book;
 
     public Comment() {
     }
 
-    public Comment(long id, String text, Book book) {
+    public Comment(String id, String text) {
         this.id = id;
         this.text = text;
-        this.book = book;
     }
 
-    public Comment(String text, Book book) {
+    public Comment(String text) {
+        this.id = UUID.randomUUID().toString();
         this.text = text;
-        this.book = book;
     }
 
     public Comment(Comment comment) {
-        this(comment.getId(), comment.getText(), comment.getBook());
+        this(comment.getId(), comment.getText());
     }
 }

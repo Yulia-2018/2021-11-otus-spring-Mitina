@@ -37,12 +37,13 @@ public class BookController {
     }
 
     @GetMapping("/edit")
-    public String editPage(@RequestParam("id") int id, Model model) {
+    public String editPage(@RequestParam("id") String id, Model model) {
         BookDto bookDto;
-        if (id != 0) {
+        if (!id.equals("0")) {
             bookDto = BookDto.toDto(bookService.getById(id));
         } else {
             bookDto = new BookDto();
+            bookDto.setId("0");
         }
         model.addAttribute("bookDto", bookDto);
         List<Author> authors = authorService.getAll();
@@ -54,9 +55,9 @@ public class BookController {
 
     @PostMapping("/edit")
     public String saveBook(@ModelAttribute("bookDto") BookDto bookDto) {
-        long id = bookDto.getId();
+        String id = bookDto.getId();
         Book book = bookService.createBookOnDto(bookDto);
-        if (id != 0) {
+        if (!id.equals("0")) {
             bookService.update(book);
         } else {
             bookService.insert(book);
@@ -65,7 +66,7 @@ public class BookController {
     }
 
     @GetMapping("/delete")
-    public String deleteBook(@RequestParam("id") int id) {
+    public String deleteBook(@RequestParam("id") String id) {
         bookService.deleteById(id);
         return "redirect:/";
     }

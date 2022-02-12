@@ -1,7 +1,6 @@
 package ru.otus.homework.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
@@ -10,6 +9,7 @@ import ru.otus.homework.exception.NotFoundException;
 import ru.otus.homework.repository.BookRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -26,13 +26,12 @@ public class BookServiceImpl implements BookService {
         this.genreService = genreService;
     }
 
-    @Transactional
     @Override
     public Book insert(Book book) {
+        book.setId(UUID.randomUUID().toString());
         return bookRepository.save(book);
     }
 
-    @Transactional
     @Override
     public void update(Book book) {
         getById(book.getId());
@@ -40,7 +39,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getById(long id) {
+    public Book getById(String id) {
         return bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book " + id + " not exist"));
     }
 
@@ -49,18 +48,16 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll();
     }
 
-    @Transactional
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         Book book = getById(id);
         bookRepository.delete(book);
     }
 
-    @Transactional
     @Override
     public Book createBookOnDto(BookDto bookDto) {
 
-        long id = bookDto.getId();
+        String id = bookDto.getId();
         String title = bookDto.getTitle().trim();
         String authorName = bookDto.getAuthorName().trim();
         String genreTitle = bookDto.getGenreTitle().trim();

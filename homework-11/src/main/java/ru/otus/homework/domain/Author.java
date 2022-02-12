@@ -1,30 +1,29 @@
 package ru.otus.homework.domain;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
+import java.util.UUID;
 
 @Data
-@Entity
-@Table(name = "author")
+@Document(collection = "authors")
 public class Author {
 
     @Id
-    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = 100_000)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
-    private long id;
+    private String id;
 
-    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     public Author() {
     }
 
     public Author(String name) {
+        this.id = UUID.randomUUID().toString();
         this.name = name;
     }
 
-    public Author(long id, String name) {
+    public Author(String id, String name) {
         this.id = id;
         this.name = name;
     }

@@ -1,29 +1,29 @@
 package ru.otus.homework.domain;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
+import java.util.UUID;
 
 @Data
-@Entity
-@Table(name = "genre")
+@Document(collection = "genres")
 public class Genre {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
-    private long id;
+    private String id;
 
-    @Column(name = "title", nullable = false, unique = true)
     private String title;
 
     public Genre() {
     }
 
     public Genre(String title) {
+        this.id = UUID.randomUUID().toString();
         this.title = title;
     }
 
-    public Genre(long id, String title) {
+    public Genre(String id, String title) {
         this.id = id;
         this.title = title;
     }
