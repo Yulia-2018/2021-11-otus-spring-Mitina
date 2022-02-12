@@ -2,18 +2,17 @@ package ru.otus.homework.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
+import ru.otus.homework.domain.Comment;
 import ru.otus.homework.domain.Genre;
 import ru.otus.homework.dto.BookDto;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.GenreService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -68,6 +67,29 @@ public class BookController {
     @GetMapping("/delete")
     public String deleteBook(@RequestParam("id") String id) {
         bookService.deleteById(id);
+        return "redirect:/";
+    }
+
+    @GetMapping("/{bookId}/comments")
+    public String listPage(@PathVariable("bookId") String bookId, Model model) {
+        Book book = bookService.getById(bookId);
+        List<Comment> comments = book.getComments();
+        model.addAttribute("bookId", bookId);
+        model.addAttribute("comments", comments);
+        return "comments";
+    }
+
+    @PostMapping("/{bookId}/comments")
+    public String saveComment(@PathVariable("bookId") String bookId, @RequestParam("commentsText") List<String> commentsText) {
+        Book book = bookService.getById(bookId);
+        List<Comment> comments = new ArrayList<>();
+        for (String text : commentsText) {
+            if (!text.trim().isEmpty()) {
+                comments.add(new Comment(text.trim()));
+            }
+        }
+        book.setComments(comments);
+        bookService.update(book);
         return "redirect:/";
     }
 }
