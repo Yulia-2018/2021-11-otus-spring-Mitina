@@ -3,6 +3,7 @@ package ru.otus.homework.service;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
+import ru.otus.homework.domain.Comment;
 import ru.otus.homework.domain.Genre;
 import ru.otus.homework.dto.BookDto;
 import ru.otus.homework.exception.NotFoundException;
@@ -68,6 +69,12 @@ public class BookServiceImpl implements BookService {
         book.setAuthor(author);
         Genre genre = genreService.getByTitleOrCreate(genreTitle);
         book.setGenre(genre);
+
+        if (!id.equals("0")) {
+            Book bookFromBase = getById(id);
+            List<Comment> comments = bookFromBase.getComments();
+            book.setComments(comments);
+        }
 
         return book;
     }
