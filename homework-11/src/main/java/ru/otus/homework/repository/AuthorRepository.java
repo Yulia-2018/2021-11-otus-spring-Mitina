@@ -1,11 +1,10 @@
 package ru.otus.homework.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import reactor.core.publisher.Mono;
 import ru.otus.homework.domain.Author;
 
-import java.util.Optional;
+public interface AuthorRepository extends ReactiveMongoRepository<Author, String> {
 
-public interface AuthorRepository extends MongoRepository<Author, String> {
-
-    Optional<Author> getByName(String name);
+    Mono<Author> getByName(String name);
 }

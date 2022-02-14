@@ -26,6 +26,13 @@ public class Book {
     public Book() {
     }
 
+    public Book(String id) {
+        this.id = id;
+        this.title = "";
+        this.author = new Author();
+        this.genre = new Genre();
+    }
+
     public Book(String id, String title) {
         this.id = id;
         this.title = title;

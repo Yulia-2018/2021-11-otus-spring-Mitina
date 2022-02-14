@@ -2,32 +2,37 @@ package ru.otus.homework.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
-import ru.otus.homework.domain.Comment;
 import ru.otus.homework.domain.Genre;
 import ru.otus.homework.dto.BookDto;
-import ru.otus.homework.service.AuthorService;
-import ru.otus.homework.service.BookService;
-import ru.otus.homework.service.GenreService;
+import ru.otus.homework.repository.AuthorRepository;
+import ru.otus.homework.repository.BookRepository;
+import ru.otus.homework.repository.GenreRepository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
+
+import static ru.otus.homework.controller.Util.*;
 
 @Controller
 public class BookController {
 
-    private final BookService bookService;
+    private final BookRepository bookRepository;
 
-    private final AuthorService authorService;
+    private final AuthorRepository authorRepository;
 
-    private final GenreService genreService;
+    private final GenreRepository genreRepository;
 
-    public BookController(BookService bookService, AuthorService authorService, GenreService genreService) {
-        this.bookService = bookService;
-        this.authorService = authorService;
-        this.genreService = genreService;
+    public BookController(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository) {
+        this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
+        this.genreRepository = genreRepository;
     }
 
     @GetMapping("/")
@@ -37,40 +42,40 @@ public class BookController {
 
     @GetMapping("/edit")
     public String editPage(@RequestParam("id") String id, Model model) {
-        BookDto bookDto;
-        if (!id.equals("0")) {
-            bookDto = BookDto.toDto(bookService.getById(id));
-        } else {
-            bookDto = new BookDto();
-            bookDto.setId("0");
-        }
+        Mono<BookDto> bookDto = bookRepository.findById(id).switchIfEmpty(Mono.just(new Book("0"))).map(BookDto::toDto);
         model.addAttribute("bookDto", bookDto);
-        List<Author> authors = authorService.getAll();
+        Flux<Author> authors = authorRepository.findAll();
         model.addAttribute("authors", authors);
-        List<Genre> genres = genreService.getAll();
+        Flux<Genre> genres = genreRepository.findAll();
         model.addAttribute("genres", genres);
         return "edit";
     }
 
     @PostMapping("/edit")
     public String saveBook(@ModelAttribute("bookDto") BookDto bookDto) {
+
         String id = bookDto.getId();
-        Book book = bookService.createBookOnDto(bookDto);
+        String title = bookDto.getTitle().trim();
+        String authorName = bookDto.getAuthorName().trim();
+        String genreTitle = bookDto.getGenreTitle().trim();
+        Book book = new Book(id, title);
+
         if (!id.equals("0")) {
-            bookService.update(book);
+            getMonoBookForUpdate(book, authorName, genreTitle, bookRepository, authorRepository, genreRepository).subscribe();
         } else {
-            bookService.insert(book);
+            book.setId(UUID.randomUUID().toString());
+            getMonoBookForCreate(book, authorName, genreTitle, bookRepository, authorRepository, genreRepository).subscribe();
         }
         return "redirect:/";
     }
 
     @GetMapping("/delete")
     public String deleteBook(@RequestParam("id") String id) {
-        bookService.deleteById(id);
+        bookRepository.deleteById(id).subscribe();
         return "redirect:/";
     }
 
-    @GetMapping("/{bookId}/comments")
+    /*@GetMapping("/{bookId}/comments")
     public String listPage(@PathVariable("bookId") String bookId, Model model) {
         Book book = bookService.getById(bookId);
         List<Comment> comments = book.getComments();
@@ -91,5 +96,5 @@ public class BookController {
         book.setComments(comments);
         bookService.update(book);
         return "redirect:/";
-    }
+    }*/
 }

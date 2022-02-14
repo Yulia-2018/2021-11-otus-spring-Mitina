@@ -1,61 +1,61 @@
 package ru.otus.homework.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.dto.BookDto;
-import ru.otus.homework.service.BookService;
+import ru.otus.homework.exception.NotFoundException;
+import ru.otus.homework.repository.AuthorRepository;
+import ru.otus.homework.repository.BookRepository;
+import ru.otus.homework.repository.GenreRepository;
 
-import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
+import static ru.otus.homework.controller.Util.getMonoBookForCreate;
+import static ru.otus.homework.controller.Util.getMonoBookForUpdate;
 
 @RestController
 public class BookRestController {
 
-    private final BookService bookService;
+    private final BookRepository bookRepository;
 
-    public BookRestController(BookService bookService) {
-        this.bookService = bookService;
+    private final AuthorRepository authorRepository;
+
+    private final GenreRepository genreRepository;
+
+    public BookRestController(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository) {
+        this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
+        this.genreRepository = genreRepository;
     }
 
     @GetMapping(value = "/books", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookDto> getAll() {
-        return bookService.getAll().stream()
-                .map(BookDto::toDto)
-                .collect(Collectors.toList());
+    public Flux<BookDto> getAll() {
+        return bookRepository.findAll().map(BookDto::toDto);
     }
 
     @GetMapping(value = "/books/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public BookDto get(@PathVariable String id) {
-        Book book = bookService.getById(id);
-        return BookDto.toDto(book);
+    public Mono<BookDto> get(@PathVariable String id) {
+        return bookRepository.findById(id).switchIfEmpty(Mono.error(new NotFoundException("Book " + id + " not exist"))).map(BookDto::toDto);
     }
 
     @DeleteMapping("/books/{id}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable String id) {
-        bookService.deleteById(id);
+    public Mono<Void> delete(@PathVariable String id) {
+        return bookRepository.deleteById(id);
     }
 
     @PutMapping(value = "/books/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Book book, @PathVariable String id) {
+    public Mono<Void> update(@RequestBody Book book, @PathVariable String id) {
+        String authorName = book.getAuthor().getName();
+        String genreTitle = book.getGenre().getTitle();
         book.setId(id);
-        bookService.update(book);
+        return getMonoBookForUpdate(book, authorName, genreTitle, bookRepository, authorRepository, genreRepository).then();
     }
 
     @PostMapping(value = "/books", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Book> createWithLocation(@RequestBody Book book) {
-        Book created = bookService.insert(book);
-
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/books/{id}")
-                .buildAndExpand(created.getId()).toUri();
-
-        return ResponseEntity.created(uriOfNewResource).body(created);
+    public Mono<Book> create(@RequestBody Book book) {
+        String authorName = book.getAuthor().getName();
+        String genreTitle = book.getGenre().getTitle();
+        return getMonoBookForCreate(book, authorName, genreTitle, bookRepository, authorRepository, genreRepository);
     }
 }

@@ -3,8 +3,3 @@ spring:
     mongodb:
       port: 27017
       database: library
-
-mongock:
-  runner-type: "InitializingBean"
-  change-logs-scan-package:
-    - ru.otus.homework.mongock.changelog

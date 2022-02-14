@@ -6,12 +6,3 @@ spring:
     mongodb:
       port: 0
       database: library
-
-mongock:
-  runner-type: "InitializingBean"
-  change-logs-scan-package:
-    - ru.otus.homework.mongock.changelog
-  mongo-db:
-    write-concern:
-      journal: false
-    read-concern: local
