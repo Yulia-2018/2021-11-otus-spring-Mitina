@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Document(collection = "books")
@@ -39,24 +38,18 @@ public class Book {
     }
 
     public Book(String title, Author author, Genre genre) {
-        this.id = UUID.randomUUID().toString();
         this.title = title;
         this.author = author;
         this.genre = genre;
     }
 
     public Book(String id, String title, Author author, Genre genre) {
+        this(title, author, genre);
         this.id = id;
-        this.title = title;
-        this.author = author;
-        this.genre = genre;
     }
 
     public Book(String id, String title, Author author, Genre genre, List<Comment> comments) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.genre = genre;
+        this(id, title, author, genre);
         this.comments = comments;
     }
 

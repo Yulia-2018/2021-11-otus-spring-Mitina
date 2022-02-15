@@ -1,24 +1,24 @@
 package ru.otus.homework;
 
+import ru.otus.homework.domain.Author;
+import ru.otus.homework.domain.Book;
+import ru.otus.homework.domain.Comment;
+import ru.otus.homework.domain.Genre;
+
+import java.util.List;
+
 public class TestData {
 
-    /*public static final int BOOKS_COUNT = 2;
-    public static final long AUTHOR_1_ID = 100000;
-    public static final Author AUTHOR_1 = new Author(AUTHOR_1_ID, "author 1");
-    public static final Author AUTHOR_2 = new Author(AUTHOR_1_ID + 1, "author 2");
-    public static final long GENRE_1_ID = 100002;
-    public static final Genre GENRE_1 = new Genre(GENRE_1_ID, "genre 1");
-    public static final Genre GENRE_2 = new Genre(GENRE_1_ID + 1, "genre 2");
-    public static final long BOOK_1_ID = 100004;
-    public static final long BOOK_2_ID = 100005;
-    public static final Book BOOK_1 = new Book(BOOK_1_ID, "book 1", AUTHOR_1, GENRE_2);
-    public static final Book BOOK_2 = new Book(BOOK_2_ID, "book 2", AUTHOR_2, GENRE_1);
-    public static final long COMMENT_1_ID = 100006;
-    public static final Comment COMMENT_1 = new Comment(COMMENT_1_ID, "comment 1", BOOK_1);
-    public static final Comment COMMENT_2 = new Comment(COMMENT_1_ID + 1, "comment 2", BOOK_1);
-    public static final Comment COMMENT_3 = new Comment(COMMENT_1_ID + 2, "comment 3", BOOK_1);
-    public static final Comment COMMENT_4 = new Comment(COMMENT_1_ID + 3, "comment 4", BOOK_2);
-    public static final long COMMENTS_FOR_BOOK_1_COUNT = 3;*/
+    public static final Author AUTHOR_1 = new Author("Author_1", "author 1");
+    public static final Author AUTHOR_2 = new Author("Author_2", "author 2");
+    public static final Genre GENRE_1 = new Genre("Genre_1", "genre 1");
+    public static final Genre GENRE_2 = new Genre("Genre_2", "genre 2");
+    public static final Comment COMMENTS_1 = new Comment("Comments_1", "comments 1");
+    public static final Comment COMMENTS_2 = new Comment("Comments_2", "comments 2");
+    public static final Comment COMMENTS_3 = new Comment("Comments_3", "comments 3");
+    public static final Comment COMMENTS_4 = new Comment("Comments_4", "comments 4");
+    public static final Book BOOK_1 = new Book("Book_1", "book 1", AUTHOR_1, GENRE_2, List.of(COMMENTS_1, COMMENTS_2, COMMENTS_3));
+    public static final Book BOOK_2 = new Book("Book_2", "book 2", AUTHOR_2, GENRE_1, List.of(COMMENTS_4));
 
     private TestData() {
     }

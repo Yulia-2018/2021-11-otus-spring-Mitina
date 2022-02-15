@@ -74,27 +74,4 @@ public class BookController {
         bookRepository.deleteById(id).subscribe();
         return "redirect:/";
     }
-
-    /*@GetMapping("/{bookId}/comments")
-    public String listPage(@PathVariable("bookId") String bookId, Model model) {
-        Book book = bookService.getById(bookId);
-        List<Comment> comments = book.getComments();
-        model.addAttribute("bookId", bookId);
-        model.addAttribute("comments", comments);
-        return "comments";
-    }
-
-    @PostMapping("/{bookId}/comments")
-    public String saveComment(@PathVariable("bookId") String bookId, @RequestParam("commentsText") List<String> commentsText) {
-        Book book = bookService.getById(bookId);
-        List<Comment> comments = new ArrayList<>();
-        for (String text : commentsText) {
-            if (!text.trim().isEmpty()) {
-                comments.add(new Comment(text.trim()));
-            }
-        }
-        book.setComments(comments);
-        bookService.update(book);
-        return "redirect:/";
-    }*/
 }
