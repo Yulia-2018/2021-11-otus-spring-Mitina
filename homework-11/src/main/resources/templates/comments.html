@@ -25,23 +25,17 @@
 <body>
 
 <!-- Comments edition -->
-<form id="comments-form" action="comments.html" th:method="post" th:action="@{'/' + ${bookId} + '/comments'}"
+<form id="comments-form" action="comments.html"
       th:object="${comments}">
     <h3>Comments for book:</h3>
 
     <div class="row" th:each="comment : ${comments}">
-        <input id="comment-input" name="commentsText" type="text" value="Comment 1" th:value="${comment.text}"/>
+        <input id="comment-input" name="commentsText" type="text" readonly="readonly" value="Comment 1" th:value="${comment.text}"/>
     </div>
 
     <div class="row">
-        <label for="new-comment-input">Enter new comment for book:</label><br/>
-        <input id="new-comment-input" name="commentsText" type="text" value=""/>
-    </div>
-
-    <div class="row">
-        <button type="submit">Save</button>
         <a href="list.html" th:href="@{/}">
-            <button type="button">Cancel</button>
+            <button type="button">Ok</button>
         </a>
     </div>
 </form>
