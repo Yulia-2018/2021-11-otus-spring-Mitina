@@ -21,3 +21,5 @@ homework-08 - домашнее задание к уроку "Spring Data для 
 homework-09 - домашнее задание к уроку "Spring MVC View"
 
 homework-10 - домашнее задание к уроку "Современные приложения на Spring MVC"
+
+homework-11 - домашнее задание к уроку "Spring WebFlux"

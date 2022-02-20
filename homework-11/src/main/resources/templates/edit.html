@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit book</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        .form-control {
+            width: 180px;
+        }
+
+        .select-editable {
+            position: relative;
+            background-color: white;
+            border: solid grey 1px;
+            width: 120px;
+            height: 18px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .select-editable select {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            font-size: 14px;
+            border: none;
+            width: 120px;
+            margin: 0;
+        }
+
+        .select-editable input {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100px;
+            padding: 1px;
+            font-size: 12px;
+            border: none;
+        }
+
+        .select-editable select:focus, .select-editable input:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Book edition -->
+<form id="edit-form" action="edit.html" th:method="post" th:action="@{/edit(idBook=${bookDto.id})}" th:object="${bookDto}">
+    <h3>Book Info:</h3>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" name="id" type="text" readonly="readonly" value="1" th:value="*{id}"/>
+    </div>
+
+    <div class="row">
+        <label for="book-title-input">Title:</label>
+        <input id="book-title-input" name="title" type="text" value="Book 1" th:value="*{title}"/>
+    </div>
+    <br/>
+
+    <label for="author-select">Author:</label>
+    <div class="select-editable">
+        <select onchange="this.nextElementSibling.value=this.value" id="author-select">
+            <option value=""></option>
+            <option th:each="author : ${authors}" th:value="${author.name}" th:text="${author.name}"></option>
+        </select>
+        <input type="text" name="authorName" th:value="*{authorName}"/>
+    </div>
+
+    <label for="genre-select">Genre:</label>
+    <div class="select-editable">
+        <select onchange="this.nextElementSibling.value=this.value" id="genre-select">
+            <option value=""></option>
+            <option th:each="genre : ${genres}" th:value="${genre.title}" th:text="${genre.title}"></option>
+        </select>
+        <input type="text" name="genreTitle" th:value="*{genreTitle}"/>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+        <a href="list.html" th:href="@{/}">
+            <button type="button">Cancel</button>
+        </a>
+    </div>
+</form>
+
+</body>
+</html>
