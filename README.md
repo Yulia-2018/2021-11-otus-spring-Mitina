@@ -23,3 +23,5 @@ homework-09 - домашнее задание к уроку "Spring MVC View"
 homework-10 - домашнее задание к уроку "Современные приложения на Spring MVC"
 
 homework-11 - домашнее задание к уроку "Spring WebFlux"
+
+homework-12 - домашнее задание к уроку "Spring Security: Механизмы аутентификации"
