@@ -4,9 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.BookService;
+import ru.otus.homework.service.CustomUserDetailsService;
 import ru.otus.homework.service.GenreService;
 
 import java.util.List;
@@ -33,6 +35,13 @@ class BookControllerTest {
     @MockBean
     private GenreService genreService;
 
+    @MockBean
+    private CustomUserDetailsService userDetailsService;
+
+    @WithMockUser(
+            username = "Admin",
+            authorities = {"ROLE_USER", "ROLE_ADMIN"}
+    )
     @Test
     void listPage() throws Exception {
         when(bookService.getAll()).thenReturn(List.of(BOOK_1, BOOK_2));
@@ -43,6 +52,10 @@ class BookControllerTest {
         verify(bookService, times(1)).getAll();
     }
 
+    @WithMockUser(
+            username = "Admin",
+            authorities = {"ROLE_USER", "ROLE_ADMIN"}
+    )
     @Test
     void editPage() throws Exception {
         when(bookService.getById(BOOK_1_ID)).thenReturn(BOOK_1);
@@ -55,6 +68,10 @@ class BookControllerTest {
         verify(genreService, times(1)).getAll();
     }
 
+    @WithMockUser(
+            username = "Admin",
+            authorities = {"ROLE_USER", "ROLE_ADMIN"}
+    )
     @Test
     void saveBook() throws Exception {
         when(bookService.getById(BOOK_1_ID)).thenReturn(BOOK_1);
@@ -73,6 +90,10 @@ class BookControllerTest {
         verify(bookService, times(1)).update(any());
     }
 
+    @WithMockUser(
+            username = "Admin",
+            authorities = {"ROLE_USER", "ROLE_ADMIN"}
+    )
     @Test
     void deleteBook() throws Exception {
         mvc.perform(get("/delete").param("id", String.valueOf(BOOK_1_ID)))
@@ -80,5 +101,31 @@ class BookControllerTest {
                 .andExpect(redirectedUrl("/"));
 
         verify(bookService, times(1)).deleteById(BOOK_1_ID);
+    }
+
+    @Test
+    void listPageUnauthorized() throws Exception {
+        mvc.perform(get("/"))
+                .andExpect(status().is(302));
+    }
+
+    @Test
+    void editPageUnauthorized() throws Exception {
+        mvc.perform(get("/edit").param("id", String.valueOf(BOOK_1_ID)))
+                .andExpect(status().is(302));
+    }
+
+    @Test
+    void saveBookUnauthorized() throws Exception {
+        mvc.perform(post("/edit")
+                .param("id", String.valueOf(BOOK_1_ID)).param("title", "New title")
+                .param("authorName", AUTHOR_1.getName()).param("genreTitle", String.valueOf(GENRE_1.getTitle())))
+                .andExpect(status().is(302));
+    }
+
+    @Test
+    void deleteBookUnauthorized() throws Exception {
+        mvc.perform(get("/delete").param("id", String.valueOf(BOOK_1_ID)))
+                .andExpect(status().is(302));
     }
 }
