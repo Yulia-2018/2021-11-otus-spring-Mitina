@@ -51,6 +51,7 @@ CREATE UNIQUE INDEX users_unique_name_idx ON users (name);
 
 CREATE TABLE user_roles
 (
+  id      BIGINT DEFAULT NEXT VALUE FOR GLOBAL_SEQ PRIMARY KEY,
   user_id BIGINT NOT NULL,
   role    VARCHAR(255) NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
