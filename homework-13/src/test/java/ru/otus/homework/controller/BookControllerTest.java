@@ -39,8 +39,8 @@ class BookControllerTest {
     private CustomUserDetailsService userDetailsService;
 
     @WithMockUser(
-            username = "Admin",
-            authorities = {"ROLE_USER", "ROLE_ADMIN"}
+            username = "User",
+            authorities = {"ROLE_USER"}
     )
     @Test
     void listPage() throws Exception {
@@ -127,5 +127,37 @@ class BookControllerTest {
     void deleteBookUnauthorized() throws Exception {
         mvc.perform(get("/delete").param("id", String.valueOf(BOOK_1_ID)))
                 .andExpect(status().is(302));
+    }
+
+    @WithMockUser(
+            username = "User",
+            authorities = {"ROLE_USER"}
+    )
+    @Test
+    void editPageForbidden() throws Exception {
+        mvc.perform(get("/edit").param("id", String.valueOf(BOOK_1_ID)))
+                .andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(
+            username = "User",
+            authorities = {"ROLE_USER"}
+    )
+    @Test
+    void saveBookForbidden() throws Exception {
+        mvc.perform(post("/edit")
+                .param("id", String.valueOf(BOOK_1_ID)).param("title", "New title")
+                .param("authorName", AUTHOR_1.getName()).param("genreTitle", String.valueOf(GENRE_1.getTitle())))
+                .andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(
+            username = "User",
+            authorities = {"ROLE_USER"}
+    )
+    @Test
+    void deleteBookForbidden() throws Exception {
+        mvc.perform(get("/delete").param("id", String.valueOf(BOOK_1_ID)))
+                .andExpect(status().isForbidden());
     }
 }

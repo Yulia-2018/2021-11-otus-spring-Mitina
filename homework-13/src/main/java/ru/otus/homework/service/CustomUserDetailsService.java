@@ -28,6 +28,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Unknown user: " + username);
         }
         User user = optionalUser.get();
-        return builder().username(username).password(user.getPassword()).roles(user.getRoles().toString()).build();
+        return builder().username(username).password(user.getPassword()).authorities(user.getRoles()).build();
     }
 }
