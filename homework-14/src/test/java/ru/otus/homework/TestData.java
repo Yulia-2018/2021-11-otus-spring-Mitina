@@ -1,9 +1,9 @@
 package ru.otus.homework;
 
-import ru.otus.homework.domain.Author;
-import ru.otus.homework.domain.Book;
-import ru.otus.homework.domain.Comment;
-import ru.otus.homework.domain.Genre;
+import ru.otus.homework.domain.mongo.Author;
+import ru.otus.homework.domain.mongo.Book;
+import ru.otus.homework.domain.mongo.Comment;
+import ru.otus.homework.domain.mongo.Genre;
 
 import java.util.List;
 

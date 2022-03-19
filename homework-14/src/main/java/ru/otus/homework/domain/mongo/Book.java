@@ -1,4 +1,4 @@
-package ru.otus.homework.domain;
+package ru.otus.homework.domain.mongo;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

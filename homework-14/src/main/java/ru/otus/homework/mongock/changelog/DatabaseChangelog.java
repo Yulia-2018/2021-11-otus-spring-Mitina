@@ -2,14 +2,12 @@ package ru.otus.homework.mongock.changelog;
 
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
+import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl.MongockTemplate;
 import com.mongodb.client.MongoDatabase;
-import ru.otus.homework.domain.Author;
-import ru.otus.homework.domain.Book;
-import ru.otus.homework.domain.Comment;
-import ru.otus.homework.domain.Genre;
-import ru.otus.homework.repository.AuthorRepository;
-import ru.otus.homework.repository.BookRepository;
-import ru.otus.homework.repository.GenreRepository;
+import ru.otus.homework.domain.mongo.Author;
+import ru.otus.homework.domain.mongo.Book;
+import ru.otus.homework.domain.mongo.Comment;
+import ru.otus.homework.domain.mongo.Genre;
 
 import java.util.List;
 
@@ -33,23 +31,20 @@ public class DatabaseChangelog {
     }
 
     @ChangeSet(order = "002", id = "insertAuthors", author = "mitina")
-    public void insertAuthors(AuthorRepository repository) {
-        repository.deleteAll();
-        repository.save(author_1);
-        repository.save(author_2);
+    public void insertAuthors(MongockTemplate template) {
+        template.save(author_1);
+        template.save(author_2);
     }
 
     @ChangeSet(order = "003", id = "insertGenres", author = "mitina")
-    public void insertGenres(GenreRepository repository) {
-        repository.deleteAll();
-        repository.save(genre_1);
-        repository.save(genre_2);
+    public void insertGenres(MongockTemplate template) {
+        template.save(genre_1);
+        template.save(genre_2);
     }
 
     @ChangeSet(order = "004", id = "insertBooks", author = "mitina")
-    public void insertBooks(BookRepository repository) {
-        repository.deleteAll();
-        repository.save(book_1);
-        repository.save(book_2);
+    public void insertBooks(MongockTemplate template) {
+        template.save(book_1);
+        template.save(book_2);
     }
 }
