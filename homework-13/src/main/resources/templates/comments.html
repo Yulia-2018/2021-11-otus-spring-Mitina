@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit comments</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 200px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Comments edition -->
+<form id="comments-form" action="comments.html" th:method="post" th:action="@{'/' + ${bookId} + '/comments'}"
+      th:object="${comments}">
+    <h3>Comments for book:</h3>
+
+    <div class="row" th:each="comment : ${comments}">
+        <input sec:authorize="hasAuthority('ROLE_ADMIN')" id="comment-input" name="commentsText" type="text" value="Comment 1" th:value="${comment.text}"/>
+        <td sec:authorize="!hasAuthority('ROLE_ADMIN')" th:text="${comment.text}">1</td>
+    </div>
+
+    <div class="row" sec:authorize="hasAuthority('ROLE_ADMIN')">
+        <label for="new-comment-input">Enter new comment for book:</label><br/>
+        <input id="new-comment-input" name="commentsText" type="text" value=""/>
+    </div>
+
+    <div class="row" sec:authorize="hasAuthority('ROLE_ADMIN')">
+        <button type="submit">Save</button>
+        <a href="list.html" th:href="@{/}">
+            <button type="button">Cancel</button>
+        </a>
+    </div>
+
+    <div class="row" sec:authorize="!hasAuthority('ROLE_ADMIN')">
+        <a href="list.html" th:href="@{/}">
+            <button type="button">Ok</button>
+        </a>
+    </div>
+</form>
+
+</body>
+</html>
