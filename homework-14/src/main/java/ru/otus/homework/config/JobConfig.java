@@ -145,7 +145,7 @@ public class JobConfig {
 
     @Bean
     public Step stepForBooks(MongoItemReader<Book> readerBooks, JpaItemWriter<R_Book> writerBooks,
-                              ItemProcessor<Book, R_Book> itemProcessorBooks) {
+                             ItemProcessor<Book, R_Book> itemProcessorBooks) {
         return stepBuilderFactory.get("stepForBooks")
                 .<Book, R_Book>chunk(5)
                 .reader(readerBooks)

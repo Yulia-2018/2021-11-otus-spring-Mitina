@@ -58,9 +58,4 @@ public class ApplicationCommands {
     private void getAllBooks() {
         bookRepository.findAll().forEach(System.out::println);
     }
-
-    /*@ShellMethod(value = "Get all comments for book", key = {"allC", "allComments", "getAllComments"})
-    private void getAllComments(@ShellOption String bookId) {
-        bookService.getById(bookId).getComments().forEach(System.out::println);
-    }*/
 }
