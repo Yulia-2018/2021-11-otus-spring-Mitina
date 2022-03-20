@@ -15,12 +15,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.homework.domain.mongo.Author;
+import ru.otus.homework.domain.mongo.Book;
 import ru.otus.homework.domain.mongo.Genre;
 import ru.otus.homework.domain.relational.R_Author;
+import ru.otus.homework.domain.relational.R_Book;
 import ru.otus.homework.domain.relational.R_Genre;
+import ru.otus.homework.repository.relational.R_AuthorRepository;
+import ru.otus.homework.repository.relational.R_GenreRepository;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.HashMap;
+import java.util.Optional;
 
 @Configuration
 public class JobConfig {
@@ -30,6 +35,12 @@ public class JobConfig {
 
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
+
+    @Autowired
+    private R_AuthorRepository r_authorRepository;
+
+    @Autowired
+    private R_GenreRepository r_genreRepository;
 
     @Bean
     public MongoItemReader<Author> readerAuthors(MongoTemplate template) {
@@ -100,11 +111,56 @@ public class JobConfig {
     }
 
     @Bean
-    public Job importData(Step stepForAuthors, Step stepForGenres) {
+    public MongoItemReader<Book> readerBooks(MongoTemplate template) {
+        return new MongoItemReaderBuilder<Book>()
+                .name("mongoItemReaderBook")
+                .template(template)
+                .jsonQuery("{}")
+                .targetType(Book.class)
+                .sorts(new HashMap<>())
+                .build();
+    }
+
+    @Bean
+    public ItemProcessor<Book, R_Book> processorBooks() {
+        return book -> {
+            String authorName = book.getAuthor().getName();
+            String genreTitle = book.getGenre().getTitle();
+            Optional<R_Author> r_author = r_authorRepository.getByName(authorName);
+            Optional<R_Genre> r_genre = r_genreRepository.getByTitle(genreTitle);
+            if (r_author.isPresent() && r_genre.isPresent()) {
+                return new R_Book(book.getTitle(), r_author.get(), r_genre.get());
+            } else {
+                return null;
+            }
+        };
+    }
+
+    @Bean
+    public JpaItemWriter<R_Book> writerBooks(EntityManagerFactory factory) {
+        return new JpaItemWriterBuilder<R_Book>()
+                .entityManagerFactory(factory)
+                .build();
+    }
+
+    @Bean
+    public Step stepForBooks(MongoItemReader<Book> readerBooks, JpaItemWriter<R_Book> writerBooks,
+                              ItemProcessor<Book, R_Book> itemProcessorBooks) {
+        return stepBuilderFactory.get("stepForBooks")
+                .<Book, R_Book>chunk(5)
+                .reader(readerBooks)
+                .processor(itemProcessorBooks)
+                .writer(writerBooks)
+                .build();
+    }
+
+    @Bean
+    public Job importData(Step stepForAuthors, Step stepForGenres, Step stepForBooks) {
         return jobBuilderFactory.get("importData")
                 .incrementer(new RunIdIncrementer())
                 .start(stepForAuthors)
                 .next(stepForGenres)
+                .next(stepForBooks)
                 .build();
     }
 }

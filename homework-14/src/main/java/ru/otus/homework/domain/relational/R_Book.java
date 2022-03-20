@@ -31,4 +31,20 @@ public class R_Book {
 
     public R_Book() {
     }
+
+    public R_Book(String title, R_Author author, R_Genre genre) {
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+    }
+
+    @Override
+    public String toString() {
+        return "R_Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author=" + author +
+                ", genre=" + genre +
+                '}';
+    }
 }
