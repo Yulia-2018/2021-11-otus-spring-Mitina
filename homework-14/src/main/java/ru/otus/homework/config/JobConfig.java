@@ -24,6 +24,9 @@ import ru.otus.homework.domain.relational.R_Book;
 import ru.otus.homework.domain.relational.R_Genre;
 import ru.otus.homework.repository.relational.R_AuthorRepository;
 import ru.otus.homework.repository.relational.R_GenreRepository;
+import ru.otus.homework.service.AuthorService;
+import ru.otus.homework.service.BookService;
+import ru.otus.homework.service.GenreService;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.HashMap;
@@ -60,8 +63,8 @@ public class JobConfig {
     }
 
     @Bean
-    public ItemProcessor<Author, R_Author> processorAuthors() {
-        return author -> new R_Author(author.getName());
+    public ItemProcessor<Author, R_Author> processorAuthors(AuthorService authorService) {
+        return authorService::convert;
     }
 
     @Bean
@@ -158,8 +161,8 @@ public class JobConfig {
     }
 
     @Bean
-    public ItemProcessor<Genre, R_Genre> processorGenres() {
-        return genre -> new R_Genre(genre.getTitle());
+    public ItemProcessor<Genre, R_Genre> processorGenres(GenreService genreService) {
+        return genreService::convert;
     }
 
     @Bean
@@ -256,18 +259,8 @@ public class JobConfig {
     }
 
     @Bean
-    public ItemProcessor<Book, R_Book> processorBooks() {
-        return book -> {
-            String authorName = book.getAuthor().getName();
-            String genreTitle = book.getGenre().getTitle();
-            Optional<R_Author> r_author = r_authorRepository.getByName(authorName);
-            Optional<R_Genre> r_genre = r_genreRepository.getByTitle(genreTitle);
-            if (r_author.isPresent() && r_genre.isPresent()) {
-                return new R_Book(book.getTitle(), r_author.get(), r_genre.get());
-            } else {
-                return null;
-            }
-        };
+    public ItemProcessor<Book, R_Book> processorBooks(BookService bookService) {
+        return bookService::convert;
     }
 
     @Bean
