@@ -38,6 +38,7 @@ public class JobConfig {
 
     private static final int CHUNK_SIZE = 5;
     private final Logger logger = LoggerFactory.getLogger("Batch");
+    public static final String IMPORT_JOB_NAME = "importDataJob";
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
@@ -346,8 +347,8 @@ public class JobConfig {
     }
 
     @Bean
-    public Job importData(Step stepForAuthors, Step stepForGenres, Step stepForBooks) {
-        return jobBuilderFactory.get("importData")
+    public Job importDataJob(Step stepForAuthors, Step stepForGenres, Step stepForBooks) {
+        return jobBuilderFactory.get(IMPORT_JOB_NAME)
                 .incrementer(new RunIdIncrementer())
                 .start(stepForAuthors)
                 .next(stepForGenres)
