@@ -5,10 +5,9 @@ import ru.otus.homework.domain.mongo.Book;
 import ru.otus.homework.domain.relational.R_Author;
 import ru.otus.homework.domain.relational.R_Book;
 import ru.otus.homework.domain.relational.R_Genre;
+import ru.otus.homework.exception.NotFoundException;
 import ru.otus.homework.repository.relational.R_AuthorRepository;
 import ru.otus.homework.repository.relational.R_GenreRepository;
-
-import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -26,12 +25,10 @@ public class BookServiceImpl implements BookService {
     public R_Book convert(Book book) {
         String authorName = book.getAuthor().getName();
         String genreTitle = book.getGenre().getTitle();
-        Optional<R_Author> r_author = r_authorRepository.getByName(authorName);
-        Optional<R_Genre> r_genre = r_genreRepository.getByTitle(genreTitle);
-        if (r_author.isPresent() && r_genre.isPresent()) {
-            return new R_Book(book.getTitle(), r_author.get(), r_genre.get());
-        } else {
-            return null;
-        }
+        R_Author r_author = r_authorRepository.getByName(authorName)
+                .orElseThrow(() -> new NotFoundException("Author with name " + authorName + " not exist"));
+        R_Genre r_genre = r_genreRepository.getByTitle(genreTitle)
+                .orElseThrow(() -> new NotFoundException("Genre with title " + genreTitle + " not exist"));
+        return new R_Book(book.getTitle(), r_author, r_genre);
     }
 }
