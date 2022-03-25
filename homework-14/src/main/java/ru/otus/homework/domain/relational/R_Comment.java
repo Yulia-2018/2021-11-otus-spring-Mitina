@@ -22,4 +22,8 @@ public class R_Comment {
 
     public R_Comment() {
     }
+
+    public R_Comment(String text) {
+        this.text = text;
+    }
 }

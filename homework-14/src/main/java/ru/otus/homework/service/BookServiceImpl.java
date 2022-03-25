@@ -2,12 +2,17 @@ package ru.otus.homework.service;
 
 import org.springframework.stereotype.Service;
 import ru.otus.homework.domain.mongo.Book;
+import ru.otus.homework.domain.mongo.Comment;
 import ru.otus.homework.domain.relational.R_Author;
 import ru.otus.homework.domain.relational.R_Book;
+import ru.otus.homework.domain.relational.R_Comment;
 import ru.otus.homework.domain.relational.R_Genre;
 import ru.otus.homework.exception.NotFoundException;
 import ru.otus.homework.repository.relational.R_AuthorRepository;
 import ru.otus.homework.repository.relational.R_GenreRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -29,6 +34,14 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new NotFoundException("Author with name " + authorName + " not exist"));
         R_Genre r_genre = r_genreRepository.getByTitle(genreTitle)
                 .orElseThrow(() -> new NotFoundException("Genre with title " + genreTitle + " not exist"));
-        return new R_Book(book.getTitle(), r_author, r_genre);
+
+        List<Comment> comments = book.getComments();
+        List<R_Comment> r_comments = new ArrayList<>();
+        for (Comment comment : comments) {
+            r_comments.add(new R_Comment(comment.getText()));
+        }
+        R_Book r_book = new R_Book(book.getTitle(), r_author, r_genre);
+        r_book.setComments(r_comments);
+        return r_book;
     }
 }

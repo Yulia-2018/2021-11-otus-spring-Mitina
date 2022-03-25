@@ -14,6 +14,7 @@ import ru.otus.homework.repository.mongo.BookRepository;
 import ru.otus.homework.repository.mongo.GenreRepository;
 import ru.otus.homework.repository.relational.R_AuthorRepository;
 import ru.otus.homework.repository.relational.R_BookRepository;
+import ru.otus.homework.repository.relational.R_CommentRepository;
 import ru.otus.homework.repository.relational.R_GenreRepository;
 
 import static ru.otus.homework.config.JobConfig.IMPORT_JOB_NAME;
@@ -29,6 +30,7 @@ public class ApplicationCommands {
     private final R_AuthorRepository r_authorRepository;
     private final R_GenreRepository r_genreRepository;
     private final R_BookRepository r_bookRepository;
+    private final R_CommentRepository r_commentRepository;
 
     private final Job importDataJob;
 
@@ -67,6 +69,11 @@ public class ApplicationCommands {
     @ShellMethod(value = "Get all books (relational)", key = "allBr")
     private void getAllRBooks() {
         r_bookRepository.findAll().forEach(System.out::println);
+    }
+
+    @ShellMethod(value = "Get all comments (relational)", key = "allCr")
+    private void getAllRComments() {
+        r_commentRepository.findAll().forEach(System.out::println);
     }
 
     @ShellMethod(value = "Get all authors (mongo)", key = "allAm")
