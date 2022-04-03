@@ -43,4 +43,6 @@ info:
 
 logging:
   level:
-    ROOT: ERROR
+    ROOT: INFO
+  file:
+    name: app.log
