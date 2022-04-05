@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.homework15.domain.Film;
 import ru.otus.homework15.domain.Frame;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,22 +23,26 @@ public class FilmProductionService {
         return frame;
     }
 
-    public Film montage(List<Frame> frames) throws InterruptedException {
-        String framesDescription = convertToString(frames);
+    public Film montage(List<Frame> frameList) throws InterruptedException {
+        String framesDescription = convertToString(frameList);
         System.out.println("Film editing in progress from frames: " + framesDescription);
         Thread.sleep(2000);
         System.out.println("Film edited from frames: " + framesDescription);
         return new Film("Film " + (int) (Math.random() * 10), framesDescription);
     }
 
-    public Film finalMontage(Film film) throws InterruptedException {
-        System.out.println("Begin final montage of film " + film.getTitle());
-        Thread.sleep(3000);
-        System.out.println("Film " + film.getTitle() + " is ready");
-        return film;
+    public List<Film> finalMontage(List<Film> filmList) throws InterruptedException {
+        List<Film> readyFilms = new ArrayList<>();
+        for (Film film : filmList) {
+            System.out.println("Begin final montage of film " + film.getTitle());
+            Thread.sleep(3000);
+            readyFilms.add(film);
+            System.out.println("Film " + film.getTitle() + " is ready");
+        }
+        return readyFilms;
     }
 
-    private String convertToString(List<Frame> frames) {
-        return frames.stream().map(Frame::getDescription).collect(Collectors.joining(", "));
+    private String convertToString(List<Frame> frameList) {
+        return frameList.stream().map(Frame::getDescription).collect(Collectors.joining(", "));
     }
 }

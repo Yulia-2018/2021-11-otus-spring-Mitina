@@ -11,5 +11,8 @@ import java.util.List;
 public interface FilmStudio {
 
     @Gateway(requestChannel = "framesChannel", replyChannel = "filmsChannel")
-    Film process(List<Frame> frames);
+    Film process(List<Frame> frameList);
+
+    @Gateway(requestChannel = "filmsChannel", replyChannel = "filmsReadyChannel")
+    List<Film> finalProcess(List<Film> filmList);
 }

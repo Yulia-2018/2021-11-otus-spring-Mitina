@@ -13,9 +13,11 @@ import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.scheduling.PollerMetadata;
+import ru.otus.homework15.domain.Film;
 import ru.otus.homework15.domain.Frame;
 import ru.otus.homework15.integration.FilmStudio;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +49,7 @@ public class Main {
 
     @Bean(name = PollerMetadata.DEFAULT_POLLER)
     public PollerMetadata poller() {
-        return Pollers.fixedRate(5000).get();
+        return Pollers.fixedRate(1000).get();
     }
 
     @Bean
@@ -61,14 +63,25 @@ public class Main {
     }
 
     @Bean
+    public PublishSubscribeChannel filmsReadyChannel() {
+        return MessageChannels.publishSubscribe().get();
+    }
+
+    @Bean
     public IntegrationFlow filmStudioFlow() {
         return IntegrationFlows.from("framesChannel")
                 .split()
                 .handle("filmProductionService", "voiceActing")
                 .aggregate()
                 .handle("filmProductionService", "montage")
+                .get();
+    }
+
+    @Bean
+    public IntegrationFlow finalFilmStudioFlow() {
+        return IntegrationFlows.from("filmsChannel")
                 .handle("filmProductionService", "finalMontage")
-                .channel("filmsChannel")
+                .channel("filmsReadyChannel")
                 .get();
     }
 
@@ -78,9 +91,12 @@ public class Main {
         FilmStudio filmStudio = context.getBean(FilmStudio.class);
 
         System.out.println("Start of films production");
+        List<Film> filmList = new ArrayList<>();
         for (Map.Entry<Integer, List<Frame>> entry : MAP_FRAMES.entrySet()) {
-            filmStudio.process(entry.getValue());
+            Film film = filmStudio.process(entry.getValue());
+            filmList.add(film);
         }
+        filmStudio.finalProcess(filmList);
         System.out.println("End of films production");
     }
 }
