@@ -10,19 +10,15 @@ import java.util.stream.Collectors;
 @Service
 public class FilmProductionService {
 
-    public List<Frame> selection(List<Frame> frames) throws InterruptedException {
-        System.out.println("Select frames from " + convertToString(frames));
-        List<Frame> selectionFrames = frames.stream().filter(frame -> !frame.getDouble() && !frame.getDefect()).collect(Collectors.toList());
-        Thread.sleep(2000);
-        System.out.println("Frames selected: " + convertToString(selectionFrames));
-        return selectionFrames;
-    }
-
     public Frame voiceActing(Frame frame) throws InterruptedException {
         String frameDescription = frame.getDescription();
-        System.out.println("Frame " + frameDescription + " is being voiced");
-        Thread.sleep(1000);
-        System.out.println("Frame " + frameDescription + " is voiced");
+        if (!frame.getDouble() && !frame.getDefect()) {
+            System.out.println("Frame " + frameDescription + " is being voiced");
+            Thread.sleep(1000);
+            System.out.println("Frame " + frameDescription + " is voiced");
+        } else {
+            System.out.println("Frame " + frameDescription + " not is voiced");
+        }
         return frame;
     }
 
@@ -32,6 +28,13 @@ public class FilmProductionService {
         Thread.sleep(2000);
         System.out.println("Film edited from frames: " + framesDescription);
         return new Film("Film " + (int) (Math.random() * 10), framesDescription);
+    }
+
+    public Film finalMontage(Film film) throws InterruptedException {
+        System.out.println("Begin final montage of film " + film.getTitle());
+        Thread.sleep(3000);
+        System.out.println("Film " + film.getTitle() + " is ready");
+        return film;
     }
 
     private String convertToString(List<Frame> frames) {

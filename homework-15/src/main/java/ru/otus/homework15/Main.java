@@ -13,7 +13,6 @@ import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.scheduling.PollerMetadata;
-import ru.otus.homework15.domain.Film;
 import ru.otus.homework15.domain.Frame;
 import ru.otus.homework15.integration.FilmStudio;
 
@@ -64,13 +63,11 @@ public class Main {
     @Bean
     public IntegrationFlow filmStudioFlow() {
         return IntegrationFlows.from("framesChannel")
-                .handle("filmProductionService", "selection")
                 .split()
-                //.<Frame>filter(frame -> !frame.getDouble())
-                //.<Frame>filter(frame -> !frame.getDefect())
                 .handle("filmProductionService", "voiceActing")
                 .aggregate()
                 .handle("filmProductionService", "montage")
+                .handle("filmProductionService", "finalMontage")
                 .channel("filmsChannel")
                 .get();
     }
@@ -80,10 +77,10 @@ public class Main {
 
         FilmStudio filmStudio = context.getBean(FilmStudio.class);
 
+        System.out.println("Start of films production");
         for (Map.Entry<Integer, List<Frame>> entry : MAP_FRAMES.entrySet()) {
-            System.out.println("Start of film production");
-            Film film = filmStudio.process(entry.getValue());
-            System.out.println("Film " + film.getTitle() + " (" + film.getShortDescription() + ") is ready");
+            filmStudio.process(entry.getValue());
         }
+        System.out.println("End of films production");
     }
 }
