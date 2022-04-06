@@ -30,10 +30,13 @@ management:
     health:
       show-details: always
   info:
+    # Включает информацию о сборке (spring-boot-maven-plugin)
+    build:
+      enabled: true
     # Включает информацию о приложении из application.yml
     env:
       enabled: true
-    # Включает информацию о git, собранную плагином
+    # Включает информацию о git, собранную плагином (git-commit-id-plugin)
     git:
       mode: "full"
 
