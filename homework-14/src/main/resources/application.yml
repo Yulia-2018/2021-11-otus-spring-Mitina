@@ -1,0 +1,29 @@
+spring:
+  main:
+    allow-circular-references: true
+  batch:
+    job:
+      enabled: false
+  data:
+    mongodb:
+      port: 27017
+      database: library
+  datasource:
+    url: jdbc:h2:mem:testdb
+  sql:
+    init:
+      mode: always
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.homework.mongock.changelog
