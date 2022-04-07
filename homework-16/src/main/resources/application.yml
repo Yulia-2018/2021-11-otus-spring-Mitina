@@ -1,0 +1,53 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+  sql:
+    init:
+      mode: always
+  h2:
+    console:
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  info:
+    # Включает информацию о сборке (spring-boot-maven-plugin)
+    build:
+      enabled: true
+    # Включает информацию о приложении из application.yml
+    env:
+      enabled: true
+    # Включает информацию о git, собранную плагином (git-commit-id-plugin)
+    git:
+      mode: "full"
+
+info:
+  app:
+    version: @project.version@
+    author: MitinaUV
+    description: Project for Spring Actuator
+
+logging:
+  level:
+    ROOT: INFO
+  file:
+    name: app.log
