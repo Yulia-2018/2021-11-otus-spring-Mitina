@@ -29,3 +29,5 @@ homework-12 - домашнее задание к уроку "Spring Security: М
 homework-13 - домашнее задание к уроку "Spring Security: ACL"
 
 homework-14 - домашнее задание к уроку "Spring Batch"
+
+homework-15 - домашнее задание к уроку "Spring Integration: Endpoints и Flow Components"
