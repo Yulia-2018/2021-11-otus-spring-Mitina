@@ -1,14 +1,12 @@
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
+    username: sa
+    password:
   sql:
     init:
       mode: always
-  h2:
-    console:
-      path: /h2-console
-      settings:
-        web-allow-others: true
+      schema-locations: classpath:schema_h2.sql
   jpa:
     generate-ddl: false
     hibernate:
