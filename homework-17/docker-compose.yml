@@ -7,6 +7,9 @@ services:
     privileged: true
     ports:
       - "8080:8080"
+    # Указываем зависимость от контейнера с postgres, чтобы приложение поднималось только после того, как поднимется база
+    depends_on:
+      - postgres
     # Эти свойства перегружают соответствующие в application.yml
     environment:
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
