@@ -33,3 +33,5 @@ homework-14 - домашнее задание к уроку "Spring Batch"
 homework-15 - домашнее задание к уроку "Spring Integration: Endpoints и Flow Components"
 
 homework-16 - домашнее задание к уроку "Монолиты vs. Microservices (Round 2), Spring Boot Actuator - must have в микросервисах"
+
+homework-17 - домашнее задание к уроку "Docker, оркестрация, облака, облачные хостинги"
