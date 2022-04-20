@@ -35,3 +35,5 @@ homework-15 - домашнее задание к уроку "Spring Integration:
 homework-16 - домашнее задание к уроку "Монолиты vs. Microservices (Round 2), Spring Boot Actuator - must have в микросервисах"
 
 homework-17 - домашнее задание к уроку "Docker, оркестрация, облака, облачные хостинги"
+
+homework-18 - домашнее задание к уроку "Zuul, Hystrix Circuit Breaker, Sleuth, Zipkin, Hystrix Dashboard, Secure Configuration Properties"
