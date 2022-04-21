@@ -1,5 +1,6 @@
 package ru.otus.homework.service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.domain.Author;
@@ -26,12 +27,14 @@ public class BookServiceImpl implements BookService {
         this.genreService = genreService;
     }
 
+    @HystrixCommand
     @Transactional
     @Override
     public Book insert(Book book) {
         return bookRepository.save(book);
     }
 
+    @HystrixCommand
     @Transactional
     @Override
     public void update(Book book) {
@@ -44,11 +47,13 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book " + id + " not exist"));
     }
 
+    @HystrixCommand
     @Override
     public List<Book> getAll() {
         return bookRepository.findAll();
     }
 
+    @HystrixCommand
     @Transactional
     @Override
     public void deleteById(long id) {

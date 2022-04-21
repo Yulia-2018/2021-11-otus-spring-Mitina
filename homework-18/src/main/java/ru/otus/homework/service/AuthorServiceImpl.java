@@ -1,9 +1,11 @@
 package ru.otus.homework.service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.repository.AuthorRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,16 +18,25 @@ public class AuthorServiceImpl implements AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    @Override
-    public Author getById(long id) {
-        return authorRepository.getById(id);
-    }
-
+    @HystrixCommand(fallbackMethod = "getAllFallback")
     @Override
     public List<Author> getAll() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return authorRepository.findAll();
     }
 
+    public List<Author> getAllFallback() {
+        Author author = new Author("Refresh the page to load the list of authors");
+        List<Author> authors = new ArrayList<>();
+        authors.add(author);
+        return authors;
+    }
+
+    @HystrixCommand
     @Override
     public Author getByNameOrCreate(String name) {
         Optional<Author> authorFromBase = authorRepository.getByName(name);

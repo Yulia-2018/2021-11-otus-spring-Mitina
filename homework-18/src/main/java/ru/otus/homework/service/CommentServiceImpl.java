@@ -1,5 +1,6 @@
 package ru.otus.homework.service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +23,14 @@ public class CommentServiceImpl implements CommentService {
         this.bookService = bookService;
     }
 
+    @HystrixCommand
     @Transactional
     @Override
     public Comment insert(Comment comment) {
         return commentRepository.save(comment);
     }
 
+    @HystrixCommand
     @Transactional
     @Override
     public void update(Comment comment) throws NotFoundException {
@@ -35,6 +38,7 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.save(comment);
     }
 
+    @HystrixCommand
     @Override
     public Comment getById(long id) throws NotFoundException {
         return commentRepository.findById(id).orElseThrow(() -> new NotFoundException("Comment " + id + " not exist"));
@@ -49,6 +53,7 @@ public class CommentServiceImpl implements CommentService {
         return comments;
     }
 
+    @HystrixCommand
     @Transactional
     @Override
     public void deleteById(long id) throws NotFoundException {
@@ -65,6 +70,7 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+    @HystrixCommand
     @Transactional
     @Override
     public void insertAllForBook(long bookId, List<String> commentsText) throws NotFoundException {
