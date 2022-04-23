@@ -26,7 +26,7 @@ public class R_Book {
     @JoinColumn(name = "genre_id", nullable = false)
     private R_Genre genre;
 
-    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<R_Comment> comments = new ArrayList<>();
 
     public R_Book() {
