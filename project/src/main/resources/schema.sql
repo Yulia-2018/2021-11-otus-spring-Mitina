@@ -1,0 +1,12 @@
+DROP TABLE task IF EXISTS;
+DROP SEQUENCE IF EXISTS GLOBAL_SEQ;
+
+CREATE SEQUENCE GLOBAL_SEQ START WITH 100000;
+
+CREATE TABLE task
+(
+  id          BIGINT DEFAULT NEXT VALUE FOR GLOBAL_SEQ PRIMARY KEY,
+  description VARCHAR(255) NOT NULL,
+  deadline    DATE NOT NULL
+);
+CREATE UNIQUE INDEX task_unique_description_deadline_idx ON task (description, deadline);
