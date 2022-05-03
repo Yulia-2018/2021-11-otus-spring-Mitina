@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface TaskService {
 
-    Task insert(Task task);
+    Task insert(Task task, Long userId);
 
-    void update(Task task) throws NotFoundException;
+    void update(Task task, Long userId) throws NotFoundException;
 
-    Task getById(Long id) throws NotFoundException;
+    Task getById(Long id, Long userId) throws NotFoundException;
 
-    List<Task> getAll();
+    List<Task> getAll(Long userId);
 
-    void deleteById(Long id) throws NotFoundException;
+    void deleteById(Long id, Long userId) throws NotFoundException;
 }

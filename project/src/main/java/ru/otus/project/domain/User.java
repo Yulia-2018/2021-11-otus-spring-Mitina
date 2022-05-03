@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -27,4 +28,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Role> roles;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OrderBy("deadline DESC")
+    private List<Task> tasks;
 }

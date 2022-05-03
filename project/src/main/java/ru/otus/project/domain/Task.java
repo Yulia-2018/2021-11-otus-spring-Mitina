@@ -1,5 +1,6 @@
 package ru.otus.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,4 +29,9 @@ public class Task {
     @FutureOrPresent(message = "Deadline cannot be in the past")
     @Column(name = "deadline", nullable = false)
     private LocalDate deadline;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
