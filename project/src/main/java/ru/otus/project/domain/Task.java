@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -24,6 +25,7 @@ public class Task {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @FutureOrPresent(message = "Deadline cannot be in the past")
     @Column(name = "deadline", nullable = false)
     private LocalDate deadline;
 }
