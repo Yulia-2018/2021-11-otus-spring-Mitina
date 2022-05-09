@@ -49,7 +49,7 @@ public class TaskRestController {
     }
 
     @PostMapping(value = "/rest/task", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Task> update(@RequestBody Task task) {
+    public ResponseEntity<Task> createWithLocation(@RequestBody Task task) {
         Long userId = SecurityUtil.authUserId();
         Task newTask = service.insert(task, userId);
 
