@@ -33,6 +33,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void update(Task task, Long userId) {
         getById(task.getId(), userId);
+        task.setUser(userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User " + userId + " not exist")));
         repository.save(task);
     }
 
@@ -48,6 +49,7 @@ public class TaskServiceImpl implements TaskService {
         return repository.findAll()
                 .stream()
                 .filter(task -> task.getUser().getId().equals(userId))
+                .sorted(Task::compareByDoneAndDeadline)
                 .collect(Collectors.toList());
     }
 

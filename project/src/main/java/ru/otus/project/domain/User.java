@@ -30,6 +30,5 @@ public class User {
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @OrderBy("deadline DESC")
     private List<Task> tasks;
 }
