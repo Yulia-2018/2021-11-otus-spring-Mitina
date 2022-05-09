@@ -1,10 +1,7 @@
 package ru.otus.project.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -14,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -58,6 +56,13 @@ public class Task {
                 return deadline.compareTo(t2.deadline);
             }
         }
+    }
+
+    public Task(Long id, String description, LocalDate deadline, Boolean done) {
+        this.id = id;
+        this.description = description;
+        this.deadline = deadline;
+        this.done = done;
     }
 
     @Override
