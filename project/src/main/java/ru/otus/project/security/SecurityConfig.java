@@ -26,6 +26,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
+                .authorizeRequests().antMatchers("/register").anonymous()
+                .and()
+                .authorizeRequests().antMatchers("/rest/user/**").hasAuthority("ROLE_ADMIN")
+                .and()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
                 .formLogin();

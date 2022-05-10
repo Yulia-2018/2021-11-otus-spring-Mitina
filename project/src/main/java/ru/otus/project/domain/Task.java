@@ -23,6 +23,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     @SequenceGenerator(name = "global_seq", allocationSize = 1)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @NotBlank(message = "Description cannot be empty")

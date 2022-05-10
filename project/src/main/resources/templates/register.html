@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>User register</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        .errors {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<!-- User register -->
+<form id="register-form" action="register.html" th:method="post" th:action="@{/register}" th:object="${userDto}">
+    <h3>User register:</h3>
+
+    <div class="row">
+        <label for="name-input">Name:</label>
+        <input id="name-input" name="name" type="text"/>
+        <div class="errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error in name</div>
+    </div>
+
+    <div class="row">
+        <label for="password-input">Password:</label>
+        <input id="password-input" name="password" type="text"/>
+        <div class="errors" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error in password</div>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+        <a href="list.html" th:href="@{/}">
+            <button type="button">Cancel</button>
+        </a>
+    </div>
+</form>
+
+</body>
+</html>
