@@ -24,6 +24,10 @@
         .row {
             margin-top: 10px;
         }
+
+        .errors {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -40,11 +44,13 @@
     <div class="row">
         <label for="task-description-input">Description:</label>
         <input id="task-description-input" name="description" type="text" value="Task 1" th:value="*{description}"/>
+        <div class="errors" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Error in description</div>
     </div>
 
     <div class="row">
         <label for="task-deadline-input">Deadline:</label>
         <input id="task-deadline-input" name="deadline" type="date" value="2012-12-05" th:value="*{deadline}"/>
+        <div class="errors" th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}">Error in deadline</div>
     </div>
 
     <div class="row">
@@ -53,6 +59,7 @@
             <option th:value="0">No</option>
             <option th:value="1">Yes</option>
         </select>
+        <div class="errors" th:if="${#fields.hasErrors('done')}" th:errors="*{done}">Error in done</div>
     </div>
 
     <div class="row">

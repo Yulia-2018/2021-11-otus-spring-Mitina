@@ -25,17 +25,18 @@ public class Task {
     @SequenceGenerator(name = "global_seq", allocationSize = 1)
     private Long id;
 
-    @NotBlank
-    @Size(min = 2, max = 120)
+    @NotBlank(message = "Description cannot be empty")
+    @Size(min = 2, max = 120, message = "Description must have size between 2 and 120")
     @Column(name = "description", nullable = false)
     private String description;
 
+    @NotNull(message = "Deadline cannot be empty")
     @FutureOrPresent(message = "Deadline cannot be in the past")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "deadline", nullable = false)
     private LocalDate deadline;
 
-    @NotNull
+    @NotNull(message = "Done flag cannot be empty")
     @Column(name = "done", nullable = false)
     private Boolean done;
 
