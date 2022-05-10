@@ -31,4 +31,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Task> tasks;
+
+    public User(Long id) {
+        this.id = id;
+    }
 }

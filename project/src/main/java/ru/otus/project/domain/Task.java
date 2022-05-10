@@ -65,6 +65,17 @@ public class Task {
         this.done = done;
     }
 
+    public Task(String description, LocalDate deadline, Boolean done, User user) {
+        this.description = description;
+        this.deadline = deadline;
+        this.done = done;
+        this.user = user;
+    }
+
+    public Task(Task task) {
+        this(task.getId(), task.getDescription(), task.getDeadline(), task.getDone());
+    }
+
     @Override
     public String toString() {
         return "Task{" +
