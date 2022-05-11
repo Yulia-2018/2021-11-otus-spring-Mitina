@@ -1,8 +1,6 @@
 package ru.otus.project.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,9 +9,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class User {
@@ -50,12 +50,22 @@ public class User {
         }
     }
 
-    public User(Long id) {
-        this.id = id;
+    public int compareById(User u2) {
+        return id.compareTo(u2.id);
     }
 
     public User(String name, String password) {
         this.name = name;
         this.password = password;
+    }
+
+    public User(String name, String password, Set<Role> roles) {
+        this(name, password);
+        this.roles = roles;
+    }
+
+    public User(Long id, String name, String password, Set<Role> roles) {
+        this(name, password, roles);
+        this.id = id;
     }
 }

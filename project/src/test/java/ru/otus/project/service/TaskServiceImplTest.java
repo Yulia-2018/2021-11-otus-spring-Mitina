@@ -71,11 +71,11 @@ class TaskServiceImplTest {
 
     @Test
     void insert() {
-        Task newTask = new Task(TASK_NEW_FOR_ADMIN.getDescription(), TASK_NEW_FOR_ADMIN.getDeadline(), TASK_NEW_FOR_ADMIN.getDone(), TASK_NEW_FOR_ADMIN.getUser());
+        Task newTask = new Task(NEW_TASK_FOR_ADMIN.getDescription(), NEW_TASK_FOR_ADMIN.getDeadline(), NEW_TASK_FOR_ADMIN.getDone(), NEW_TASK_FOR_ADMIN.getUser());
 
         when(userRepository.findById(ADMIN_ID)).thenReturn(Optional.of(ADMIN));
-        when(repository.save(newTask)).thenReturn(TASK_NEW_FOR_ADMIN);
-        when(repository.findAll()).thenReturn(List.of(TASK_1_FOR_USER, TASK_2_FOR_USER, TASK_1_FOR_ADMIN, TASK_2_FOR_ADMIN, TASK_NEW_FOR_ADMIN));
+        when(repository.save(newTask)).thenReturn(NEW_TASK_FOR_ADMIN);
+        when(repository.findAll()).thenReturn(List.of(TASK_1_FOR_USER, TASK_2_FOR_USER, TASK_1_FOR_ADMIN, TASK_2_FOR_ADMIN, NEW_TASK_FOR_ADMIN));
 
         Task createdTask = service.insert(newTask, ADMIN_ID);
         newTask.setId(createdTask.getId());

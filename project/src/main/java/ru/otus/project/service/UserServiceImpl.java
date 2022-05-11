@@ -7,6 +7,7 @@ import ru.otus.project.exception.NotFoundException;
 import ru.otus.project.repository.UserRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAll() {
-        return repository.findAll();
+        return repository.findAll()
+                .stream()
+                .sorted(User::compareById)
+                .collect(Collectors.toList());
     }
 }
