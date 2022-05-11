@@ -1,11 +1,13 @@
 package ru.otus.project.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 
+@EqualsAndHashCode(exclude = "user")
 @NoArgsConstructor
 @Setter
 @Entity
