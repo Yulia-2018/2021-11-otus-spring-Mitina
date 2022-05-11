@@ -24,7 +24,7 @@ public class UserRestController {
     }
 
     @GetMapping(value = "/rest/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public User get(@PathVariable Long id) {
+    public User getById(@PathVariable Long id) {
         return service.getById(id);
     }
 }

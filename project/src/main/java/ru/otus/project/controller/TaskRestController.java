@@ -28,7 +28,7 @@ public class TaskRestController {
     }
 
     @GetMapping(value = "/rest/task/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Task get(@PathVariable Long id) {
+    public Task getById(@PathVariable Long id) {
         Long userId = SecurityUtil.authUserId();
         return service.getById(id, userId);
     }

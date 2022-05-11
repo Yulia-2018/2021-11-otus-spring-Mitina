@@ -1,5 +1,7 @@
 package ru.otus.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,6 +31,7 @@ public class User {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotBlank(message = "Password cannot be empty")
     @Size(min = 5, max = 150, message = "Password must have size between 5 and 150")
     @Column(name = "password", nullable = false)
@@ -37,6 +40,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<Role> roles;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Task> tasks;
 
