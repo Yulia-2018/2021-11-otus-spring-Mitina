@@ -17,9 +17,9 @@ public class TestData {
     public static final Role ROLE_1_FOR_ADMIN = new Role(100003L, "ROLE_ADMIN");
     public static final Role ROLE_2_FOR_ADMIN = new Role(100004L, "ROLE_USER");
     public static final Role NEW_ROLE = new Role(100010L, "ROLE_USER");
-    public static final User USER = new User(USER_ID, "User", "password", Set.of(ROLE_FOR_USER));
-    public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin", Set.of(ROLE_1_FOR_ADMIN, ROLE_2_FOR_ADMIN));
-    public static final User NEW_USER = new User(NEW_USER_ID, "New user", "New password", Set.of(NEW_ROLE));
+    public static final User USER = new User(USER_ID, "User", "password", null, Set.of(ROLE_FOR_USER));
+    public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin", null, Set.of(ROLE_1_FOR_ADMIN, ROLE_2_FOR_ADMIN));
+    public static final User NEW_USER = new User(NEW_USER_ID, "New user", "New password", "TestUserName", Set.of(NEW_ROLE));
 
     public static final int TASKS_COUNT_FOR_USER = 2;
     public static final int TASKS_COUNT_FOR_ADMIN = 2;

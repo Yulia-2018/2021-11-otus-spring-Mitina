@@ -57,7 +57,7 @@ class UserServiceImplTest {
 
     @Test
     void insert() {
-        User newUser = new User(NEW_USER.getName(), NEW_USER.getPassword(), NEW_USER.getRoles());
+        User newUser = new User(NEW_USER.getName(), NEW_USER.getPassword(), NEW_USER.getTelegramUsername(), NEW_USER.getRoles());
 
         when(repository.save(newUser)).thenReturn(NEW_USER);
         when(repository.findAll()).thenReturn(List.of(USER, ADMIN, NEW_USER));

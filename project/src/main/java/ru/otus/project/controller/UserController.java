@@ -41,7 +41,7 @@ public class UserController {
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
 
         Role role_user = new Role("ROLE_USER");
-        User user = new User(userDto.getName(), encodedPassword);
+        User user = new User(userDto.getName(), encodedPassword, userDto.getTelegramUsername());
         user.addRole(role_user);
         service.insert(user);
         return "redirect:/";

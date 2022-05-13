@@ -7,11 +7,14 @@ CREATE SEQUENCE GLOBAL_SEQ START WITH 100000;
 
 CREATE TABLE users
 (
-  id       BIGINT DEFAULT NEXT VALUE FOR GLOBAL_SEQ PRIMARY KEY,
-  name     VARCHAR(255) NOT NULL,
-  password VARCHAR(255) NOT NULL
+  id                BIGINT DEFAULT NEXT VALUE FOR GLOBAL_SEQ PRIMARY KEY,
+  name              VARCHAR(255) NOT NULL,
+  password          VARCHAR(255) NOT NULL,
+  telegram_username VARCHAR(255),
+  telegram_chat_id  BIGINT
 );
 CREATE UNIQUE INDEX users_unique_name_idx ON users (name);
+CREATE UNIQUE INDEX users_unique_telegram_username_idx ON users (telegram_username);
 
 CREATE TABLE user_roles
 (

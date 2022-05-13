@@ -17,4 +17,6 @@ public class UserDto {
     @NotBlank(message = "Password cannot be empty")
     @Size(min = 5, max = 150, message = "Password must have size between 5 and 150")
     private String password;
+
+    private String telegramUsername;
 }

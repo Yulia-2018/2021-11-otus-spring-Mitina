@@ -60,10 +60,12 @@ class UserControllerTest {
     @Test
     void insert() throws Exception {
 
-        User createdUser = new User("New user", "New password");
+        User createdUser = new User("New user", "New password", "NewUsername");
 
         mvc.perform(post("/register")
-                .param("name", createdUser.getName()).param("password", createdUser.getPassword()))
+                .param("name", createdUser.getName())
+                .param("password", createdUser.getPassword())
+                .param("telegramUsername", createdUser.getTelegramUsername()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
 
@@ -78,10 +80,12 @@ class UserControllerTest {
     @Test
     void insertUserForbidden() throws Exception {
 
-        User createdUser = new User("New user", "New password");
+        User createdUser = new User("New user", "New password", "NewUsername");
 
         mvc.perform(post("/register")
-                .param("name", createdUser.getName()).param("password", createdUser.getPassword()))
+                .param("name", createdUser.getName())
+                .param("password", createdUser.getPassword())
+                .param("telegramUsername", createdUser.getTelegramUsername()))
                 .andExpect(status().isForbidden());
 
         verify(service, times(0)).insert(any());
@@ -94,10 +98,12 @@ class UserControllerTest {
     @Test
     void insertAdminForbidden() throws Exception {
 
-        User createdUser = new User("New user", "New password");
+        User createdUser = new User("New user", "New password", "NewUsername");
 
         mvc.perform(post("/register")
-                .param("name", createdUser.getName()).param("password", createdUser.getPassword()))
+                .param("name", createdUser.getName())
+                .param("password", createdUser.getPassword())
+                .param("telegramUsername", createdUser.getTelegramUsername()))
                 .andExpect(status().isForbidden());
 
         verify(service, times(0)).insert(any());

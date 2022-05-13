@@ -3,6 +3,7 @@ package ru.otus.project.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -37,6 +38,13 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "telegram_username")
+    private String telegramUsername;
+
+    @Column(name = "telegram_chat_id")
+    private Long telegramChatId;
+
+    @BatchSize(size = 200)
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<Role> roles;
 
@@ -58,18 +66,19 @@ public class User {
         return id.compareTo(u2.id);
     }
 
-    public User(String name, String password) {
+    public User(String name, String password, String telegramUsername) {
         this.name = name;
         this.password = password;
+        this.telegramUsername = telegramUsername;
     }
 
-    public User(String name, String password, Set<Role> roles) {
-        this(name, password);
+    public User(String name, String password, String telegramUsername, Set<Role> roles) {
+        this(name, password, telegramUsername);
         this.roles = roles;
     }
 
-    public User(Long id, String name, String password, Set<Role> roles) {
-        this(name, password, roles);
+    public User(Long id, String name, String password, String telegramUsername, Set<Role> roles) {
+        this(name, password, telegramUsername, roles);
         this.id = id;
     }
 }
