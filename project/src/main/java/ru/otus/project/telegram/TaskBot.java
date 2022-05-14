@@ -82,16 +82,18 @@ public class TaskBot extends TelegramLongPollingBot {
         List<User> users = userRepository.getByTelegramChatIdIsNotNull();
         users.forEach(user -> {
             List<Task> tasksForToday = taskRepository.getByUserIdAndDeadlineAndDoneIsFalse(user.getId(), LocalDate.now());
-            StringBuilder messageText = new StringBuilder();
-            tasksForToday.forEach(task -> messageText.append(task.getDescription()).append("\n"));
-            try {
-                execute(SendMessage.builder()
-                        .chatId(user.getTelegramChatId().toString())
-                        .text("Your tasks for today:\n" +
-                                messageText.toString())
-                        .build());
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
+            if (!tasksForToday.isEmpty()) {
+                StringBuilder messageText = new StringBuilder();
+                tasksForToday.forEach(task -> messageText.append(task.getDescription()).append("\n"));
+                try {
+                    execute(SendMessage.builder()
+                            .chatId(user.getTelegramChatId().toString())
+                            .text("Your tasks for today:\n" +
+                                    messageText.toString())
+                            .build());
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
