@@ -1,5 +1,6 @@
 package ru.otus.project.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ class TaskRestControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private ObjectMapper mapper;
+
     @MockBean
     private TaskService service;
 
@@ -48,7 +52,8 @@ class TaskRestControllerTest {
 
             mvc.perform(get("/rest/task"))
                     .andExpect(status().isOk())
-                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                    .andExpect(content().json(mapper.writeValueAsString(List.of(TASK_2_FOR_ADMIN, TASK_1_FOR_ADMIN))));
 
             verify(service, times(1)).getAll(ADMIN_ID);
         }
@@ -69,7 +74,8 @@ class TaskRestControllerTest {
 
             mvc.perform(get("/rest/task/" + TASK_2_ID_FOR_ADMIN))
                     .andExpect(status().isOk())
-                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                    .andExpect(content().json(mapper.writeValueAsString(TASK_2_FOR_ADMIN)));
 
             verify(service, times(1)).getById(TASK_2_ID_FOR_ADMIN, ADMIN_ID);
         }

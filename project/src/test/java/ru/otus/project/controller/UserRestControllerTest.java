@@ -1,5 +1,6 @@
 package ru.otus.project.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,6 +24,9 @@ class UserRestControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private ObjectMapper mapper;
+
     @MockBean
     private UserService service;
 
@@ -40,7 +44,8 @@ class UserRestControllerTest {
 
         mvc.perform(get("/rest/user"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(mapper.writeValueAsString(List.of(USER, ADMIN))));
 
         verify(service, times(1)).getAll();
     }
@@ -77,9 +82,10 @@ class UserRestControllerTest {
 
         when(service.getById(USER_ID)).thenReturn(USER);
 
-        mvc.perform(get("/rest/user/" +  + USER_ID))
+        mvc.perform(get("/rest/user/" + USER_ID))
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(mapper.writeValueAsString(USER)));
 
         verify(service, times(1)).getById(USER_ID);
     }
