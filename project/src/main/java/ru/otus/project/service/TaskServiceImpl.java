@@ -46,9 +46,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> getAll(Long userId) {
-        return repository.findAll()
+        return repository.getByUserId(userId)
                 .stream()
-                .filter(task -> task.getUser().getId().equals(userId))
                 .sorted(Task::compareByDoneAndDeadline)
                 .collect(Collectors.toList());
     }

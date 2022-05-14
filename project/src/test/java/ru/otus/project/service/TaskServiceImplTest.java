@@ -32,13 +32,13 @@ class TaskServiceImplTest {
 
     @Test
     void getAll() {
-        when(repository.findAll()).thenReturn(List.of(TASK_1_FOR_USER, TASK_2_FOR_USER, TASK_1_FOR_ADMIN, TASK_2_FOR_ADMIN));
+        when(repository.getByUserId(ADMIN_ID)).thenReturn(List.of(TASK_1_FOR_ADMIN, TASK_2_FOR_ADMIN));
 
         List<Task> tasks = service.getAll(ADMIN_ID);
         assertThat(tasks.size()).isEqualTo(TASKS_COUNT_FOR_ADMIN);
         assertThat(tasks).containsExactlyElementsOf(List.of(TASK_2_FOR_ADMIN, TASK_1_FOR_ADMIN));
 
-        verify(repository, times(1)).findAll();
+        verify(repository, times(1)).getByUserId(ADMIN_ID);
     }
 
     @Test
@@ -75,7 +75,7 @@ class TaskServiceImplTest {
 
         when(userRepository.findById(ADMIN_ID)).thenReturn(Optional.of(ADMIN));
         when(repository.save(newTask)).thenReturn(NEW_TASK_FOR_ADMIN);
-        when(repository.findAll()).thenReturn(List.of(TASK_1_FOR_USER, TASK_2_FOR_USER, TASK_1_FOR_ADMIN, TASK_2_FOR_ADMIN, NEW_TASK_FOR_ADMIN));
+        when(repository.getByUserId(ADMIN_ID)).thenReturn(List.of(TASK_1_FOR_ADMIN, TASK_2_FOR_ADMIN, NEW_TASK_FOR_ADMIN));
 
         Task createdTask = service.insert(newTask, ADMIN_ID);
         newTask.setId(createdTask.getId());
@@ -85,7 +85,7 @@ class TaskServiceImplTest {
         assertThat(tasks).usingRecursiveFieldByFieldElementComparatorIgnoringFields("user.name", "user.password", "user.roles", "user.tasks").containsExactlyElementsOf(List.of(TASK_2_FOR_ADMIN, newTask, TASK_1_FOR_ADMIN));
 
         verify(repository, times(1)).save(newTask);
-        verify(repository, times(1)).findAll();
+        verify(repository, times(1)).getByUserId(ADMIN_ID);
         verify(userRepository, times(1)).findById(ADMIN_ID);
     }
 
@@ -137,7 +137,7 @@ class TaskServiceImplTest {
     @Test
     void deleteById() {
         when(repository.findById(TASK_1_ID_FOR_USER)).thenReturn(Optional.of(TASK_1_FOR_USER));
-        when(repository.findAll()).thenReturn(List.of(TASK_2_FOR_USER, TASK_1_FOR_ADMIN, TASK_2_FOR_ADMIN));
+        when(repository.getByUserId(USER_ID)).thenReturn(List.of(TASK_2_FOR_USER));
 
         service.deleteById(TASK_1_ID_FOR_USER, USER_ID);
         List<Task> tasks = service.getAll(USER_ID);
@@ -146,7 +146,7 @@ class TaskServiceImplTest {
 
         verify(repository, times(1)).findById(TASK_1_ID_FOR_USER);
         verify(repository, times(1)).delete(TASK_1_FOR_USER);
-        verify(repository, times(1)).findAll();
+        verify(repository, times(1)).getByUserId(USER_ID);
     }
 
     @Test
