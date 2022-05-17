@@ -12,7 +12,7 @@
     <artifactId>project</artifactId>
     <version>1.0</version>
     <name>project</name>
-    <description>Task management system</description>
+    <description>Personal task management system</description>
     <properties>
         <java.version>11</java.version>
     </properties>
