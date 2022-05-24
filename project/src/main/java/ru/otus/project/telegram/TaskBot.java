@@ -1,5 +1,6 @@
 package ru.otus.project.telegram;
 
+import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -16,17 +17,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Component
 public class TaskBot extends TelegramLongPollingBot {
 
     private final UserRepository userRepository;
 
     private final TaskRepository taskRepository;
-
-    public TaskBot(UserRepository userRepository, TaskRepository taskRepository) {
-        this.userRepository = userRepository;
-        this.taskRepository = taskRepository;
-    }
 
     @Override
     public String getBotUsername() {
