@@ -37,3 +37,5 @@ homework-16 - домашнее задание к уроку "Монолиты vs
 homework-17 - домашнее задание к уроку "Docker, оркестрация, облака, облачные хостинги"
 
 homework-18 - домашнее задание к уроку "Zuul, Hystrix Circuit Breaker, Sleuth, Zipkin, Hystrix Dashboard, Secure Configuration Properties"
+
+project - выпускной проект на тему "Система управления личными задачами"

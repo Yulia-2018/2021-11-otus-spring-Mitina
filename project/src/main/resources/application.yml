@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+  sql:
+    init:
+      mode: always
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+telegram:
+  bot:
+    username : "@Task2022Bot"
+    token: "5397746195:AAHrCPSYqQ7moGK_W0s63_tobxO526qEe5M"
+
+logging:
+  level:
+    ROOT: DEBUG

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>User register</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h3 class="hello">
+    Hello new user!
+    <br>
+    Register at "Personal task management system".
+    <br>
+    If you want every day to receive a list of your tasks for today in telegram, then when registering, enter your username in the telegram correctly, and then say hello to our telegram bot @Task2022Bot :)
+</h3>
+<br>
+
+<!-- User register -->
+<form id="register-form" action="register.html" th:method="post" th:action="@{/register}" th:object="${userDto}">
+    <h3>User register:</h3>
+
+    <div class="row">
+        <label for="name-input">Name:</label>
+        <input id="name-input" name="name" type="text"/>
+        <div class="errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error in name</div>
+    </div>
+
+    <div class="row">
+        <label for="password-input">Password:</label>
+        <input id="password-input" name="password" type="text"/>
+        <div class="errors" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error in password</div>
+    </div>
+
+    <div class="row">
+        <label for="telegramUsername-input">Telegram username:</label>
+        <input id="telegramUsername-input" name="telegramUsername" type="text"/>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <button type="submit">Save</button>
+        <a href="list.html" th:href="@{/}">
+            <button type="button">Cancel</button>
+        </a>
+    </div>
+</form>
+
+</body>
+</html>

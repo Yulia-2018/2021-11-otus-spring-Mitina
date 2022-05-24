@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all tasks</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<h3>Tasks:</h3>
+
+<table class="tasks">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Description</th>
+        <th>Deadline</th>
+        <th>Done</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<div class="row">
+    <a href="edit.html" th:href="@{/edit(id=0)}">
+        <button type="button"><img src="images/add.png"> Add task</button>
+    </a>
+</div>
+
+<script>
+    $(function () {
+        $.get('/rest/task').done(function (tasks) {
+            tasks.forEach(function (task) {
+                $('tbody').append(`
+                            <tr data-taskDone="${task.done}">
+                                <td align="center">${task.id}</td>
+                                <td>${task.description}</td>
+                                <td align="center">${task.deadline}</td>
+                                <td align="center">${task.done}</td>
+                                <td align="center"><a href="/edit?id=${task.id}"><img src="images/pencil.png" alt="Edit"></a></td>
+                                <td align="center"><a href="/delete?id=${task.id}"><img src="images/delete.png" alt="Delete"></a></td>
+                            </tr>
+                        `)
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
