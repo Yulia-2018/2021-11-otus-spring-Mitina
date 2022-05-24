@@ -29,6 +29,13 @@ public class R_Book {
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<R_Comment> comments = new ArrayList<>();
 
+    public void addComment(R_Comment comment) {
+        if (comment != null) {
+            comments.add(comment);
+            comment.setBook(this);
+        }
+    }
+
     public R_Book() {
     }
 

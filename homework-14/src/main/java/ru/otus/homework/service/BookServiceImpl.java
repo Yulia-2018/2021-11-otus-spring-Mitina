@@ -11,7 +11,6 @@ import ru.otus.homework.exception.NotFoundException;
 import ru.otus.homework.repository.relational.R_AuthorRepository;
 import ru.otus.homework.repository.relational.R_GenreRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,13 +34,9 @@ public class BookServiceImpl implements BookService {
         R_Genre r_genre = r_genreRepository.getByTitle(genreTitle)
                 .orElseThrow(() -> new NotFoundException("Genre with title " + genreTitle + " not exist"));
 
-        List<Comment> comments = book.getComments();
-        List<R_Comment> r_comments = new ArrayList<>();
-        for (Comment comment : comments) {
-            r_comments.add(new R_Comment(comment.getText()));
-        }
         R_Book r_book = new R_Book(book.getTitle(), r_author, r_genre);
-        r_book.setComments(r_comments);
+        List<Comment> comments = book.getComments();
+        comments.forEach(comment -> r_book.addComment(new R_Comment(comment.getText())));
         return r_book;
     }
 }

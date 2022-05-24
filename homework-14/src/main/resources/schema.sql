@@ -34,7 +34,7 @@ CREATE TABLE comment
 (
   id        BIGINT DEFAULT NEXT VALUE FOR GLOBAL_SEQ PRIMARY KEY,
   text      VARCHAR(255) NOT NULL,
-  book_id   BIGINT, --NOT NULL,
+  book_id   BIGINT NOT NULL,
   FOREIGN KEY (book_id) REFERENCES book (id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX comment_unique_text_book_idx ON comment (text, book_id);
